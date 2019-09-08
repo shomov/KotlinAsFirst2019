@@ -111,8 +111,10 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double {
-    (initial + (initial * percent / 100.0)
-            /*не закончено*/
+    var initial = (initial + (initial * percent / 100.0))
+    initial = (initial + (initial * percent / 100.0))
+    initial = (initial + (initial * percent / 100.0))
+    return initial
 }
 
 /**
@@ -121,4 +123,4 @@ fun accountInThreeYears(initial: Int, percent: Int): Double {
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int = TODO()
+fun numberRevert(number: Int): Int = (number % 10) * 100 + ((number % 100) / 10) * 10 + number / 100
