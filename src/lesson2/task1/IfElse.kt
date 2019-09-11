@@ -3,6 +3,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -87,7 +88,17 @@ fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
     t3: Double, v3: Double
-): Double = TODO()
+): Double {
+    val sp = ((t1 * v1 + t2 * v2 + t3 * v3) / 2)
+    if (sp <= t1 * v1) {
+        return sp / v1
+    }
+    return if ((sp > t1 * v1) and (sp <= t1 * v1 + t2 * v2)) {
+        t1 + (sp - t1 * v1) / v2
+    } else {
+        t1 + t2 + (sp - t1 * v1 - t2 * v2) / v3;
+    }
+}
 
 /**
  * Простая
@@ -102,7 +113,19 @@ fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
-): Int = TODO()
+): Int {
+    if (((kingX == rookX1) or (kingY == rookY1)) and ((kingX != rookX2) and (kingY != rookY2))) {
+        return 1
+    }
+    if (((kingX != rookX1) and (kingY != rookY1)) and ((kingX == rookX2) or (kingY == rookY2))) {
+        return 2
+    }
+    if (((kingX == rookX1) or (kingY == rookY1)) and ((kingX == rookX2) or (kingY == rookY2))) {
+        return 3
+    } else {
+        return 0
+    }
+}
 
 /**
  * Простая
@@ -118,7 +141,15 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int = TODO()
+): Int {
+    if ((kingX == rookX) or (kingY == rookY)) {
+        return 1
+    }
+    /** не доделано*/
+    else {
+        return 0
+    }
+}
 
 /**
  * Простая
