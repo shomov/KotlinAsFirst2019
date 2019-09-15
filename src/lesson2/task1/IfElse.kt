@@ -3,8 +3,10 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import java.lang.Math.pow
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -114,17 +116,13 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    if (((kingX == rookX1) or (kingY == rookY1)) and ((kingX != rookX2) and (kingY != rookY2))) {
-        return 1
+    return when {
+        ((kingX == rookX1) or (kingY == rookY1)) and ((kingX != rookX2) and (kingY != rookY2)) -> 1
+        ((kingX != rookX1) and (kingY != rookY1)) and ((kingX == rookX2) or (kingY == rookY2)) -> 2
+        ((kingX == rookX1) or (kingY == rookY1)) and ((kingX == rookX2) or (kingY == rookY2)) -> 3
+        else -> 0
     }
-    if (((kingX != rookX1) and (kingY != rookY1)) and ((kingX == rookX2) or (kingY == rookY2))) {
-        return 2
-    }
-    if (((kingX == rookX1) or (kingY == rookY1)) and ((kingX == rookX2) or (kingY == rookY2))) {
-        return 3
-    } else {
-        return 0
-    }
+
 }
 
 /**
@@ -142,12 +140,11 @@ fun rookOrBishopThreatens(
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int {
-    if ((kingX == rookX) or (kingY == rookY)) {
-        return 1
-    }
-    /** не доделано*/
-    else {
-        return 0
+    return when {
+        (kingX == rookX) or (kingY == rookY) and (abs(kingX - bishopX) != abs(kingY - bishopY)) -> 1
+        ((kingX != rookX) and (kingY != rookY)) and (abs(kingX - bishopX) == abs(kingY - bishopY)) -> 2
+        ((kingX == rookX) or (kingY == rookY)) and (abs(kingX - bishopX) == abs(kingY - bishopY)) -> 3
+        else -> 0
     }
 }
 
@@ -159,7 +156,31 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val bs = max(max(a, b), c)
+    var e: Double
+    var d: Double
+    if (a != bs) {
+        d = a
+        e = if (b != bs) {
+            b
+        } else {
+            c
+        }
+    } else {
+        d = b
+        e = c
+    }
+    return if ((a + b > c) and (a + c > b) and (b + c > a)) {
+        when {
+            bs.pow(2) < e.pow(2) + d.pow(2) -> 0
+            bs.pow(2) == e.pow(2) + d.pow(2) -> 1
+            else -> 2
+        }
+    } else {
+        -1
+    }
+}
 
 /**
  * Средняя
