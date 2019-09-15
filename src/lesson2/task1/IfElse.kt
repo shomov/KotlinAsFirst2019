@@ -4,10 +4,7 @@ package lesson2.task1
 
 import lesson1.task1.discriminant
 import java.lang.Math.pow
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /**
  * Пример
@@ -97,9 +94,7 @@ fun timeForHalfWay(
     }
     return if ((sp > t1 * v1) and (sp <= t1 * v1 + t2 * v2)) {
         t1 + (sp - t1 * v1) / v2
-    } else {
-        t1 + t2 + (sp - t1 * v1 - t2 * v2) / v3;
-    }
+    } else t1 + t2 + (sp - t1 * v1 - t2 * v2) / v3
 }
 
 /**
@@ -158,8 +153,8 @@ fun rookOrBishopThreatens(
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     val bs = max(max(a, b), c)
-    var e: Double
-    var d: Double
+    val e: Double
+    val d: Double
     if (a != bs) {
         d = a
         e = if (b != bs) {
@@ -190,4 +185,12 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    return when {
+        ((b == c) or (a == d)) -> 0
+        (b < c) or (d < a) -> -1
+        else -> abs(max(a, c) - min(b, d))
+    }
+
+
+}
