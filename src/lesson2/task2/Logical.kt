@@ -4,6 +4,8 @@ package lesson2.task2
 
 import lesson1.task1.sqr
 import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 /**
  * Пример
@@ -40,10 +42,13 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 fun daysInMonth(month: Int, year: Int): Int {
-    if
-    if(year%4==0){
-        
+    return when {
+        ((month < 8) and (month % 2 == 1)) or ((month >= 8) and (month % 2 == 0)) -> 31
+        ((month < 7) and (month % 2 == 0) and (month != 2)) or ((month >= 9) and (month % 2 == 1)) -> 30
+        ((month == 2) and (year % 4 == 0) and (((year % 100 != 0) or (year % 400 == 0)))) -> 29
+        else -> 28
     }
+
 }
 
 /**
@@ -56,7 +61,9 @@ fun daysInMonth(month: Int, year: Int): Int {
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean = TODO()
+): Boolean =
+    sqrt((x1 - x2).pow(2) + (y1 - y2).pow(2)) <= r2 - r1
+
 
 /**
  * Средняя
@@ -67,4 +74,6 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
+    ((a <= r) and (b <= s)) or ((a <= r) and (c <= s)) or ((b <= r) and (c <= s)) or (((a <= s) and (b <= r)) or ((a <= s) and (c <= r)) or ((b <= s) and (c <= r)))
+
