@@ -33,7 +33,7 @@ fun isNumberHappy(number: Int): Boolean =
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
-    (x1 == x2) or (y1 == y2) or (abs(x1 - x2) == abs(y1 - y2))
+    (x1 == x2) || (y1 == y2) || (abs(x1 - x2) == abs(y1 - y2))
 
 
 /**
@@ -44,8 +44,8 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  */
 
 fun daysInMonth(month: Int, year: Int): Int = when {
-    ((month == 2) and (year % 4 == 0) and (((year % 100 != 0) or (year % 400 == 0)))) -> 29
-    ((month < 8) and (month % 2 == 1)) or ((month >= 8) and (month % 2 == 0)) -> 31
+    ((month == 2) && (year % 4 == 0) && (((year % 100 != 0) || (year % 400 == 0)))) -> 29
+    ((month < 8) && (month % 2 == 1)) || ((month >= 8) and (month % 2 == 0)) -> 31
     month != 2 -> 30
     else -> 28
 }
