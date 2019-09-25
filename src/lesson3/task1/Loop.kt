@@ -4,6 +4,8 @@ package lesson3.task1
 
 import lesson1.task1.sqr
 import kotlin.math.sqrt
+import java.lang.Math.pow
+import kotlin.math.pow
 
 /**
  * Пример
@@ -147,7 +149,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     var b = n
     while (a != b) {
         if (a > b) a -= b else b -= a
-        if ((a == 1) || (b == 1)){
+        if ((a == 1) || (b == 1)) {
             return true
         }
     }
@@ -167,8 +169,6 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
 }
 
 
-
-
 /**
  * Средняя
  *
@@ -185,7 +185,16 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var a = x
+    var i = 0
+    while (a != 1) {
+        if (a % 2 == 0) a /= 2
+        else a = a * 3 + 1
+        i += 1
+    }
+    return i
+}
 
 /**
  * Средняя
@@ -216,7 +225,22 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var count = 0
+    var num = n
+    var answer = 0
+    while (num != 0) {
+        num /= 10
+        count += 1
+    }
+    num = n
+    for (i in 1..count) {
+        answer = answer * 10 + num % 10
+        num /= 10
+    }
+    return answer
+}
+
 
 /**
  * Средняя
@@ -227,7 +251,7 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя
@@ -237,7 +261,24 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var num = n
+    var count = 0
+    while (num != 0) {
+        num /= 10
+        count += 1
+    }
+    num = n
+    for (i in 0 until count) {
+        for (j in 1 until count) {
+            val a = num % 10.0.pow(i + 1).toInt() / 10.0.pow(i).toInt()
+            val b = num % 10.0.pow(j + 1).toInt() / 10.0.pow(j).toInt()
+            if ((a != b) && (i != j)) return true
+
+        }
+    }
+    return false
+}
 
 /**
  * Сложная
