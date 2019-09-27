@@ -221,10 +221,10 @@ class Tests {
     fun hasDifferentDigits() {
         assertTrue(hasDifferentDigits(323))
         assertTrue(hasDifferentDigits(54))
-        /**assertTrue(hasDifferentDigits(222266666))
+        assertTrue(hasDifferentDigits(222266666))
         assertFalse(hasDifferentDigits(0))
         assertFalse(hasDifferentDigits(777))
-        assertTrue(hasDifferentDigits(31122))*/
+        assertTrue(hasDifferentDigits(31122))
     }
 
     @Test
@@ -236,6 +236,7 @@ class Tests {
         assertEquals(6, squareSequenceDigit(12))
         assertEquals(0, squareSequenceDigit(17))
         assertEquals(9, squareSequenceDigit(27))
+
     }
 
     @Test
