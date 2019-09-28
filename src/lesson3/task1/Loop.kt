@@ -15,7 +15,7 @@ import kotlin.math.pow
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result *= i // Please do not fix in master
     }
     return result
 }
@@ -109,7 +109,7 @@ fun fib(n: Int): Int {
 fun lcm(m: Int, n: Int): Int {
     var a = m
     var b = n
-    var mul = a * b
+    val mul = a * b
     while (a != b) {
         if (a > b) a -= b else b -= a
     }
@@ -335,4 +335,4 @@ fun squareSequenceDigit(n: Int) = universal(n) { n -> sqr(n) }
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = universal(n) { n -> fib(n) }
+fun fibSequenceDigit(n: Int) = universal(n) { n -> fib(n) }
