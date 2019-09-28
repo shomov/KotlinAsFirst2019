@@ -281,7 +281,35 @@ fun hasDifferentDigits(n: Int): Boolean {
 }
 
 
+fun universal(n: Int, fnk: (n: Int) -> Int): Int {
+    var count = 0
+    var i = 1
+    while (count <= n) {
+        var num = fnk(i)
+        while (num > 0) {
+            count += 1
+            num /= 10
+        }
+        num = fnk(i)
+        i += 1
+        if (count >= n) {
+            return if (count == n) {
+                while (num > 10) num %= 10
+                num
+            } else {
+                num = (num % 10.0.pow(count - n + 1)).toInt()
+                while (num > 10) num /= 10
+                num
+            }
+        }
+    }
 
+
+
+
+
+    return 1
+}
 
 
 /**
@@ -293,38 +321,9 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int {
-    var count = 0
-    var i = 1
-    while (count <= n) {
-        var num = sqr(i)
-        while (num > 0) {
-            count += 1
-            num /= 10
-        }
-        num = sqr(i)
-        i += 1
-        if (count >= n) {
-            return if (count == n) {
-                while (num > 10) num %= 10
-                num
-            } else {
-                num = (num % 10.0.pow(count - n + 1)).toInt()
-                while (num > 10) num /= 10
-                num
-            }
-        }
-    }
+fun squareSequenceDigit(n: Int) = universal(n) { n -> sqr(n) }
 
 
-
-
-
-    return 1
-
-
-
-}
 
 
 /**
@@ -336,32 +335,4 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int {
-    var count = 0
-    var i = 1
-    while (count <= n) {
-        var num = fib(i)
-        while (num > 0) {
-            count += 1
-            num /= 10
-        }
-        num = fib(i)
-        i += 1
-        if (count >= n) {
-            return if (count == n) {
-                while (num > 10) num %= 10
-                num
-            } else {
-                num = (num % 10.0.pow(count - n + 1)).toInt()
-                while (num > 10) num /= 10
-                num
-            }
-        }
-    }
-
-
-
-
-
-    return 1
-}
+fun fibSequenceDigit(n: Int): Int = universal(n) { n -> fib(n) }
