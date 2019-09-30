@@ -3,9 +3,8 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
-import kotlin.math.sqrt
-import java.lang.Math.pow
 import kotlin.math.pow
+import kotlin.math.sqrt
 
 /**
  * Пример
