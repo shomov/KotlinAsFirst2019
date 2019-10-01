@@ -96,7 +96,6 @@ fun fib(n: Int): Int {
         a1 = a3
     }
     return a3
-
 }
 
 /**
