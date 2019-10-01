@@ -108,11 +108,10 @@ fun fib(n: Int): Int {
 fun lcm(m: Int, n: Int): Int {
     var a = m
     var b = n
-    val mul = a * b
     while (a != b) {
         if (a > b) a -= b else b -= a
     }
-    return mul / a
+    return m / a * n
 }
 
 /**
@@ -224,15 +223,9 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun revert(n: Int): Int {
-    var count = 0
     var num = n
     var answer = 0
-    while (num != 0) {
-        num /= 10
-        count += 1
-    }
-    num = n
-    for (i in 1..count) {
+    while (num > 0) {
         answer = answer * 10 + num % 10
         num /= 10
     }
@@ -260,53 +253,25 @@ fun isPalindrome(n: Int): Boolean = n == revert(n)
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun hasDifferentDigits(n: Int): Boolean {
-    var num = n
-    var count = 0
-    while (num != 0) {
-        num /= 10
-        count += 1
-    }
-    num = n
-    for (i in 0 until count) {
-        for (j in 1 until count) {
-            val a = num % 10.0.pow(i + 1).toInt() / 10.0.pow(i).toInt()
-            val b = num % 10.0.pow(j + 1).toInt() / 10.0.pow(j).toInt()
-            if ((a != b) && (i != j)) return true
-
-        }
+    var m = n / 10
+    while (m > 0) {
+        if (m % 10 != n % 10) return true
+        else m /= 10
     }
     return false
 }
 
 
 fun universal(n: Int, fnk: (n: Int) -> Int): Int {
-    var count = 0
-    var i = 1
-    while (count <= n) {
-        var num = fnk(i)
-        while (num > 0) {
-            count += 1
-            num /= 10
-        }
-        num = fnk(i)
-        i += 1
-        if (count >= n) {
-            return if (count == n) {
-                while (num > 10) num %= 10
-                num
-            } else {
-                num = (num % 10.0.pow(count - n + 1)).toInt()
-                while (num > 10) num /= 10
-                num
-            }
-        }
+    var count = 1
+    var sum = 0
+    var num = 0
+    while (sum < n) {
+        num = fnk(count)
+        sum += digitNumber(num)
+        count += 1
     }
-
-
-
-
-
-    return 1
+    return (num / 10.0.pow(sum - n).toInt()) % 10
 }
 
 
@@ -320,9 +285,6 @@ fun universal(n: Int, fnk: (n: Int) -> Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int) = universal(n) { n -> sqr(n) }
-
-
-
 
 /**
  * Сложная
