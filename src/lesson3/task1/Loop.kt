@@ -73,7 +73,7 @@ fun digitNumber(n: Int): Int {
     if (n == 0) return 1
     var num = n
     var result = 0
-    while (num > 0) {
+    while ((num > 0) || (num < 0)) {
         num /= 10
         result += 1
     }
@@ -146,11 +146,10 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
 fun isCoPrime(m: Int, n: Int): Boolean {
     var a = m
     var b = n
-    while (a != b) {
+    if ((a == b) && isPrime(a)) return true
+    while ((a != 0) && (b != 0)) {
         if (a > b) a -= b else b -= a
-        if ((a == 1) || (b == 1)) {
-            return true
-        }
+        if ((a == 1) || (b == 1)) return true
     }
     return false
 }
