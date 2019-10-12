@@ -325,7 +325,7 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun units(n: Int): String {
-    var dict = listOf(
+    val dict = listOf(
         "",
         "один",
         "два",
@@ -342,7 +342,8 @@ fun units(n: Int): String {
 
 fun decades(n: Int, last: Int): String {
     return if (n == 1) {
-        var dict = listOf(
+        val dict = listOf(
+            "",
             "десять",
             "одиннадцать",
             "двенадцать",
@@ -356,7 +357,7 @@ fun decades(n: Int, last: Int): String {
         )
         dict[last]
     } else {
-        var dict = listOf(
+        val dict = listOf(
             "",
             "",
             "двадцать",
@@ -370,13 +371,10 @@ fun decades(n: Int, last: Int): String {
         )
         dict[n]
     }
-
-
 }
 
 fun hundreds(n: Int): String {
-
-    var dict = listOf(
+    val dict = listOf(
         "",
         "сто",
         "двести",
@@ -389,44 +387,46 @@ fun hundreds(n: Int): String {
         "девятьсот"
     )
     return dict[n]
-
-
 }
 
 fun thousands(n: Int): String {
     var str = ""
+    val last = n % 10
     if (n % 100 / 10 != 1) {
-        var last = n % 10
         str += when (last) {
-            in 1..3 -> {
-                var dict = listOf(
+            in 1..4 -> {
+                val dict = listOf(
                     "",
                     "одна",
                     "две",
-                    "три"
+                    "три",
+                    "четыре"
                 )
                 dict[last] + " тысячи"
             }
-            in 4..9 -> units(last) + " тысяч"
-            else -> " тысяч"
+            else -> units(last) + "тысяч"
         }
-
+    } else {
+        str += decades(1, last + 1) + " тысяч"
     }
-    return str
-
+    val strk = (hundreds(n / 100) + " " + decades(n % 100 / 10, 0) + " ").trim()
+    return ("$strk $str").trim()
 }
 
 fun russian(n: Int): String {
     var num = n
-    var words = mutableListOf<String>()
+    val words = mutableListOf<String>()
     var count = 1
     var last = 0
     while (num > 0) {
         val temp = num % 10
-        if ((count == 1) && ((num % 100 <= 9) || (num % 100 >= 20))) words.add(units(temp))
-        if (count == 2) words.add(decades(temp, last))
-        if (count == 3) words.add(hundreds(temp))
-        if (count > 3) words.add(thousands(num))
+        if ((count == 1) && ((num % 100 <= 9) || (num % 100 >= 20)) && (temp != 0)) words.add(units(temp))
+        if ((count == 2) && (temp != 0)) words.add(decades(temp, last + 1))
+        if ((count == 3) && (temp != 0)) words.add(hundreds(temp))
+        if ((count > 3) && (n != 0)) {
+            words.add(thousands(num))
+            break
+        }
         last = temp
         count += 1
         num /= 10
@@ -438,7 +438,6 @@ fun russian(n: Int): String {
         if (i != 0) str += " "
         i -= 1
     }
-
     return str
 }
 
