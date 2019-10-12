@@ -394,17 +394,17 @@ fun thousands(n: Int): String {
     val last = n % 10
     if (n % 100 / 10 != 1) {
         str += when (last) {
-            in 2..4 -> {
+            in 1..4 -> {
                 val dict = listOf(
+                    "",
+                    "одна",
                     "две",
                     "три",
                     "четыре"
                 )
-                dict[last - 2] + " тысячи"
+                dict[last] + " тысячи"
             }
-            1 -> "одна тысяча"
-            0 -> "тысяч"
-            else -> (units(last)) + " тысяч"
+            else -> units(last) + "тысяч"
         }
     } else {
         str += decades(1, last + 1) + " тысяч"
@@ -440,3 +440,5 @@ fun russian(n: Int): String {
     }
     return str
 }
+
+
