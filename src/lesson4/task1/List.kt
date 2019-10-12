@@ -251,8 +251,9 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    var num = n
     val result = mutableListOf<Int>()
+    if (n == 0) result.add(index = result.size, element = 0)
+    var num = n
     while (num > 1) {
         result.add(index = result.size, element = num % base)
         num /= base
@@ -394,17 +395,18 @@ fun thousands(n: Int): String {
     val last = n % 10
     if (n % 100 / 10 != 1) {
         str += when (last) {
-            in 1..4 -> {
+            in 2..4 -> {
                 val dict = listOf(
                     "",
-                    "одна",
                     "две",
                     "три",
                     "четыре"
                 )
-                dict[last] + " тысячи"
+                dict[last - 1] + " тысячи"
             }
-            else -> units(last) + "тысяч"
+            in 5..9 -> units(last) + " тысяч"
+            1 -> "одна тысяча"
+            else -> "тысяч"
         }
     } else {
         str += decades(1, last + 1) + " тысяч"
