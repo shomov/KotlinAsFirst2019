@@ -2,6 +2,7 @@
 
 package lesson4.task1
 
+import kotlinx.html.attributes.stringSetDecode
 import lesson3.task1.isPrime
 import lesson1.task1.discriminant
 import kotlin.math.pow
@@ -250,7 +251,17 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    var num = n
+    val result = mutableListOf<Int>()
+    while (num > 1) {
+        result.add(index = result.size, element = num % base)
+        num /= base
+    }
+    if ((num < 10) && (num != 0)) result.add(index = result.size, element = num)
+    result.reverse()
+    return result
+}
 
 /**
  * Сложная
@@ -263,7 +274,8 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): List<Int> = TODO()
+
 
 /**
  * Средняя
@@ -272,7 +284,15 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var a = digits.size
+    var result = 0
+    for (i in digits.indices) {
+        a -= 1
+        result += digits[i] * base.toDouble().pow(a).toInt()
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -305,4 +325,107 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun units(n: Int): String {
+    var dict = listOf(
+        "",
+        "один",
+        "два",
+        "три",
+        "четыре",
+        "пять",
+        "шесть",
+        "семь",
+        "восемь",
+        "девять"
+    )
+    return dict[n]
+}
+
+fun decades(n: Int, last: Int): String {
+    return if (n == 1) {
+        var dict = listOf(
+            "десять",
+            "одиннадцать",
+            "двенадцать",
+            "тринадцать",
+            "четырнадцать",
+            "пятнадцать",
+            "шестнадцать",
+            "семнадцать",
+            "восемнадцать",
+            "девятнадцать"
+        )
+        dict[last]
+    } else {
+        var dict = listOf(
+            "",
+            "",
+            "двадцать",
+            "тридцать",
+            "сорок",
+            "пятьдесят",
+            "шестьдесят",
+            "семьдесят",
+            "восемьдесят",
+            "девяносто"
+        )
+        dict[n]
+    }
+
+
+}
+
+fun hundreds(n: Int): String {
+
+    var dict = listOf(
+        "сто",
+        "двести",
+        "триста",
+        "четыреста",
+        "пятьсот",
+        "шестьсот",
+        "семьсот",
+        "восемьсот",
+        "девятьсот"
+    )
+    return dict[n]
+
+
+}
+
+fun thousands(n: Int): String {
+    if (n % 100 / 10 != 1){
+
+    }
+
+
+
+
+}
+
+fun russian(n: Int): String {
+    var num = n
+    var words = mutableListOf<String>()
+    var count = 1
+    var last = 0
+    while (num > 0) {
+        val temp = num % 10
+        if ((count == 1) && ((num % 100 <= 9) || (num % 100 >= 20))) words.add(units(temp))
+        if (count == 2) words.add(decades(temp, last))
+        if (count == 3) words.add(hundreds(temp - 1))
+        if (count == 3) words.add(thousands(num))
+        last = temp
+        count += 1
+        num /= 10
+    }
+    var str = ""
+    var i = words.size - 1
+    while (i >= 0) {
+        str += words[i]
+        if (i != 0) str += " "
+        i -= 1
+    }
+    return str
+}
+
+
