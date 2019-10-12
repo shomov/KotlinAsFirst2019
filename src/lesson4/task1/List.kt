@@ -122,7 +122,6 @@ fun abs(v: List<Double>): Double {
     else sqrt(v.fold(0.0) { result, element -> result + element.pow(2) })
 }
 
-
 /**
  * Простая
  *
@@ -442,5 +441,3 @@ fun russian(n: Int): String {
     }
     return str
 }
-
-
