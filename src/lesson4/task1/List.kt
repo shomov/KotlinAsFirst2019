@@ -2,9 +2,8 @@
 
 package lesson4.task1
 
-import kotlinx.html.attributes.stringSetDecode
-import lesson3.task1.isPrime
 import lesson1.task1.discriminant
+import lesson3.task1.isPrime
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -378,6 +377,7 @@ fun decades(n: Int, last: Int): String {
 fun hundreds(n: Int): String {
 
     var dict = listOf(
+        "",
         "сто",
         "двести",
         "триста",
@@ -394,12 +394,25 @@ fun hundreds(n: Int): String {
 }
 
 fun thousands(n: Int): String {
-    if (n % 100 / 10 != 1){
+    var str = ""
+    if (n % 100 / 10 != 1) {
+        var last = n % 10
+        str += when (last) {
+            in 1..3 -> {
+                var dict = listOf(
+                    "",
+                    "одна",
+                    "две",
+                    "три"
+                )
+                dict[last] + " тысячи"
+            }
+            in 4..9 -> units(last) + " тысяч"
+            else -> " тысяч"
+        }
 
     }
-
-
-
+    return str
 
 }
 
@@ -412,8 +425,8 @@ fun russian(n: Int): String {
         val temp = num % 10
         if ((count == 1) && ((num % 100 <= 9) || (num % 100 >= 20))) words.add(units(temp))
         if (count == 2) words.add(decades(temp, last))
-        if (count == 3) words.add(hundreds(temp - 1))
-        if (count == 3) words.add(thousands(num))
+        if (count == 3) words.add(hundreds(temp))
+        if (count > 3) words.add(thousands(num))
         last = temp
         count += 1
         num /= 10
@@ -425,6 +438,7 @@ fun russian(n: Int): String {
         if (i != 0) str += " "
         i -= 1
     }
+
     return str
 }
 
