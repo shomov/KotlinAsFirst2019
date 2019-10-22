@@ -95,7 +95,6 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
 
 
-
 /**
  * Простая
  *
@@ -125,10 +124,10 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): MutableMap<String, String> {
     for ((key, value) in b) if (a[key] == value) a.remove(key)
+    return a
 }
-
 
 
 /**
@@ -157,7 +156,14 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val unmap: MutableMap<String, String> = subtractOf(mapA.toMutableMap(), mapB.toMutableMap())
+    for ((key, value) in mapB) {
+        if (unmap[key] == null) unmap[key] = value
+        else unmap[key] += ", " + mapB[key]
+    }
+    return unmap
+}
 
 /**
  * Средняя
@@ -197,7 +203,11 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    val w = word.toLowerCase()
+    for (i in w.indices) if (!chars.contains(w[i])) return false
+    return true
+}
 
 /**
  * Средняя
@@ -211,7 +221,18 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    /**
+    var count = 0
+    var result: MutableMap<String, Int>
+    for (i in list.indices) {
+        if (list[i] != result[i])
+
+    }*/
+
+}
+
+
 
 /**
  * Средняя
