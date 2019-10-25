@@ -183,10 +183,10 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
             if (counter[stockPrices[i].first] == null) counter[stockPrices[i].first] = 2
             else counter[stockPrices[i].first] = counter.getValue(stockPrices[i].first) + 1
             result[stockPrices[i].first] =
-                (result.getValue(stockPrices[i].first) + stockPrices[i].second) / counter.getValue(stockPrices[i].first)
+                (result.getValue(stockPrices[i].first) + stockPrices[i].second)
         }
+    for ((key) in counter) result[key] = result.getValue(key) / counter.getValue(key)
     return result
-
 }
 
 
