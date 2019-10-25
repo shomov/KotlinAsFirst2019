@@ -158,10 +158,9 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
     val unmap: MutableMap<String, String> = subtractOf(mapA.toMutableMap(), mapB.toMutableMap())
-    for ((key, value) in mapB) {
+    for ((key, value) in mapB)
         if (unmap[key] == null) unmap[key] = value
         else unmap[key] += ", " + mapB[key]
-    }
     return unmap
 }
 
@@ -175,7 +174,17 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val result = mutableMapOf<String, Double>()
+    for (i in stockPrices.indices)
+        if (!result.containsKey(stockPrices[i].first)) result[stockPrices[i].first] = stockPrices[i].second
+        else result[stockPrices[i].first] = (result.getValue(stockPrices[i].first) + stockPrices[i].second) / 2
+    return result
+
+}
+
+
+
 
 /**
  * Средняя
@@ -224,12 +233,10 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val result = mutableMapOf<String, Int>()
-    for (i in list.indices) {
+    for (i in list.indices)
         if (!result.containsKey(list[i])) result[list[i]] = 1
         else result[list[i]] = result.getValue(list[i]) + 1
-    }
     return result.filterValues { it > 1 }
-
 }
 
 /**
