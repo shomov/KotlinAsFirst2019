@@ -129,7 +129,6 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): MutableMa
     return a
 }
 
-
 /**
  * Простая
  *
@@ -188,7 +187,6 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
     for ((key) in counter) result[key] = result.getValue(key) / counter.getValue(key)
     return result
 }
-
 
 /**
  * Средняя
@@ -278,7 +276,40 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+
+/** Входные данные
+ *         assertEquals(
+mapOf(
+"Marat" to setOf("Mikhail", "Sveta"),
+"Sveta" to setOf("Mikhail"),
+"Mikhail" to setOf()
+),
+propagateHandshakes(
+mapOf(
+"Marat" to setOf("Sveta"),
+"Sveta" to setOf("Mikhail")
+)
+)
+)
+ */
+fun propagateHandshakes(friends: Map<String, Set<String>>): MutableMap<String, MutableSet<String>> {
+    var handshakes = friends as MutableMap<String, MutableSet<String>>
+    var list = mutableListOf<String>()
+    for ((key, value) in handshakes) {
+        //list.add(handshakes.keys.toString())
+        list.add(handshakes[key].toString().removePrefix('['.toString()).removeSuffix(']'.toString()))
+        //println(handshakes[key])
+    }
+    for (i in list.indices) {
+        if (handshakes[list[i]] == null) {
+            handshakes = (handshakes + Pair(list[i], mutableSetOf())).toMutableMap()
+        }
+        else{
+
+        }
+    }
+    return handshakes
+}
 
 /**
  * Сложная
@@ -297,7 +328,13 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    if (list.isEmpty()) return Pair(-1, -1)
+    for (i in list.indices) {
+        for (j in 1 until list.size) if ((i != j) && (list[i] + list[j] == number)) return Pair(i, j)
+    }
+    return Pair(-1, -1)
+}
 
 /**
  * Очень сложная
