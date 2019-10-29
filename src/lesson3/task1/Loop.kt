@@ -108,9 +108,10 @@ fun lcm(m: Int, n: Int): Int {
     var a = m
     var b = n
     while (a != b) {
-        if (a > b) a -= b else b -= a
+        if (a > b) a -= b
+        else b -= a
     }
-    return m / a * n
+    return m * n / a
 }
 
 /**
