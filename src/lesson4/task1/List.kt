@@ -118,22 +118,22 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-//fun abs(v: List<Double>): Double {
-//    return if (v.isEmpty()) 0.0
-//    else sqrt(v.fold(0.0) { result, element -> result + element.pow(2) })
-//}
-
-//Без функции высшего порядка
 fun abs(v: List<Double>): Double {
     return if (v.isEmpty()) 0.0
-    else {
-        var res = 0
-        for (i in v.indices) {
-            res = (sqr(v[i]) + res).toInt()
-        }
-        sqrt(res.toDouble())
-    }
+    else sqrt(v.fold(0.0) { result, element -> result + element.pow(2) })
 }
+
+//Без функции высшего порядка
+//fun abs(v: List<Double>): Double {
+//    return if (v.isEmpty()) 0.0
+//    else {
+//        var res = 0
+//        for (i in v.indices) {
+//            res = (sqr(v[i]) + res).toInt()
+//        }
+//        sqrt(res.toDouble())
+//    }
+//}
 
 
 /**
