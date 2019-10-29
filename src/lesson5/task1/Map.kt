@@ -205,10 +205,14 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var price = Double.MIN_VALUE
+    var check = false
     for ((key) in stuff) {
-        if ((stuff[key]?.first == kind) && ((price == Double.MIN_VALUE) || (price > stuff[key]?.second!!)))
+        if ((stuff[key]?.first == kind) && ((price == Double.MIN_VALUE) || (price > stuff[key]?.second!!))) {
             price = stuff[key]?.second!!
+            check = true
+        }
     }
+    if (!check) return null
     for ((key) in stuff) {
         if (stuff[key]?.second == price) return key
     }
@@ -287,7 +291,7 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *        )
  */
 
-/** Test
+/** Входные данные
  *         assertEquals(
 mapOf(
 "Marat" to setOf("Mikhail", "Sveta"),
@@ -302,7 +306,23 @@ mapOf(
 )
 )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): MutableMap<String, MutableSet<String>> = TODO()
+fun propagateHandshakes(friends: Map<String, Set<String>>): MutableMap<String, MutableSet<String>> {
+    var handshakes = friends as MutableMap<String, MutableSet<String>>
+    var list = mutableListOf<String>()
+    for ((key, value) in handshakes) {
+        //list.add(handshakes.keys.toString())
+        list.add(handshakes[key].toString().removePrefix('['.toString()).removeSuffix(']'.toString()))
+        //println(handshakes[key])
+    }
+    for (i in list.indices) {
+        if (handshakes[list[i]] == null) {
+            handshakes = (handshakes + Pair(list[i], mutableSetOf())).toMutableMap()
+        } else {
+
+        }
+    }
+    return handshakes
+}
 
 /**
  * Сложная
