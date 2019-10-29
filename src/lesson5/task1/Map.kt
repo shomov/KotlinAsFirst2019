@@ -306,23 +306,7 @@ mapOf(
 )
 )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): MutableMap<String, MutableSet<String>> {
-    var handshakes = friends as MutableMap<String, MutableSet<String>>
-    var list = mutableListOf<String>()
-    for ((key, value) in handshakes) {
-        //list.add(handshakes.keys.toString())
-        list.add(handshakes[key].toString().removePrefix('['.toString()).removeSuffix(']'.toString()))
-        //println(handshakes[key])
-    }
-    for (i in list.indices) {
-        if (handshakes[list[i]] == null) {
-            handshakes = (handshakes + Pair(list[i], mutableSetOf())).toMutableMap()
-        } else {
-
-        }
-    }
-    return handshakes
-}
+fun propagateHandshakes(friends: Map<String, Set<String>>): MutableMap<String, MutableSet<String>> = TODO()
 
 /**
  * Сложная
@@ -341,13 +325,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): MutableMap<String, M
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    if (list.isEmpty()) return Pair(-1, -1)
-    for (i in list.indices) {
-        for (j in 1 until list.size) if ((i != j) && (list[i] + list[j] == number)) return Pair(i, j)
-    }
-    return Pair(-1, -1)
-}
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
 
 /**
  * Очень сложная
