@@ -106,7 +106,6 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
-    if(a == null || b == null) return false
     for ((key) in a) if (a[key] == b[key]) return true
     return false
 }
@@ -278,7 +277,7 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *        )
  */
 
-/** Входные данные
+/** Test
  *         assertEquals(
 mapOf(
 "Marat" to setOf("Mikhail", "Sveta"),
@@ -293,24 +292,7 @@ mapOf(
 )
 )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): MutableMap<String, MutableSet<String>> {
-    var handshakes = friends as MutableMap<String, MutableSet<String>>
-    var list = mutableListOf<String>()
-    for ((key, value) in handshakes) {
-        //list.add(handshakes.keys.toString())
-        list.add(handshakes[key].toString().removePrefix('['.toString()).removeSuffix(']'.toString()))
-        //println(handshakes[key])
-    }
-    for (i in list.indices) {
-        if (handshakes[list[i]] == null) {
-            handshakes = (handshakes + Pair(list[i], mutableSetOf())).toMutableMap()
-        }
-        else{
-
-        }
-    }
-    return handshakes
-}
+fun propagateHandshakes(friends: Map<String, Set<String>>): MutableMap<String, MutableSet<String>> = TODO()
 
 /**
  * Сложная
