@@ -159,10 +159,9 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
     val unmap: MutableMap<String, String> = subtractOf(mapA.toMutableMap(), mapB.toMutableMap())
-    for ((key, value) in mapB) {
+    for ((key, value) in mapB)
         if (unmap[key] == null) unmap[key] = value
         else unmap[key] += ", " + mapB[key]
-    }
     return unmap
 }
 
@@ -176,7 +175,21 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val result = mutableMapOf<String, Double>()
+    val counter = mutableMapOf<String, Int>()
+    for (i in stockPrices.indices)
+        if (!result.containsKey(stockPrices[i].first)) result[stockPrices[i].first] = stockPrices[i].second
+        else {
+            if (counter[stockPrices[i].first] == null) counter[stockPrices[i].first] = 2
+            else counter[stockPrices[i].first] = counter.getValue(stockPrices[i].first) + 1
+            result[stockPrices[i].first] =
+                (result.getValue(stockPrices[i].first) + stockPrices[i].second)
+        }
+    for ((key) in counter) result[key] = result.getValue(key) / counter.getValue(key)
+    return result
+}
+
 
 /**
  * Средняя
@@ -206,8 +219,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     val w = word.toLowerCase()
-    val W = word.toUpperCase()
-    for (i in w.indices) if ((!chars.contains(w[i])) && (!chars.contains(W[i]))) return false
+    val uw = word.toUpperCase()
+    for (i in word.indices) if (((!chars.contains(w[i])) && (!chars.contains(uw[i])))) return false
     return true
 }
 
@@ -223,7 +236,13 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+    for (i in list.indices)
+        if (!result.containsKey(list[i])) result[list[i]] = 1
+        else result[list[i]] = result.getValue(list[i]) + 1
+    return result.filterValues { it > 1 }
+}
 
 /**
  * Средняя
