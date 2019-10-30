@@ -97,8 +97,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     for ((key, value) in grades)
         if (result[value].isNullOrEmpty())
             result[value] = mutableListOf(key)
-        else
-            result[value]?.add(key)
+        else result[value]?.add(key)
     return result
 }
 
@@ -214,16 +213,14 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var price = Double.MIN_VALUE
     var check = false
-    for ((key) in stuff) {
+    for ((key) in stuff)
         if ((stuff[key]?.first == kind) && ((price == Double.MIN_VALUE) || (price > stuff[key]?.second!!))) {
             price = stuff[key]?.second!!
             check = true
         }
-    }
     if (!check) return null
-    for ((key) in stuff) {
+    for ((key) in stuff)
         if (stuff[key]?.second == price) return key
-    }
     return null
 }
 
