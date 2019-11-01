@@ -59,7 +59,7 @@ fun main() {
 }
 
 fun universalDateFunction(date: String, trend: Boolean): MutableList<String> {
-    var result = ""
+
     val dict = mapOf(
         1 to "января",
         2 to "февраля",
@@ -133,7 +133,8 @@ fun dateStrToDigit(str: String): String {
 fun dateDigitToStr(digital: String): String {
     val list = universalDateFunction(digital, false)
     if (list[0] != "0")
-        return (list[0] + " " + list[1] + " " + list[2])
+        //return (list[0].toInt().toString() + " " + list[1] + " " + list[2])
+        return String.format("%d %s %d", list[0].toInt(), list[1], list[2].toInt())
     return ""
 }
 
