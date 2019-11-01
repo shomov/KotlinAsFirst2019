@@ -2,6 +2,7 @@
 
 package lesson6.task1
 
+
 /**
  * Пример
  *
@@ -57,6 +58,48 @@ fun main() {
     }
 }
 
+fun universalDateFunction(date: String, trend: Boolean): MutableList<String> {
+    var result = ""
+    val dict = mapOf(
+        1 to "января",
+        2 to "февраля",
+        3 to "марта",
+        4 to "апреля",
+        5 to "мая",
+        6 to "июня",
+        7 to "июля",
+        8 to "августа",
+        9 to "сентября",
+        10 to "октября",
+        11 to "ноября",
+        12 to "декабря"
+    )
+    val dateOnList = mutableListOf<String>()
+    val parts = if (trend) {
+        date.split(" ")
+    } else {
+        date.split(".")
+    }
+    for (part in parts) {
+        dateOnList.add(part) //+счётчик
+    }
+
+    for ((key, value) in dict) {
+        if ((trend) && (dict[key] == dateOnList[1])) {
+            dateOnList[1] = key.toString()
+            print(dateOnList[1])
+            return dateOnList
+        } else if ((!trend) && (key == dateOnList[1].toInt())) {
+            dateOnList[1] = dict[key].toString()
+            print(dateOnList[1])
+            return dateOnList
+        }
+    }
+    //return String.format("%02d.%02d.%02d", dateOnList[0].toInt(), dateOnList[1].toInt(), dateOnList[2].toInt())
+    print(dateOnList[0] + " " + dateOnList[1] + " " + dateOnList[2])
+    dateOnList[0] = "0"
+    return dateOnList
+}
 
 /**
  * Средняя
@@ -69,7 +112,13 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+
+    val list = universalDateFunction(str, true)
+    if (list[0] != "0")
+        return String.format("%02d.%02d.%01d", list[0].toInt(), list[1].toInt(), list[2].toInt())
+    return ""
+}
 
 /**
  * Средняя
@@ -81,7 +130,12 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val list = universalDateFunction(digital, false)
+    if (list[0] != "0")
+        return (list[0] + " " + list[1] + " " + list[2])
+    return ""
+}
 
 /**
  * Средняя
