@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 
 /**
  * Пример
@@ -83,21 +85,41 @@ fun universalDateFunction(date: String, trend: Boolean): MutableList<String> {
     for (part in parts) {
         dateOnList.add(part) //+счётчик
     }
-
-    for ((key, value) in dict) {
-        if ((trend) && (dict[key] == dateOnList[1])) {
-            dateOnList[1] = key.toString()
-            print(dateOnList[1])
-            return dateOnList
-        } else if ((!trend) && (key == dateOnList[1].toInt())) {
-            dateOnList[1] = dict[key].toString()
-            print(dateOnList[1])
-            return dateOnList
+    if ((dateOnList.size != 3)) {
+        dateOnList[0] = ""
+    } else if ((trend && (!dict.containsValue(dateOnList[1])))) {
+        dateOnList[0] = ""
+        println("this sector")
+    } else {
+        for ((key, value) in dict) {
+            if ((trend) && (dict[key] == dateOnList[1])) {
+                dateOnList[1] = key.toString()
+                //print(dateOnList[1])
+                break
+            } else if ((!trend) && (key == dateOnList[1].toInt())) {
+                dateOnList[1] = dict[key].toString()
+                println(dateOnList[1])
+                break
+            }
+        }
+        println(dateOnList[0] + " " + dateOnList[1] + " " + dateOnList[2])
+        if ((trend) && (daysInMonth(
+                dateOnList[1].toInt(),
+                dateOnList[2].toInt()
+            ) < dateOnList[0].toInt())
+        ) {
+            dateOnList[0] = ""
+            println("inc")
+        }
+        println(dateOnList[0] + " " + dateOnList[1] + " " + dateOnList[2])
+        if ((!trend) && (daysInMonth(parts[1].toInt(), dateOnList[2].toInt()) < dateOnList[0].toInt())) {
+            dateOnList[0] = ""
+            println("incf")
         }
     }
     //return String.format("%02d.%02d.%02d", dateOnList[0].toInt(), dateOnList[1].toInt(), dateOnList[2].toInt())
-    print(dateOnList[0] + " " + dateOnList[1] + " " + dateOnList[2])
-    dateOnList[0] = "0"
+    //println(dateOnList[0] + " " + dateOnList[1] + " " + dateOnList[2])
+
     return dateOnList
 }
 
@@ -115,7 +137,7 @@ fun universalDateFunction(date: String, trend: Boolean): MutableList<String> {
 fun dateStrToDigit(str: String): String {
 
     val list = universalDateFunction(str, true)
-    if (list[0] != "0")
+    if (list[0] != "")
         return String.format("%02d.%02d.%01d", list[0].toInt(), list[1].toInt(), list[2].toInt())
     return ""
 }
@@ -132,8 +154,8 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val list = universalDateFunction(digital, false)
-    if (list[0] != "0")
-        //return (list[0].toInt().toString() + " " + list[1] + " " + list[2])
+    if (list[0] != "")
+    //return (list[0].toInt().toString() + " " + list[1] + " " + list[2])
         return String.format("%d %s %d", list[0].toInt(), list[1], list[2].toInt())
     return ""
 }
