@@ -79,7 +79,7 @@ fun universalDateFunction(date: String, trend: Boolean): MutableList<String> {
     val parts = if (trend) date.split(" ") else date.split(".")
     for (part in parts) dateOnList.add(part)
     if ((dateOnList.size != 3) || (!parts[0].matches(Regex("""(\d|\d\d)"""))) ||
-        (parts[0].toInt() < 1) || (!trend && parts[1].toInt() < 1)) dateOnList[0] = ""
+        (parts[0].toInt() < 1) || (!trend && ((parts[1].toInt() < 1) || (parts[1].toInt() > 12)))) dateOnList[0] = ""
     else if (trend && (!dict.containsValue(dateOnList[1]))) dateOnList[0] = ""
     else {
         for ((key, _) in dict) if ((trend) && (dict[key] == dateOnList[1])) {
