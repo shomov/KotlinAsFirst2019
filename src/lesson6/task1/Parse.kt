@@ -83,11 +83,11 @@ fun universalDateFunction(date: String, trend: Boolean): MutableList<String> {
         date.split(".")
     }
     for (part in parts) {
-        dateOnList.add(part) //+счётчик
+        dateOnList.add(part)
     }
-    if ((dateOnList.size != 3)) {
+    if ((dateOnList.size != 3) || (!parts[0].matches(Regex("""(\d|\d\d)"""))) || (parts[0].toInt() < 1) || (!trend && parts[1].toInt() < 1)) { //детект ошибок формата
         dateOnList[0] = ""
-    } else if ((trend && (!dict.containsValue(dateOnList[1])))) {
+    } else if (trend && (!dict.containsValue(dateOnList[1]))) {
         dateOnList[0] = ""
         println("this sector")
     } else {
