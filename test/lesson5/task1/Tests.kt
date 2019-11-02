@@ -240,6 +240,13 @@ class Tests {
                 "печенье"
             )
         )
+        assertEquals(
+            "a",
+            findCheapestStuff(
+                mapOf("a" to ("" to 5e-324), "" to ("" to 0.42325828981039015)),
+                ""
+            )
+        )
         assertNull(
             findCheapestStuff(
                 mapOf("" to ("" to 5e-324)),
