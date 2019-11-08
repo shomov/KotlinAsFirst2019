@@ -3,7 +3,6 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
-import java.lang.IllegalArgumentException
 
 
 /**
@@ -151,11 +150,7 @@ fun dateDigitToStr(digital: String): String {
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String {
-    return if ((!phone.contains(Regex("""\(\s*\)"""))) && (phone.matches(Regex("""\+?\d*\s*\(?[[\s?][\d+][-*]]*\)?[\d\s-]*"""))))
-        phone.filter { it !in " " && it !in "(" && it !in ")" && it !in "-" }
-    else ""
-}
+fun flattenPhoneNumber(phone: String): String = TODO()
 
 /**
  * Средняя
@@ -167,13 +162,7 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int {
-    if (jumps.contains(Regex("""[^\d\s\-%]"""))) return -1
-    val parts = Regex("""[\s\-%]""").split(jumps)
-    var max = -1
-    for (part in parts) if ((part.isNotEmpty()) && (part.toInt() > max)) max = part.toInt()
-    return max
-}
+fun bestLongJump(jumps: String): Int = TODO()
 
 /**
  * Сложная
@@ -186,15 +175,7 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int {
-    if (jumps.contains(Regex("""[^\d\s\-%+]"""))) return -1
-    val parts = Regex(""" """).split(jumps)
-    var max = -1
-    for (i in 0 until parts.size - 1)
-        if ((parts[i].matches(Regex(""" ?\d*"""))) && (parts[i + 1].matches(Regex("""[ +]"""))) && (parts[i].toInt() > max))
-            max = parts[i].toInt()
-    return max
-}
+fun bestHighJump(jumps: String): Int = TODO()
 
 /**
  * Сложная
@@ -205,20 +186,7 @@ fun bestHighJump(jumps: String): Int {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int {
-    if ((expression.contains(Regex("""[^\d\s\-+]|(^[\-+])|(- -)""")))) throw IllegalArgumentException(expression)
-    val parts = Regex(""" """).split(expression)
-    var result = parts[0].toInt()
-    var i = 1
-    while (i < parts.size) {
-        if (parts[i].matches(Regex("""[ +]"""))) result += parts[i + 1].toInt()
-        else result -= parts[i + 1].toInt()
-        i += 2
-    }
-
-
-    return result
-}
+fun plusMinus(expression: String): Int = TODO()
 
 /**
  * Сложная
