@@ -132,10 +132,8 @@ fun abs(v: List<Double>): Double {
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double {
-    return if (list.isEmpty()) 0.0
-    else list.sum() / list.size
-}
+fun mean(list: List<Double>): Double = list.sum() / list.size
+
 
 /**
  * Средняя
@@ -146,12 +144,10 @@ fun mean(list: List<Double>): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    return if (list.isEmpty()) list
-    else {
-        val mean = mean(list)
-        for (i in list.indices) list[i] -= mean
-        list
-    }
+    val mean = mean(list)
+    for (i in list.indices) list[i] -= mean
+    return list
+
 }
 
 /**
@@ -162,12 +158,9 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
 fun times(a: List<Int>, b: List<Int>): Int {
-    return if (a.isEmpty()) 0
-    else {
-        var c = 0
-        for (i in a.indices) c += a[i] * b[i]
-        c
-    }
+    var c = 0
+    for (i in a.indices) c += a[i] * b[i]
+    return c
 }
 
 /**
@@ -179,12 +172,10 @@ fun times(a: List<Int>, b: List<Int>): Int {
  * Значение пустого многочлена равно 0 при любом x.
  */
 fun polynom(p: List<Int>, x: Int): Int {
-    return if (p.isEmpty()) 0
-    else {
-        var px = 0
-        for (i in p.indices) px += p[i] * x.toDouble().pow(i).toInt()
-        px
-    }
+    var px = 0
+    for (i in p.indices) px += p[i] * x.toDouble().pow(i).toInt()
+    return px
+
 }
 
 /**
@@ -198,16 +189,10 @@ fun polynom(p: List<Int>, x: Int): Int {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    return if (list.isEmpty()) list
-    else {
-        var sum = 0
-        for (i in list.indices) {
-            sum += list[i]
-            list[i] = sum
-
-        }
-        list
+    for (i in 1 until list.size) {
+        list[i] += list[i - 1]
     }
+    return list
 }
 
 
@@ -221,18 +206,18 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
 fun factorize(n: Int): List<Int> {
     val result = mutableListOf<Int>()
     if (isPrime(n)) {
-        result.add(element = n)
+        result.add(n)
         return result
     }
     var num = n
     var i = 2
     while ((num > 1) && (num != i - 1)) {
         if (num % i == 0) {
-            result.add(index = result.size, element = i)
+            result.add(i)
             num /= i
-            i -= 1
+            i--
         }
-        i += 1
+        i++
     }
     return result
 }
