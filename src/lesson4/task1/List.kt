@@ -119,12 +119,9 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 
 fun abs(v: List<Double>): Double {
-    return if (v.isEmpty()) 0.0
-    else {
-        var res = 0.0
-        for (i in v.indices) res += v[i].pow(2.0)
-        sqrt(res)
-    }
+    var res = 0.0
+    for (i in v.indices) res += v[i].pow(2.0)
+    return sqrt(res)
 }
 
 /**
@@ -132,7 +129,10 @@ fun abs(v: List<Double>): Double {
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = list.sum() / list.size
+fun mean(list: List<Double>): Double =
+    if (list.isEmpty()) 0.0
+    else list.sum() / list.size
+
 
 
 /**
@@ -314,69 +314,61 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun units(n: Int): String {
+val units = listOf(
+    "",
+    "один",
+    "два",
+    "три",
+    "четыре",
+    "пять",
+    "шесть",
+    "семь",
+    "восемь",
+    "девять"
+)
+
+val hundreds = listOf(
+    "",
+    "сто",
+    "двести",
+    "триста",
+    "четыреста",
+    "пятьсот",
+    "шестьсот",
+    "семьсот",
+    "восемьсот",
+    "девятьсот"
+)
+
+fun decades(n: Int, last: Int): String = if (n == 1) {
     val dict = listOf(
         "",
-        "один",
-        "два",
-        "три",
-        "четыре",
-        "пять",
-        "шесть",
-        "семь",
-        "восемь",
-        "девять"
+        "десять",
+        "одиннадцать",
+        "двенадцать",
+        "тринадцать",
+        "четырнадцать",
+        "пятнадцать",
+        "шестнадцать",
+        "семнадцать",
+        "восемнадцать",
+        "девятнадцать"
     )
-    return dict[n]
-}
-
-fun decades(n: Int, last: Int): String {
-    return if (n == 1) {
-        val dict = listOf(
-            "",
-            "десять",
-            "одиннадцать",
-            "двенадцать",
-            "тринадцать",
-            "четырнадцать",
-            "пятнадцать",
-            "шестнадцать",
-            "семнадцать",
-            "восемнадцать",
-            "девятнадцать"
-        )
-        dict[last]
-    } else {
-        val dict = listOf(
-            "",
-            "",
-            "двадцать",
-            "тридцать",
-            "сорок",
-            "пятьдесят",
-            "шестьдесят",
-            "семьдесят",
-            "восемьдесят",
-            "девяносто"
-        )
-        dict[n]
-    }
-}
-
-fun hundreds(n: Int): String {
+    dict[last]
+} else {
     val dict = listOf(
         "",
-        "сто",
-        "двести",
-        "триста",
-        "четыреста",
-        "пятьсот",
-        "шестьсот",
-        "семьсот",
-        "восемьсот",
-        "девятьсот"
+        "",
+        "двадцать",
+        "тридцать",
+        "сорок",
+        "пятьдесят",
+        "шестьдесят",
+        "семьдесят",
+        "восемьдесят",
+        "девяносто"
     )
-    return dict[n]
+    dict[n]
 }
 
 fun thousands(n: Int): String {
@@ -393,14 +385,14 @@ fun thousands(n: Int): String {
                 )
                 dict[last - 1] + " тысячи"
             }
-            in 5..9 -> units(last) + " тысяч"
+            in 5..9 -> units[last] + " тысяч"
             1 -> "одна тысяча"
             else -> "тысяч"
         }
     } else {
         str += decades(1, last + 1) + " тысяч"
     }
-    val strk = (hundreds(n / 100) + " " + decades(n % 100 / 10, 0) + " ").trim()
+    val strk = (hundreds[n / 100] + " " + decades(n % 100 / 10, 0) + " ").trim()
     return ("$strk $str").trim()
 }
 
@@ -411,9 +403,9 @@ fun russian(n: Int): String {
     var last = 0
     while (num > 0) {
         val temp = num % 10
-        if ((count == 1) && ((num % 100 <= 9) || (num % 100 >= 20)) && (temp != 0)) words.add(units(temp))
+        if ((count == 1) && ((num % 100 <= 9) || (num % 100 >= 20)) && (temp != 0)) words.add(units[temp])
         if ((count == 2) && (temp != 0)) words.add(decades(temp, last + 1))
-        if ((count == 3) && (temp != 0)) words.add(hundreds(temp))
+        if ((count == 3) && (temp != 0)) words.add(hundreds[temp])
         if ((count > 3) && (n != 0)) {
             words.add(thousands(num))
             break
