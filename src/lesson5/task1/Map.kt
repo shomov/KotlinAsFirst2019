@@ -113,9 +113,8 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
-    var count = 0
-    for ((key) in a) if (a[key] == b[key]) count += 1
-    return (count == a.size)
+    for ((key, value) in a) if (value != b[key]) return false
+    return true
 }
 
 /**
@@ -164,7 +163,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
-    val unmap: MutableMap<String, String> = subtractOf(mapA.toMutableMap(), mapB.toMutableMap())
+    val unmap = subtractOf(mapA.toMutableMap(), mapB.toMutableMap())
     for ((key, value) in mapB)
         if (unmap[key] == null) unmap[key] = value
         else unmap[key] += ", " + mapB[key]
@@ -213,16 +212,13 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var price = -1.0
-    var check = false
+    var name: String? = null
     for ((key) in stuff)
         if ((stuff[key]?.first == kind) && ((price == -1.0) || (price > stuff[key]?.second!!))) {
             price = stuff[key]?.second!!
-            check = true
+            name = key
         }
-    if (!check) return null
-    for ((key) in stuff)
-        if (stuff[key]?.second == price) return key
-    return null
+    return name
 }
 
 /**
