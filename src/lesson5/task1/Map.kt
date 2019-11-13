@@ -1,264 +1,350 @@
 @file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
 
-package lesson6.task1
-
-import lesson2.task2.daysInMonth
-
+package lesson5.task1
 
 /**
  * Пример
  *
- * Время представлено строкой вида "11:34:45", содержащей часы, минуты и секунды, разделённые двоеточием.
- * Разобрать эту строку и рассчитать количество секунд, прошедшее с начала дня.
+ * Для заданного списка покупок `shoppingList` посчитать его общую стоимость
+ * на основе цен из `costs`. В случае неизвестной цены считать, что товар
+ * игнорируется.
  */
-fun timeStrToSeconds(str: String): Int {
-    val parts = str.split(":")
-    var result = 0
-    for (part in parts) {
-        val number = part.toInt()
-        result = result * 60 + number
+fun shoppingListCost(
+    shoppingList: List<String>,
+    costs: Map<String, Double>
+): Double {
+    var totalCost = 0.0
+
+    for (item in shoppingList) {
+        val itemCost = costs[item]
+        if (itemCost != null) {
+            totalCost += itemCost
+
+        }
     }
+
+    return totalCost
+}
+
+/**
+ * Пример
+ *
+ * Для набора "имя"-"номер телефона" `phoneBook` оставить только такие пары,
+ * для которых телефон начинается с заданного кода страны `countryCode`
+ */
+fun filterByCountryCode(
+    phoneBook: MutableMap<String, String>,
+    countryCode: String
+) {
+    val namesToRemove = mutableListOf<String>()
+
+    for ((name, phone) in phoneBook) {
+        if (!phone.startsWith(countryCode)) {
+            namesToRemove.add(name)
+        }
+    }
+
+    for (name in namesToRemove) {
+        phoneBook.remove(name)
+    }
+}
+
+/**
+ * Пример
+ *
+ * Для заданного текста `text` убрать заданные слова-паразиты `fillerWords`
+ * и вернуть отфильтрованный текст
+ */
+fun removeFillerWords(
+    text: List<String>,
+    vararg fillerWords: String
+): List<String> {
+    val fillerWordSet = setOf(*fillerWords)
+
+    val res = mutableListOf<String>()
+    for (word in text) {
+        if (word !in fillerWordSet) {
+            res += word
+        }
+    }
+    return res
+}
+
+/**
+ * Пример
+ *
+ * Для заданного текста `text` построить множество встречающихся в нем слов
+ */
+fun buildWordSet(text: List<String>): MutableSet<String> {
+    val res = mutableSetOf<String>()
+    for (word in text) res.add(word)
+    return res
+}
+
+
+/**
+ * Простая
+ *
+ * По заданному ассоциативному массиву "студент"-"оценка за экзамен" построить
+ * обратный массив "оценка за экзамен"-"список студентов с этой оценкой".
+ *
+ * Например:
+ *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
+ *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
+ */
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    val result = mutableMapOf<Int, MutableList<String>>()
+    for ((key, value) in grades)
+        if (result[value].isNullOrEmpty())
+            result[value] = mutableListOf(key)
+        else result[value]?.add(key)
+    return result
+}
+
+
+/**
+ * Простая
+ *
+ * Определить, входит ли ассоциативный массив a в ассоциативный массив b;
+ * это выполняется, если все ключи из a содержатся в b с такими же значениями.
+ *
+ * Например:
+ *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
+ *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
+ */
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    for ((key, value) in a) if (value != b[key]) return false
+    return true
+}
+
+/**
+ * Простая
+ *
+ * Удалить из изменяемого ассоциативного массива все записи,
+ * которые встречаются в заданном ассоциативном массиве.
+ * Записи считать одинаковыми, если и ключи, и значения совпадают.
+ *
+ * ВАЖНО: необходимо изменить переданный в качестве аргумента
+ *        изменяемый ассоциативный массив
+ *
+ * Например:
+ *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
+ *     -> a changes to mutableMapOf() aka becomes empty
+ */
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): MutableMap<String, String> {
+    for ((key, value) in b) if (a[key] == value) a.remove(key)
+    return a
+}
+
+/**
+ * Простая
+ *
+ * Для двух списков людей найти людей, встречающихся в обоих списках.
+ * В выходном списке не должно быть повторяюихся элементов,
+ * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
+ */
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b).toList()
+
+/**
+ * Средняя
+ *
+ * Объединить два ассоциативных массива `mapA` и `mapB` с парами
+ * "имя"-"номер телефона" в итоговый ассоциативный массив, склеивая
+ * значения для повторяющихся ключей через запятую.
+ * В случае повторяющихся *ключей* значение из mapA должно быть
+ * перед значением из mapB.
+ *
+ * Повторяющиеся *значения* следует добавлять только один раз.
+ *
+ * Например:
+ *   mergePhoneBooks(
+ *     mapOf("Emergency" to "112", "Police" to "02"),
+ *     mapOf("Emergency" to "911", "Police" to "02")
+ *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
+ */
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val unmap = subtractOf(mapA.toMutableMap(), mapB.toMutableMap())
+    for ((key, value) in mapB)
+        if (unmap[key] == null) unmap[key] = value
+        else unmap[key] += ", " + mapB[key]
+    return unmap
+}
+
+/**
+ * Средняя
+ *
+ * Для заданного списка пар "акция"-"стоимость" вернуть ассоциативный массив,
+ * содержащий для каждой акции ее усредненную стоимость.
+ *
+ * Например:
+ *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
+ *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
+ */
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val result = mutableMapOf<String, Double>()
+    val counter = mutableMapOf<String, Int>()
+    for (i in stockPrices.indices)
+        if (!result.containsKey(stockPrices[i].first)) result[stockPrices[i].first] = stockPrices[i].second
+        else {
+            if (counter[stockPrices[i].first] == null) counter[stockPrices[i].first] = 2
+            else counter[stockPrices[i].first] = counter.getValue(stockPrices[i].first) + 1
+            result[stockPrices[i].first] =
+                (result.getValue(stockPrices[i].first) + stockPrices[i].second)
+        }
+    for ((key) in counter) result[key] = result.getValue(key) / counter.getValue(key)
     return result
 }
 
 /**
- * Пример
+ * Средняя
  *
- * Дано число n от 0 до 99.
- * Вернуть его же в виде двухсимвольной строки, от "00" до "99"
- */
-fun twoDigitStr(n: Int) = if (n in 0..9) "0$n" else "$n"
-
-/**
- * Пример
+ * Входными данными является ассоциативный массив
+ * "название товара"-"пара (тип товара, цена товара)"
+ * и тип интересующего нас товара.
+ * Необходимо вернуть название товара заданного типа с минимальной стоимостью
+ * или null в случае, если товаров такого типа нет.
  *
- * Дано seconds -- время в секундах, прошедшее с начала дня.
- * Вернуть текущее время в виде строки в формате "ЧЧ:ММ:СС".
+ * Например:
+ *   findCheapestStuff(
+ *     mapOf("Мария" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)),
+ *     "печенье"
+ *   ) -> "Мария"
  */
-fun timeSecondsToStr(seconds: Int): String {
-    val hour = seconds / 3600
-    val minute = (seconds % 3600) / 60
-    val second = seconds % 60
-    return String.format("%02d:%02d:%02d", hour, minute, second)
-}
-
-/**
- * Пример: консольный ввод
- */
-fun main() {
-    println("Введите время в формате ЧЧ:ММ:СС")
-    val line = readLine()
-    if (line != null) {
-        val seconds = timeStrToSeconds(line)
-        if (seconds == -1) {
-            println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        } else {
-            println("Прошло секунд с начала суток: $seconds")
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var price = -1.0
+    var name: String? = null
+    for ((key) in stuff)
+        if ((stuff[key]?.first == kind) && ((price == -1.0) || (price > stuff[key]?.second!!))) {
+            price = stuff[key]?.second!!
+            name = key
         }
-    } else {
-        println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
-    }
-}
-
-fun universalDateFunction(date: String, trend: Boolean): MutableList<String> {
-    val dict = mapOf(
-        1 to "января",
-        2 to "февраля",
-        3 to "марта",
-        4 to "апреля",
-        5 to "мая",
-        6 to "июня",
-        7 to "июля",
-        8 to "августа",
-        9 to "сентября",
-        10 to "октября",
-        11 to "ноября",
-        12 to "декабря"
-    )
-    val dateOnList = mutableListOf<String>()
-    val parts = if (trend) date.split(" ") else date.split(".")
-    for (part in parts) dateOnList.add(part)
-    if ((dateOnList.size != 3) || (!parts[0].matches(Regex("""(\d|\d\d)"""))) ||
-        (parts[0].toInt() < 1) || (!trend && ((parts[1].toInt() < 1) || (parts[1].toInt() > 12)))
-    ) dateOnList[0] = ""
-    else if (trend && (!dict.containsValue(dateOnList[1]))) dateOnList[0] = ""
-    else {
-        for ((key, _) in dict) if ((trend) && (dict[key] == dateOnList[1])) {
-            dateOnList[1] = key.toString()
-            break
-        } else if ((!trend) && (key == dateOnList[1].toInt())) {
-            dateOnList[1] = dict[key].toString()
-            break
-        }
-        if ((trend) && (daysInMonth(
-                dateOnList[1].toInt(),
-                dateOnList[2].toInt()
-            ) < dateOnList[0].toInt())
-        ) dateOnList[0] = ""
-        if ((!trend) && (daysInMonth(parts[1].toInt(), dateOnList[2].toInt()) < dateOnList[0].toInt())) dateOnList[0] =
-            ""
-    }
-    return dateOnList
+    return name
 }
 
 /**
  * Средняя
  *
- * Дата представлена строкой вида "15 июля 2016".
- * Перевести её в цифровой формат "15.07.2016".
- * День и месяц всегда представлять двумя цифрами, например: 03.04.2011.
- * При неверном формате входной строки вернуть пустую строку.
+ * Для заданного набора символов определить, можно ли составить из него
+ * указанное слово (регистр символов игнорируется)
  *
- * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
- * входными данными.
+ * Например:
+ *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun dateStrToDigit(str: String): String {
-    val list = universalDateFunction(str, true)
-    if (list[0] != "")
-        return String.format("%02d.%02d.%01d", list[0].toInt(), list[1].toInt(), list[2].toInt())
-    return ""
+fun canBuildFrom(chars: List<Char>, word: String): Boolean =
+    (word.toLowerCase().toSet().intersect(chars) == word.toLowerCase().toSet()) ||
+            word.toUpperCase().toSet().intersect(chars) == word.toUpperCase().toSet()
+
+/**
+ * Средняя
+ *
+ * Найти в заданном списке повторяющиеся элементы и вернуть
+ * ассоциативный массив с информацией о числе повторений
+ * для каждого повторяющегося элемента.
+ * Если элемент встречается только один раз, включать его в результат
+ * не следует.
+ *
+ * Например:
+ *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
+ */
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+    for (i in list.indices)
+        if (!result.containsKey(list[i])) result[list[i]] = 1
+        else result[list[i]] = result.getValue(list[i]) + 1
+    return result.filterValues { it > 1 }
 }
 
 /**
  * Средняя
  *
- * Дата представлена строкой вида "15.07.2016".
- * Перевести её в строковый формат вида "15 июля 2016".
- * При неверном формате входной строки вернуть пустую строку
+ * Для заданного списка слов определить, содержит ли он анаграммы
+ * (два слова являются анаграммами, если одно можно составить из второго)
  *
- * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
- * входными данными.
+ * Например:
+ *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun dateDigitToStr(digital: String): String {
-    val list = universalDateFunction(digital, false)
-    if (list[0] != "")
-        return String.format("%d %s %d", list[0].toInt(), list[1], list[2].toInt())
-    return ""
-}
-
-/**
- * Средняя
- *
- * Номер телефона задан строкой вида "+7 (921) 123-45-67".
- * Префикс (+7) может отсутствовать, код города (в скобках) также может отсутствовать.
- * Может присутствовать неограниченное количество пробелов и чёрточек,
- * например, номер 12 --  34- 5 -- 67 -89 тоже следует считать легальным.
- * Перевести номер в формат без скобок, пробелов и чёрточек (но с +), например,
- * "+79211234567" или "123456789" для приведённых примеров.
- * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
- * При неверном формате вернуть пустую строку.
- *
- * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
- */
-fun flattenPhoneNumber(phone: String): String = TODO()
-
-/**
- * Средняя
- *
- * Результаты спортсмена на соревнованиях в прыжках в длину представлены строкой вида
- * "706 - % 717 % 703".
- * В строке могут присутствовать числа, черточки - и знаки процента %, разделённые пробелами;
- * число соответствует удачному прыжку, - пропущенной попытке, % заступу.
- * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
- * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
- */
-fun bestLongJump(jumps: String): Int = TODO()
+fun hasAnagrams(words: List<String>): Boolean = TODO()
 
 /**
  * Сложная
  *
- * Результаты спортсмена на соревнованиях в прыжках в высоту представлены строкой вида
- * "220 + 224 %+ 228 %- 230 + 232 %%- 234 %".
- * Здесь + соответствует удачной попытке, % неудачной, - пропущенной.
- * Высота и соответствующие ей попытки разделяются пробелом.
- * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
- * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
- * вернуть -1.
+ * Для заданного ассоциативного массива знакомых через одно рукопожатие `friends`
+ * необходимо построить его максимальное расширение по рукопожатиям, то есть,
+ * для каждого человека найти всех людей, с которыми он знаком через любое
+ * количество рукопожатий.
+ * Считать, что все имена людей являются уникальными, а также что рукопожатия
+ * являются направленными, то есть, если Марат знает Свету, то это не означает,
+ * что Света знает Марата.
+ *
+ * Например:
+ *   propagateHandshakes(
+ *     mapOf(
+ *       "Marat" to setOf("Mikhail", "Sveta"),
+ *       "Sveta" to setOf("Marat"),
+ *       "Mikhail" to setOf("Sveta")
+ *     )
+ *   ) -> mapOf(
+ *          "Marat" to setOf("Mikhail", "Sveta"),
+ *          "Sveta" to setOf("Marat", "Mikhail"),
+ *          "Mikhail" to setOf("Sveta", "Marat")
+ *        )
  */
-fun bestHighJump(jumps: String): Int = TODO()
+
+/** Входные данные
+ *         assertEquals(
+mapOf(
+"Marat" to setOf("Mikhail", "Sveta"),
+"Sveta" to setOf("Mikhail"),
+"Mikhail" to setOf()
+),
+propagateHandshakes(
+mapOf(
+"Marat" to setOf("Sveta"),
+"Sveta" to setOf("Mikhail")
+)
+)
+)
+ */
+fun propagateHandshakes(friends: Map<String, Set<String>>): MutableMap<String, MutableSet<String>> = TODO()
 
 /**
  * Сложная
  *
- * В строке представлено выражение вида "2 + 31 - 40 + 13",
- * использующее целые положительные числа, плюсы и минусы, разделённые пробелами.
- * Наличие двух знаков подряд "13 + + 10" или двух чисел подряд "1 2" не допускается.
- * Вернуть значение выражения (6 для примера).
- * Про нарушении формата входной строки бросить исключение IllegalArgumentException
- */
-fun plusMinus(expression: String): Int = TODO()
-
-/**
- * Сложная
+ * Для заданного списка неотрицательных чисел и числа определить,
+ * есть ли в списке пара чисел таких, что их сумма равна заданному числу.
+ * Если да, верните их индексы в виде Pair<Int, Int>;
+ * если нет, верните пару Pair(-1, -1).
  *
- * Строка состоит из набора слов, отделённых друг от друга одним пробелом.
- * Определить, имеются ли в строке повторяющиеся слова, идущие друг за другом.
- * Слова, отличающиеся только регистром, считать совпадающими.
- * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
- * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
- */
-fun firstDuplicateIndex(str: String): Int = TODO()
-
-/**
- * Сложная
+ * Индексы в результате должны следовать в порядке (меньший, больший).
  *
- * Строка содержит названия товаров и цены на них в формате вида
- * "Хлеб 39.9; Молоко 62; Курица 184.0; Конфеты 89.9".
- * То есть, название товара отделено от цены пробелом,
- * а цена отделена от названия следующего товара точкой с запятой и пробелом.
- * Вернуть название самого дорогого товара в списке (в примере это Курица),
- * или пустую строку при нарушении формата строки.
- * Все цены должны быть больше либо равны нуля.
- */
-fun mostExpensive(description: String): String = TODO()
-
-/**
- * Сложная
+ * Постарайтесь сделать ваше решение как можно более эффективным,
+ * используя то, что вы узнали в данном уроке.
  *
- * Перевести число roman, заданное в римской системе счисления,
- * в десятичную систему и вернуть как результат.
- * Римские цифры: 1 = I, 4 = IV, 5 = V, 9 = IX, 10 = X, 40 = XL, 50 = L,
- * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
- * Например: XXIII = 23, XLIV = 44, C = 100
- *
- * Вернуть -1, если roman не является корректным римским числом
+ * Например:
+ *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
+ *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun fromRoman(roman: String): Int = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
 
 /**
  * Очень сложная
  *
- * Имеется специальное устройство, представляющее собой
- * конвейер из cells ячеек (нумеруются от 0 до cells - 1 слева направо) и датчик, двигающийся над этим конвейером.
- * Строка commands содержит последовательность команд, выполняемых данным устройством, например +>+>+>+>+
- * Каждая команда кодируется одним специальным символом:
- *	> - сдвиг датчика вправо на 1 ячейку;
- *  < - сдвиг датчика влево на 1 ячейку;
- *	+ - увеличение значения в ячейке под датчиком на 1 ед.;
- *	- - уменьшение значения в ячейке под датчиком на 1 ед.;
- *	[ - если значение под датчиком равно 0, в качестве следующей команды следует воспринимать
- *  	не следующую по порядку, а идущую за соответствующей следующей командой ']' (с учётом вложенности);
- *	] - если значение под датчиком не равно 0, в качестве следующей команды следует воспринимать
- *  	не следующую по порядку, а идущую за соответствующей предыдущей командой '[' (с учётом вложенности);
- *      (комбинация [] имитирует цикл)
- *  пробел - пустая команда
+ * Входными данными является ассоциативный массив
+ * "название сокровища"-"пара (вес сокровища, цена сокровища)"
+ * и вместимость вашего рюкзака.
+ * Необходимо вернуть множество сокровищ с максимальной суммарной стоимостью,
+ * которые вы можете унести в рюкзаке.
  *
- * Изначально все ячейки заполнены значением 0 и датчик стоит на ячейке с номером N/2 (округлять вниз)
+ * Перед решением этой задачи лучше прочитать статью Википедии "Динамическое программирование".
  *
- * После выполнения limit команд или всех команд из commands следует прекратить выполнение последовательности команд.
- * Учитываются все команды, в том числе несостоявшиеся переходы ("[" при значении под датчиком не равном 0 и "]" при
- * значении под датчиком равном 0) и пробелы.
- *
- * Вернуть список размера cells, содержащий элементы ячеек устройства после завершения выполнения последовательности.
- * Например, для 10 ячеек и командной строки +>+>+>+>+ результат должен быть 0,0,0,0,0,1,1,1,1,1
- *
- * Все прочие символы следует считать ошибочными и формировать исключение IllegalArgumentException.
- * То же исключение формируется, если у символов [ ] не оказывается пары.
- * Выход за границу конвейера также следует считать ошибкой и формировать исключение IllegalStateException.
- * Считать, что ошибочные символы и непарные скобки являются более приоритетной ошибкой чем выход за границу ленты,
- * то есть если в программе присутствует некорректный символ или непарная скобка, то должно быть выброшено
- * IllegalArgumentException.
- * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
- *
+ * Например:
+ *   bagPacking(
+ *     mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
+ *     850
+ *   ) -> setOf("Кубок")
+ *   bagPacking(
+ *     mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
+ *     450
+ *   ) -> emptySet()
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
