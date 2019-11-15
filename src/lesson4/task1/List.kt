@@ -247,7 +247,7 @@ fun convert(n: Int, base: Int): List<Int> {
         result.add(num % base)
         num /= base
     }
-    if ((num < 10) && (num != 0)) result.add(num)
+    if (num in 1..9) result.add(num)
     result.reverse()
     return result
 }
