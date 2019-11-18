@@ -241,13 +241,13 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  */
 fun convert(n: Int, base: Int): List<Int> {
     val result = mutableListOf<Int>()
-    if (n == 0) result.add(index = result.size, element = 0)
+    if (n == 0) result.add(result.size)
     var num = n
     while (num > 1) {
-        result.add(index = result.size, element = num % base)
+        result.add(num % base)
         num /= base
     }
-    if ((num < 10) && (num != 0)) result.add(index = result.size, element = num)
+    if (num in 1..9) result.add(num)
     result.reverse()
     return result
 }
