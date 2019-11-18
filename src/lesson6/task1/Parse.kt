@@ -229,13 +229,12 @@ fun plusMinus(expression: String): Int {
 fun firstDuplicateIndex(str: String): Int {
     val parts = Regex(""" """).split(str)
     if (parts.size == 1) return -1
-    var counter = -1
-    for (i in parts.indices) {
-        if (parts[i].toLowerCase() == parts[i + 1].toLowerCase()) break
-        counter += parts[i].length + 1
+    var counter = 0
+    for (i in 1 until parts.size) {
+        if (parts[i - 1].toLowerCase() == parts[i].toLowerCase()) return counter
+        counter += parts[i - 1].length + 1
     }
-    if (counter == -1) counter = -1
-    return counter + 1
+    return -1
 }
 
 /**
