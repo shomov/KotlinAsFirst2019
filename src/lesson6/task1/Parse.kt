@@ -205,7 +205,7 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    require(!(expression.contains(Regex("""[^\d\s\-+]|(^[\-+])|(- -)""")))) { expression }
+    require((!expression.contains(Regex("""[^\d\s\-+]|(^[\-+])|(- -)"""))) || expression == "") { expression }
     val parts = Regex(""" """).split(expression)
     var result = parts[0].toInt()
     var i = 1
@@ -229,13 +229,13 @@ fun plusMinus(expression: String): Int {
 fun firstDuplicateIndex(str: String): Int {
     val parts = Regex(""" """).split(str)
     if (parts.size == 1) return -1
-    var counter = 0
+    var counter = -1
     for (i in parts.indices) {
         if (parts[i].toLowerCase() == parts[i + 1].toLowerCase()) break
         counter += parts[i].length + 1
     }
-    if (counter == 0) counter = -1
-    return counter
+    if (counter == -1) counter = -1
+    return counter + 1
 }
 
 /**
