@@ -150,7 +150,11 @@ fun dateDigitToStr(digital: String): String {
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    return if ((!phone.contains(Regex("""\(\s*\)"""))) && (phone.matches(Regex("""\+?\d*\s*\(?[[\s?][\d+][-*]]*\)?[\d\s-]*"""))))
+        phone.filter { it !in " " && it !in "(" && it !in ")" && it !in "-" }
+    else ""
+}
 
 /**
  * Средняя
@@ -162,7 +166,13 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    if (jumps.contains(Regex("""[^\d\s\-%]"""))) return -1
+    val parts = Regex("""[\s\-%]""").split(jumps)
+    var max = -1
+    for (part in parts) if ((part.isNotEmpty()) && (part.toInt() > max)) max = part.toInt()
+    return max
+}
 
 /**
  * Сложная
@@ -175,7 +185,15 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    if (jumps.contains(Regex("""[^\d\s\-%+]"""))) return -1
+    val parts = Regex(""" """).split(jumps)
+    var max = -1
+    for (i in 0 until parts.size - 1)
+        if ((parts[i].matches(Regex(""" ?\d*"""))) && (parts[i + 1].matches(Regex("""[ +]"""))) && (parts[i].toInt() > max))
+            max = parts[i].toInt()
+    return max
+}
 
 /**
  * Сложная
@@ -186,7 +204,18 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    require(!(expression.contains(Regex("""[^\d\s\-+]|(^[\-+])|(- -)""")))) { expression }
+    val parts = Regex(""" """).split(expression)
+    var result = parts[0].toInt()
+    var i = 1
+    while (i < parts.size) {
+        if (parts[i].matches(Regex("""[ +]"""))) result += parts[i + 1].toInt()
+        else result -= parts[i + 1].toInt()
+        i += 2
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -197,7 +226,17 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val parts = Regex(""" """).split(str)
+    if (parts.size == 1) return -1
+    var counter = 0
+    for (i in parts.indices) {
+        if (parts[i].toLowerCase() == parts[i + 1].toLowerCase()) break
+        counter += parts[i].length + 1
+    }
+    if (counter == 0) counter = -1
+    return counter
+}
 
 /**
  * Сложная
@@ -210,7 +249,20 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    if (!description.contains(Regex("""[[a-zA-Z] \d*]"""))) return ""
+    val listOfGoods = Regex("""; """).split(description)
+    var maxPrice = -1.0
+    var expensiveGoods = ""
+    for (i in listOfGoods.indices) {
+        val goodsPrice = Regex(""" """).split(listOfGoods[i])
+        if (goodsPrice[1].removeSuffix(";").toDouble() > maxPrice) {
+            maxPrice = goodsPrice[1].removeSuffix(";").toDouble()
+            expensiveGoods = goodsPrice[0]
+        }
+    }
+    return expensiveGoods
+}
 
 /**
  * Сложная
@@ -262,3 +314,4 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
