@@ -205,7 +205,8 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    require((!expression.contains(Regex("""[^\d\s\-+]|(^[\-+])|(\- \-)|(\- \+)|(\+ \-)|(\+ \+)"""))) || expression.isNotEmpty()) { expression }
+    require((!expression.contains(Regex("""[^\d\s\-+]|(^[\-+])|(\- \-)|(\- \+)|(\+ \-)|(\+ \+)""")))) { expression }
+    require(!expression.isEmpty()) { expression }
     val parts = Regex(""" """).split(expression)
     var result = parts[0].toInt()
     var i = 1
