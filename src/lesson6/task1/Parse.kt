@@ -130,6 +130,7 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
+    if (!digital.matches(Regex("""\d+\.\d+\.\d+"""))) return ""
     val list = universalDateFunction(digital, false)
     if (list[0] != "")
         return String.format("%d %s %d", list[0].toInt(), list[1], list[2].toInt())
@@ -151,7 +152,7 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    return if ((!phone.contains(Regex("""\(\s*\)"""))) && (phone.matches(Regex("""\+?\d*\s*\(?[[\s?][\d+][-*]]*\)?[\d\s-]*"""))) && (!phone.matches(
+    return if ((!phone.contains(Regex("""\(\s*\)"""))) && (phone.matches(Regex("""\+?\s*\d+\s*\(?[[\s?][\d+][-*]]*\)?[\d\s-]*"""))) && (!phone.matches(
             Regex("""\n""")
         ))
     )
