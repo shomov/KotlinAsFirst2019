@@ -72,6 +72,7 @@ class Tests {
         assertEquals("+425667", flattenPhoneNumber("+42 56 -- 67"))
         assertEquals("+42566789", flattenPhoneNumber("+42(56 -- 67)89"))
         assertEquals("", flattenPhoneNumber("ab-123"))
+        assertEquals("", flattenPhoneNumber("\n"))
         assertEquals("", flattenPhoneNumber("134_+874"))
     }
 
@@ -99,11 +100,13 @@ class Tests {
     @Tag("Hard")
     fun plusMinus() {
         assertEquals(0, plusMinus("0"))
+        assertThrows(IllegalArgumentException::class.java) { plusMinus("") }
         assertEquals(4, plusMinus("2 + 2"))
         assertEquals(1, plusMinus("2 + 2 - 3"))
         assertEquals(6, plusMinus("2 + 31 - 40 + 13"))
         assertEquals(-1, plusMinus("0 - 1"))
         assertThrows(IllegalArgumentException::class.java) { plusMinus("+2") }
+        assertThrows(IllegalArgumentException::class.java) { plusMinus("8-5") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("+ 4") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("4 - -2") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("44 - - 12") }
