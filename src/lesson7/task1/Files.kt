@@ -236,7 +236,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
         for (i in line) {
             if (i.toLowerCase() !in l) l.add(i.toLowerCase())
             else break
-            if (l.size == line.length) {
+            if (l.size == line.length && line !in chaoticWords) {
                 chaoticWords.add(line)
                 if (line.length > max) max = line.length
             }

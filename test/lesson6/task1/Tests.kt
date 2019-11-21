@@ -101,6 +101,7 @@ class Tests {
     fun plusMinus() {
         assertEquals(0, plusMinus("0"))
         assertThrows(IllegalArgumentException::class.java) { plusMinus("") }
+        assertThrows(IllegalArgumentException::class.java) { plusMinus(" ") }
         assertEquals(4, plusMinus("2 + 2"))
         assertEquals(1, plusMinus("2 + 2 - 3"))
         assertEquals(6, plusMinus("2 + 31 - 40 + 13"))
