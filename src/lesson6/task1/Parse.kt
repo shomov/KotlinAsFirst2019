@@ -210,7 +210,7 @@ fun bestHighJump(jumps: String): Int {
  */
 fun plusMinus(expression: String): Int {
     require(
-        (!expression.contains(Regex("""[^\d\s\-+]|(^[\-+])|(- -)""")))
+        (!expression.contains(Regex("""[^\d \-+]|(^[\-+])|(- -)""")))
                 && (!expression.matches(Regex(""" """)))
     ) { expression }
     require(expression.isNotEmpty()) { expression }
