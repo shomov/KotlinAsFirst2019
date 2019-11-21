@@ -151,7 +151,7 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    return if ((!phone.contains(Regex("""\(\s*\)"""))) && (phone.matches(Regex("""\+?\d*\s*\(?[[\s?][\d+][-*]]*\)?[\d\s-]*"""))))
+    return if ((!phone.contains(Regex("""\(\s*\)"""))) && (phone.matches(Regex("""\+?\d*\s*\(?[[\s?][\d+][-*]]*\)?[\d\s-]*"""))) && (!phone.matches(Regex("""\n"""))))
         phone.filter { it !in " " && it !in "(" && it !in ")" && it !in "-" }
     else ""
 }
@@ -205,7 +205,8 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    require((!expression.contains(Regex("""[^\d\s\-+]|(^[\-+])|(- -)"""))) || expression.isEmpty()) { expression }
+    require((!expression.contains(Regex("""[^\d\s\-+]|(^[\-+])|(\- \-)|(\- \+)|(\+ \-)|(\+ \+)""")))) { expression }
+    require(!expression.isEmpty()) { expression }
     val parts = Regex(""" """).split(expression)
     var result = parts[0].toInt()
     var i = 1
