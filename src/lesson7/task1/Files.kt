@@ -89,39 +89,28 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    val dictOfLetters = listOf<String>("ж", "ч", "ш", "щ")
-    var dOCOIL = listOf('и' to 'ы', 'а' to 'я', 'у' to 'ю') //dOCOIL means dictOfCorrectOrIncorrectLetters
-    println(dOCOIL)
+    val dictOfLetters = listOf("ж", "ч", "ш", "щ")
+    val dOCOIL = listOf('и' to 'ы', 'а' to 'я', 'у' to 'ю') //dOCOIL means dictOfCorrectOrIncorrectLetters
     val outputStream = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
         var l = ""
         var temp = ""
-        var check = false
-        for (i in 0 until line.length){
-            if (!check) {
-                if (line[i].toString() in dictOfLetters) {
-                    for (j in dOCOIL.indices) {
-                        if (line[i + 1] == dOCOIL[j].second) {
+        for (i in 0 until line.length)
+            if (temp == "") {
+                if (line[i].toString().toLowerCase() in dictOfLetters)
+                    for (j in dOCOIL.indices)
+                        if (line[i + 1] == dOCOIL[j].second)
                             temp = dOCOIL[j].first.toString()
-                            check = true
-                        }
-                    }
-                }
+                        else if (line[i + 1].toLowerCase() == dOCOIL[j].second)
+                            temp = dOCOIL[j].first.toUpperCase().toString()
                 l += line[i].toString() + temp
+            }
+            else
                 temp = ""
-
-            }
-            else {
-                check = false
-            }
-
-        }
         outputStream.write(l)
         outputStream.newLine()
     }
-
     outputStream.close()
-
 }
 
 /**
