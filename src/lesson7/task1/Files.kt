@@ -315,31 +315,54 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val tagSign = listOf("*", "**", "~")
+    val usingTags = mutableListOf(false, false, false)
     val outputStream = File(outputName).bufferedWriter()
     outputStream.write("<html><body><p>")
     for (line in File(inputName).readLines()) {
-        if (line.isBlank()){
+        if (line.isBlank())
             outputStream.write("</p><p>")
-        }
         else {
             var i = 0
             while (i < line.length - 1) {
                 if ((line[i].toString() in tagSign)) {
                     when (line[i].toString() + line[i+1].toString()){
                         "**" -> {
-                            outputStream.write("<b>")
+                            outputStream.write("<")
+                            if (!usingTags[1])
+                                usingTags[1] = true
+
+                            else{
+                                usingTags[1] = false
+                                outputStream.write("/")
+                            }
+                            outputStream.write("b>")
                             i++
                         }
                         "~~" -> {
-                            outputStream.write("<s>")
+                            outputStream.write("<")
+                            if (!usingTags[2])
+                                usingTags[2] = true
+
+                            else{
+                                usingTags[2] = false
+                                outputStream.write("/")
+                            }
+                            outputStream.write("i>")
                             i++
                         }
-                        else -> outputStream.write("<i>")
+                        else -> {
+                            outputStream.write("<")
+                            if (!usingTags[0])
+                                usingTags[0] = true
+
+                            else{
+                                usingTags[0] = false
+                                outputStream.write("/")
+                            }
+                            outputStream.write("i>")
+                        }
                     }
-
-
                 }
-
                 else {
                     outputStream.write(line[i].toString())
                 }
