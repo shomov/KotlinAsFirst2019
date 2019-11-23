@@ -317,20 +317,22 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val tagSign = listOf("*", "**", "~")
     val usingTags = mutableListOf(false, false, false)
     val outputStream = File(outputName).bufferedWriter()
+    var check = false
     outputStream.write("<html><body><p>")
-    for (line in File(inputName).readLines())
-        if (line.isBlank())
+    for (line in File(inputName).readLines()) {
+        if (line.isBlank() && check)
             outputStream.write("</p><p>")
         else {
+            check = true
             var i = 0
             while (i < line.length - 1) {
                 if ((line[i].toString() in tagSign))
-                    when (line[i].toString() + line[i+1].toString()){
+                    when (line[i].toString() + line[i + 1].toString()) {
                         "**" -> {
                             outputStream.write("<")
                             if (!usingTags[1])
                                 usingTags[1] = true
-                            else{
+                            else {
                                 usingTags[1] = false
                                 outputStream.write("/")
                             }
@@ -341,7 +343,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                             outputStream.write("<")
                             if (!usingTags[2])
                                 usingTags[2] = true
-                            else{
+                            else {
                                 usingTags[2] = false
                                 outputStream.write("/")
                             }
@@ -352,7 +354,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                             outputStream.write("<")
                             if (!usingTags[0])
                                 usingTags[0] = true
-                            else{
+                            else {
                                 usingTags[0] = false
                                 outputStream.write("/")
                             }
@@ -366,6 +368,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     outputStream.write(line[i].toString())
             }
         }
+    }
     outputStream.write("</p></body></html>")
     outputStream.close()
 }
