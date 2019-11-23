@@ -97,7 +97,7 @@ fun sibilants(inputName: String, outputName: String) {
         var temp = ""
         for (i in 0 until line.length)
             if (temp == "") {
-                if (line[i].toString().toLowerCase() in dictOfLetters)
+                if ((line[i].toString().toLowerCase() in dictOfLetters) && (i != line.length - 1))
                     for (j in dOCOIL.indices)
                         if (line[i + 1] == dOCOIL[j].second)
                             temp = dOCOIL[j].first.toString()
