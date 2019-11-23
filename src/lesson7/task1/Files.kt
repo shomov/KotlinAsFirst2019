@@ -314,7 +314,47 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    val tagSign = listOf("*", "**", "~")
+    val outputStream = File(outputName).bufferedWriter()
+    outputStream.write("<html><body><p>")
+    for (line in File(inputName).readLines()) {
+        if (line.isBlank()){
+            outputStream.write("</p><p>")
+        }
+        else {
+            var i = 0
+            while (i < line.length - 1) {
+                if ((line[i].toString() in tagSign)) {
+                    when (line[i].toString() + line[i+1].toString()){
+                        "**" -> {
+                            outputStream.write("<b>")
+                            i++
+                        }
+                        "~~" -> {
+                            outputStream.write("<s>")
+                            i++
+                        }
+                        else -> outputStream.write("<i>")
+                    }
+
+
+                }
+
+                else {
+                    outputStream.write(line[i].toString())
+                }
+                i++
+            }
+
+
+        }
+    }
+
+
+
+
+    outputStream.write("</p></body></html>")
+    outputStream.close()
 }
 
 /**
