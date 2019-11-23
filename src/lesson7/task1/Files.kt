@@ -318,19 +318,18 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val usingTags = mutableListOf(false, false, false)
     val outputStream = File(outputName).bufferedWriter()
     outputStream.write("<html><body><p>")
-    for (line in File(inputName).readLines()) {
+    for (line in File(inputName).readLines())
         if (line.isBlank())
             outputStream.write("</p><p>")
         else {
             var i = 0
             while (i < line.length - 1) {
-                if ((line[i].toString() in tagSign)) {
+                if ((line[i].toString() in tagSign))
                     when (line[i].toString() + line[i+1].toString()){
                         "**" -> {
                             outputStream.write("<")
                             if (!usingTags[1])
                                 usingTags[1] = true
-
                             else{
                                 usingTags[1] = false
                                 outputStream.write("/")
@@ -342,19 +341,17 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                             outputStream.write("<")
                             if (!usingTags[2])
                                 usingTags[2] = true
-
                             else{
                                 usingTags[2] = false
                                 outputStream.write("/")
                             }
-                            outputStream.write("i>")
+                            outputStream.write("s>")
                             i++
                         }
                         else -> {
                             outputStream.write("<")
                             if (!usingTags[0])
                                 usingTags[0] = true
-
                             else{
                                 usingTags[0] = false
                                 outputStream.write("/")
@@ -362,20 +359,13 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                             outputStream.write("i>")
                         }
                     }
-                }
-                else {
+                else
                     outputStream.write(line[i].toString())
-                }
                 i++
+                if (i == line.length - 1)
+                    outputStream.write(line[i].toString())
             }
-
-
         }
-    }
-
-
-
-
     outputStream.write("</p></body></html>")
     outputStream.close()
 }
