@@ -325,7 +325,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         else {
             check = true
             var i = 0
-            while (i < line.length - 1) {
+            while (i <= line.length - 1) {
                 if ((line[i].toString() in tagSign))
                     when (line[i].toString() + line[i + 1].toString()) {
                         "**" -> {
@@ -364,8 +364,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 else
                     outputStream.write(line[i].toString())
                 i++
-                if (i == line.length - 1)
-                    outputStream.write(line[i].toString())
             }
         }
     }
