@@ -373,10 +373,21 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     outputStream.write(line[i].toString())
                 i++
                 if (i == line.length - 1)
-                    if (line[i].toString() == tagSign[0])
-                        outputStream.write("</i>")
-                    else
-                       outputStream.write(line[i].toString())
+                    if (line[i].toString() == tagSign[0]) {
+                        when (usingTags[0]) {
+                            true -> {
+                                outputStream.write("</i>")
+                                usingTags[0] = false
+                            }
+                            else -> {
+                                outputStream.write("<i>")
+                                usingTags[0] = true
+                            }
+                        }
+                    }
+                    else {
+                        outputStream.write(line[i].toString())
+                    }
             }
         }
     }
