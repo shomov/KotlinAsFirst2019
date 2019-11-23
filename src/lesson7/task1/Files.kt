@@ -320,8 +320,13 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var check = false
     outputStream.write("<html><body><p>")
     for (line in File(inputName).readLines()) {
-        if (line.isBlank() && check)
+        if (line.isBlank() && check) {
             outputStream.write("</p><p>")
+            check = false
+        }
+        if (line.isBlank() && !check) {
+            outputStream.write("")
+        }
         else {
             check = true
             if (line.length == 1) {
