@@ -315,8 +315,7 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val tagSign = listOf("*", "**", "~")
-    val stack = mutableListOf<String>()
-    stack.add("")
+    val stack = mutableListOf<String>(" ")
     val usingTags = mutableListOf(false, false, false)
     val outputStream = File(outputName).bufferedWriter()
     var check = false
@@ -333,57 +332,57 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             var i = 0
             val str = "$line  "
             while (i < str.length - 2) {
-                if (str[i].toString() == tagSign[0] && str[i] == str[i+1] && str[i] == str[i+2] && str[i].toString() == tagSign[0] && !usingTags[0] && !usingTags[1]) {
-                    outputStream.write("<b><i>")
-                    usingTags[0] = true
-                    usingTags[1] = true
-                    stack.add(tagSign[1])
-                    stack.add(tagSign[0])
-                    i += 3
-                }
-                else if (str[i] == str[i+1] && str[i] == str[i+2] && str[i].toString() == tagSign[0] && usingTags[0] && usingTags[1]) {
-                    outputStream.write("</i></b>")
+                if (str[i] == str[i+1] && str[i] == str[i+2] && str[i].toString() == tagSign[0] && usingTags[1] && usingTags[0] && stack.last().toString() == tagSign[0]) {
+                    outputStream.write("</b></i>")
+                    stack.remove(stack.last())
+                    stack.remove(stack.last())
                     usingTags[0] = false
                     usingTags[1] = false
-                    i += 3
+                    i += 2
                 }
                 else if (str[i] == str[i+1] && str[i].toString() == tagSign[0]){
                     outputStream.write("<")
-                    if (stack.last() != tagSign[1])
-                        stack.add(tagSign[1])
-                    else {
+                    if (stack.last() == tagSign[1]) {
                         outputStream.write("/")
                         stack.remove(stack.last())
+                        usingTags[1] = false
+
+                    } else {
+                        stack.add(tagSign[1])
+                        usingTags[1] = true
                     }
                     outputStream.write("b>")
-                    i += 2
+                    i++
                 }
                 else if (str[i].toString() == tagSign[0]) {
                     outputStream.write("<")
-                    if (stack.last() != tagSign[0])
-                        stack.add(tagSign[0])
-                    else {
+                    if (stack.last() == tagSign[0]){
                         outputStream.write("/")
                         stack.remove(stack.last())
+                        usingTags[0] = false
+                    }
+                    else {
+                        stack.add(tagSign[0])
+                        usingTags[0] = true
                     }
                     outputStream.write("i>")
-                    i++
+
                 }
                 else if (str[i] == str[i+1] && str[i].toString() == tagSign[2]){
                     outputStream.write("<")
-                    if (stack.last() != tagSign[2])
-                        stack.add(tagSign[2])
+                    if (!usingTags[2]) {
+                        usingTags[2] = true
+                    }
                     else {
                         outputStream.write("/")
-                        stack.remove(stack.last())
+                        usingTags[2] = false
                     }
                     outputStream.write("s>")
-                    i += 2
-                }
-                else {
-                    outputStream.write(str[i].toString())
                     i++
                 }
+                else
+                    outputStream.write(str[i].toString())
+                i++
             }
         }
     }
