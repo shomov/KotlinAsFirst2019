@@ -222,7 +222,17 @@ Basic, Ruby, Swift.
         val result = File("temp.html").readText().replace(Regex("[\\s\\n\\t]"), "")
         val expected =
             """
-                    <html><body><p><i>Привет,мир</i></p><p><b>Какжеяхочуспать</b></p><p><s>26.11.2019</s></p><p><s>1:46AM</s></p></body></html>
+<html>
+                        <body>
+                            <p>
+                                Lorem ipsum <i>dolor sit amet</i>, consectetur <b>adipiscing</b> elit.
+                                Vestibulum lobortis. <s>Est vehicula rutrum <i>suscipit</i></s>, ipsum <s>lib</s>ero <i>placerat <b>tortor</b></i>.
+                            </p>
+                            <p>
+                                Suspendisse <s>et elit in enim tempus iaculis</s>.
+                            </p>
+                        </body>
+                    </html>
                     """.trimIndent().replace(Regex("[\\s\\n\\t]"), "")
         assertEquals(expected, result)
 
@@ -232,7 +242,7 @@ Basic, Ruby, Swift.
     @Test
     @Tag("Hard")
     fun markdownToHtmlSimple() {
-        markdownToHtmlSimple("input/markdown_simple_kotoed.txt", "temp.html")
+        markdownToHtmlSimple("input/markdown_simple.md", "temp.html")
         checkHtmlSimpleExample()
     }
 

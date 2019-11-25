@@ -323,12 +323,9 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     for (line in File(inputName).readLines()) {
         if (line.isEmpty() && check) {
             outputStream.write("</p><p>")
-            check = false
         }
-        else if (line.isEmpty() && !check)
-            outputStream.write("")
         else {
-            check = true
+            check = line.isNotEmpty()
             var i = 0
             val str = "$line  "
             while (i < str.length - 2) {
