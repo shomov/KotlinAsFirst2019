@@ -318,20 +318,25 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val stack = mutableListOf(" ")
     val usingTags = mutableListOf(false, false, false)
     val outputStream = File(outputName).bufferedWriter()
-    var check = false
-    var counter = 0
+    val emptyList = mutableListOf<Boolean>()
     outputStream.write("<html><body><p>")
-    for (line in File(inputName).readLines()) {
-        if (counter == File(inputName).readLines().lastIndex && line.isEmpty())
+    for (line in File(inputName).readLines())
+        if (line.isNotEmpty())
+            emptyList.add(false)
+        else
+            emptyList.add(true)
+    emptyList.add(true)
+    for ((counter, line) in File(inputName).readLines().withIndex()) {
+        if (counter == 0 && emptyList[counter])
             outputStream.write("")
-        else if (line.isEmpty() && check) {
+        else if (emptyList[counter] && !emptyList[counter+1]){
             outputStream.write("</p><p>")
-            check = false
         }
-        else if (line.isEmpty() && !check)
+        else if (emptyList[counter] && emptyList[counter+1]){
             outputStream.write("")
+        }
         else {
-            check = true
+
             var i = 0
             val str = "$line  "
             while (i < str.length - 2) {
@@ -388,9 +393,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 i++
             }
         }
-        counter++
     }
-
     outputStream.write("</p></body></html>")
     outputStream.close()
 }
