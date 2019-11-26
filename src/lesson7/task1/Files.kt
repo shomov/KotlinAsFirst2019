@@ -346,7 +346,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                         outputStream.write("/")
                         stack.remove(stack.last())
                         usingTags[1] = false
-
                     } else {
                         stack.add(tagSign[1])
                         usingTags[1] = true
