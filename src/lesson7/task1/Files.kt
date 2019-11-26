@@ -327,7 +327,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             emptyList.add(true)
     emptyList.add(true)
     for ((counter, line) in File(inputName).readLines().withIndex()) {
-        if (counter == 0 && emptyList[counter])
+        if (counter < emptyList.indexOf(false))
             outputStream.write("")
         else if (emptyList[counter] && !emptyList[counter+1]){
             outputStream.write("</p><p>")
@@ -340,7 +340,15 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             var i = 0
             val str = "$line  "
             while (i < str.length - 2) {
-                if (str[i] == str[i+1] && str[i].toString() == tagSign[0]){
+                if (str[i] == str[i+1] && str[i] == str[i+2] && str[i].toString() == tagSign[0] && usingTags[1] && usingTags[0] && stack.last().toString() == tagSign[0]) {
+                    outputStream.write("</b></i>")
+                    stack.remove(stack.last())
+                    stack.remove(stack.last())
+                    usingTags[0] = false
+                    usingTags[1] = false
+                    i += 2
+                }
+                else if (str[i] == str[i+1] && str[i].toString() == tagSign[0]){
                     outputStream.write("<")
                     if (stack.last() == tagSign[1]) {
                         outputStream.write("/")
@@ -366,6 +374,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                         usingTags[0] = true
                     }
                     outputStream.write("i>")
+
                 }
                 else if (str[i] == str[i+1] && str[i].toString() == tagSign[2]){
                     outputStream.write("<")
