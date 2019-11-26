@@ -131,7 +131,21 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    var max = 0
+    for (line in File(inputName).readLines())
+        if (line.trimIndent().length > max)
+            max = line.trimIndent().length
+    val outputStream = File(outputName).bufferedWriter()
+    for (line in File(inputName).readLines()){
+        var temp = (max - line.trimIndent().length) / 2
+        while (temp > 0){
+            outputStream.write(" ")
+            temp--
+        }
+        outputStream.write(line.trimIndent())
+        outputStream.newLine()
+    }
+    outputStream.close()
 }
 
 /**
@@ -329,14 +343,11 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     for ((counter, line) in File(inputName).readLines().withIndex()) {
         if (counter < emptyList.indexOf(false))
             outputStream.write("")
-        else if (emptyList[counter] && !emptyList[counter+1]){
+        else if (emptyList[counter] && !emptyList[counter+1])
             outputStream.write("</p><p>")
-        }
-        else if (emptyList[counter] && emptyList[counter+1]){
+        else if (emptyList[counter] && emptyList[counter+1])
             outputStream.write("")
-        }
         else {
-
             var i = 0
             val str = "$line  "
             while (i < str.length - 2) {
@@ -365,13 +376,11 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                         usingTags[0] = true
                     }
                     outputStream.write("i>")
-
                 }
                 else if (str[i] == str[i+1] && str[i].toString() == tagSign[2]){
                     outputStream.write("<")
-                    if (!usingTags[2]) {
+                    if (!usingTags[2])
                         usingTags[2] = true
-                    }
                     else {
                         outputStream.write("/")
                         usingTags[2] = false
