@@ -322,11 +322,9 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var counter = 0
     outputStream.write("<html><body><p>")
     for (line in File(inputName).readLines()) {
-        if (counter == File(inputName).readLines().lastIndex && line.isEmpty()) {
+        if (counter == File(inputName).readLines().lastIndex && line.isEmpty())
             outputStream.write("")
-            continue
-        }
-        if (line.isEmpty() && check) {
+        else if (line.isEmpty() && check) {
             outputStream.write("</p><p>")
             check = false
         }
