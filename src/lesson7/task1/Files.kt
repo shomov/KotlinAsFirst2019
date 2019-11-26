@@ -315,7 +315,7 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val tagSign = listOf("*", "**", "~")
-    val stack = mutableListOf<String>(" ")
+    val stack = mutableListOf(" ")
     val usingTags = mutableListOf(false, false, false)
     val outputStream = File(outputName).bufferedWriter()
     var check = false
