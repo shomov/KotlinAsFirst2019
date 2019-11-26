@@ -319,8 +319,13 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val usingTags = mutableListOf(false, false, false)
     val outputStream = File(outputName).bufferedWriter()
     var check = false
+    var counter = 0
     outputStream.write("<html><body><p>")
     for (line in File(inputName).readLines()) {
+        if (counter == File(inputName).readLines().lastIndex) {
+            outputStream.write("")
+            continue
+        }
         if (line.isEmpty() && check) {
             outputStream.write("</p><p>")
             check = false
@@ -385,7 +390,9 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 i++
             }
         }
+        counter++
     }
+
     outputStream.write("</p></body></html>")
     outputStream.close()
 }
