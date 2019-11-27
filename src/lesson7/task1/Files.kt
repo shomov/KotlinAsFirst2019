@@ -204,9 +204,8 @@ fun alignFileByWidth(inputName: String, outputName: String) {
             outputStream.write(parts.joinToString(" "))
             outputStream.newLine()
         }
-        else {
+        else
             outputStream.newLine()
-        }
     }
     outputStream.close()
 }
