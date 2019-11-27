@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import kotlin.math.max
+
 /**
  * Пример
  *
@@ -350,4 +352,23 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val result = mutableSetOf<String>()
+    val listOfMass = mutableListOf<Int>()
+    val listOfPrices = mutableListOf<Int>()
+    val listOfTreasures = mutableListOf<String>()
+    val prices = Array(treasures.size + 1) { Array(capacity + 1) { 0 } }
+    for ((key, value) in treasures) {
+        listOfPrices.add(value.second)
+        listOfMass.add(value.first)
+        listOfTreasures.add(key)
+    }
+    for (i in listOfTreasures.indices)
+        for (j in 0..capacity)
+            if (j >= listOfMass[i])
+                prices[i][j] = max(prices[i][j], prices[i][j - listOfMass[i]] + listOfPrices[i])
+    for (i in listOfTreasures.indices)
+        if (prices[i + 1][capacity] != prices[i][capacity])
+            result.add(listOfTreasures[i])
+    return result
+}
