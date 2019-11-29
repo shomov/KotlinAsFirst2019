@@ -380,9 +380,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             outputStream.write("")
         else {
             var i = 0
-            val str = "$line  "
-            while (i < str.length - 2) {
-                if (str[i] == str[i+1] && str[i].toString() == tagSign[0]){
+            while (i < line.length ) {
+                if (i < line.length - 1 && line[i] == line[i+1] && line[i].toString() == tagSign[0]){
                     outputStream.write("<")
                     if (stack.last() == tagSign[1]) {
                         outputStream.write("/")
@@ -395,7 +394,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     outputStream.write("b>")
                     i++
                 }
-                else if (str[i].toString() == tagSign[0]) {
+                else if (line[i].toString() == tagSign[0]) {
                     outputStream.write("<")
                     if (stack.last() == tagSign[0]){
                         outputStream.write("/")
@@ -408,7 +407,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     }
                     outputStream.write("i>")
                 }
-                else if (str[i] == str[i+1] && str[i].toString() == tagSign[2]){
+                else if (i < line.length - 1 && line[i] == line[i+1] && line[i].toString() == tagSign[2]){
                     outputStream.write("<")
                     if (!usingTags[2])
                         usingTags[2] = true
@@ -420,7 +419,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     i++
                 }
                 else
-                    outputStream.write(str[i].toString())
+                    outputStream.write(line[i].toString())
                 i++
             }
         }
