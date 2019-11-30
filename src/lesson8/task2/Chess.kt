@@ -180,23 +180,15 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
     if (colorS != colorE)
         return trace
     trace.add(start)
-    var temp = Square(0, 0)
-    for (c in 1..8) {
-        for (r in 1..8) {
-            if (abs(r - start.row) == abs(c - start.column) && abs(r - end.row) == abs(c - end.column))
-                temp = Square(c, r)
-        }
-    }
-
-
-
-    if (temp.column != 0 && temp.row != 0)
+    if (abs(start.row - end.row) != abs(start.column - end.column)) {
+        var temp = Square(0, 0)
+        for (c in 1..8)
+            for (r in 1..8)
+                if (abs(r - start.row) == abs(c - start.column) && abs(r - end.row) == abs(c - end.column))
+                    temp = Square(c, r)
         trace.add(temp)
+    }
     trace.add(end)
-
-
-
-
     return trace
 }
 
