@@ -3,7 +3,6 @@
 package lesson8.task2
 
 import kotlin.math.abs
-import kotlin.math.max
 
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
@@ -173,12 +172,9 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
     }
     var colorS = false
     var colorE = false
-    if (start.column % 2 == start.row % 2)
-        colorS = true
-    if (end.column % 2 == end.row % 2)
-        colorE = true
-    if (colorS != colorE)
-        return trace
+    if (start.column % 2 == start.row % 2) colorS = true
+    if (end.column % 2 == end.row % 2) colorE = true
+    if (colorS != colorE) return trace
     trace.add(start)
     if (abs(start.row - end.row) != abs(start.column - end.column)) {
         var temp = Square(0, 0)
