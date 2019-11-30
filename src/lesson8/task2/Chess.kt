@@ -40,8 +40,10 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
-    val col = notation.first().toInt() - 96
-    return Square(col, notation.last().toInt() - 48)
+    val c = notation.first().toInt() - 96
+    val r = notation.last().toInt() - 48
+    require(c in 1..8 && r in 1..8)
+    return Square(c, r)
 }
 
 /**
@@ -68,7 +70,7 @@ fun square(notation: String): Square {
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
 fun rookMoveNumber(start: Square, end: Square): Int {
-    require(start.inside() || end.inside())
+    require(start.inside() && end.inside())
     var answer = 0
     if (start.column != end.column) answer++
     if (start.row != end.row) answer++
