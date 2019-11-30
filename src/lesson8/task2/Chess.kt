@@ -2,6 +2,8 @@
 
 package lesson8.task2
 
+import kotlin.math.abs
+
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
  * Поэтому, обе координаты клетки (горизонталь row, вертикаль column) могут находиться в пределах от 1 до 8.
@@ -40,7 +42,7 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
-    require(notation != "")
+    require(notation != "" && notation.length == 2)
     val c = notation.first().toInt() - 96
     val r = notation.last().toInt() - 48
     require(c in 1..8 && r in 1..8)
@@ -123,7 +125,25 @@ fun rookTrajectory(start: Square, end: Square): List<Square> {
  * Примеры: bishopMoveNumber(Square(3, 1), Square(6, 3)) = -1; bishopMoveNumber(Square(3, 1), Square(3, 7)) = 2.
  * Слон может пройти через клетку (6, 4) к клетке (3, 7).
  */
-fun bishopMoveNumber(start: Square, end: Square): Int = TODO()
+fun bishopMoveNumber(start: Square, end: Square): Int {
+    require(start.inside() && end.inside())
+    if (start == end)
+        return 0
+    var counter = -1
+    var colorS = false
+    var colorE = false
+    if (start.column % 2 == start.row % 2)
+        colorS = true
+    if (end.column % 2 == end.row % 2)
+        colorE = true
+    if (colorS != colorE)
+        return counter
+    counter += if (abs(start.row - end.row) == abs(start.column - end.column))
+        2
+    else
+        3
+    return counter
+}
 
 /**
  * Сложная
