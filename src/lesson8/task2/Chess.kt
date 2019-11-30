@@ -3,6 +3,7 @@
 package lesson8.task2
 
 import kotlin.math.abs
+import kotlin.math.max
 
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
@@ -12,7 +13,7 @@ import kotlin.math.abs
 
 val charColumn = mutableMapOf(1 to 'a', 2 to 'b', 3 to 'c', 4 to 'd', 5 to 'e', 6 to 'f', 7 to 'g', 8 to 'h')
 
-data class Square(val column: Int, val row: Int) {
+data class Square(var column: Int, var row: Int) {
     /**
      * Пример
      *
@@ -163,7 +164,41 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
  *          bishopTrajectory(Square(1, 3), Square(6, 8)) = listOf(Square(1, 3), Square(6, 8))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun bishopTrajectory(start: Square, end: Square): List<Square> {
+    require(start.inside() && end.inside())
+    val trace = mutableListOf<Square>()
+    if (start == end) {
+        trace.add(start)
+        return trace
+    }
+    var colorS = false
+    var colorE = false
+    if (start.column % 2 == start.row % 2)
+        colorS = true
+    if (end.column % 2 == end.row % 2)
+        colorE = true
+    if (colorS != colorE)
+        return trace
+    trace.add(start)
+    var temp = Square(0, 0)
+    for (c in 1..8) {
+        for (r in 1..8) {
+            if (abs(r - start.row) == abs(c - start.column) && abs(r - end.row) == abs(c - end.column))
+                temp = Square(c, r)
+        }
+    }
+
+
+
+    if (temp.column != 0 && temp.row != 0)
+        trace.add(temp)
+    trace.add(end)
+
+
+
+
+    return trace
+}
 
 /**
  * Средняя
