@@ -42,7 +42,7 @@ data class Square(val column: Int, val row: Int) {
 fun square(notation: String): Square {
     val c = notation.first().toInt() - 96
     val r = notation.last().toInt() - 48
-    require(c in 1..8 && r in 1..8)
+    require(c in 1..8 && r in 1..8 && notation != "")
     return Square(c, r)
 }
 
