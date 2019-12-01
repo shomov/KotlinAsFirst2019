@@ -211,26 +211,22 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
 fun kingMoveNumber(start: Square, end: Square): Int {
     require(start.inside() && end.inside())
     var counter = 0
-    if (start.row == end.row  && start.column == end.column)
+    if (start.row == end.row && start.column == end.column)
         return counter
     while (start.column != end.column || start.row != end.row) {
-        if (start.column < end.column && start.row < end.row){
+        if (start.column < end.column && start.row < end.row) {
             start.column++
             start.row++
-        }
-        else if (start.column > end.column && start.row > end.row){
+        } else if (start.column > end.column && start.row > end.row) {
             start.column--
             start.row--
-        }
-        else if (start.column > end.column && start.row < end.row){
+        } else if (start.column > end.column && start.row < end.row) {
             start.column--
             start.row++
-        }
-        else if (start.column < end.column && start.row > end.row){
+        } else if (start.column < end.column && start.row > end.row) {
             start.column++
             start.row--
-        }
-        else if (start.column < end.column) start.column++
+        } else if (start.column < end.column) start.column++
         else if (start.column > end.column) start.column--
         else if (start.row < end.row) start.row++
         else start.row--

@@ -88,7 +88,7 @@ fun sibilants(inputName: String, outputName: String) {
     for (line in File(inputName).readLines()) {
         var l = ""
         var temp = ""
-        for (i in 0 until line.length)
+        for (i in line.indices)
             if (temp == "") {
                 if ((line[i].toString().toLowerCase() in dictOfLetters) && (i != line.length - 1))
                     for (j in dOCOIL.indices)
@@ -97,8 +97,7 @@ fun sibilants(inputName: String, outputName: String) {
                         else if (line[i + 1].toLowerCase() == dOCOIL[j].second)
                             temp = dOCOIL[j].first.toUpperCase().toString()
                 l += line[i].toString() + temp
-            }
-            else
+            } else
                 temp = ""
         outputStream.write(l)
         outputStream.newLine()
@@ -129,9 +128,9 @@ fun centerFile(inputName: String, outputName: String) {
         if (line.trim().length > max)
             max = line.trim().length
     val outputStream = File(outputName).bufferedWriter()
-    for (line in File(inputName).readLines()){
+    for (line in File(inputName).readLines()) {
         var temp = (max - line.trim().length) / 2
-        while (temp > 0){
+        while (temp > 0) {
             outputStream.write(" ")
             temp--
         }
@@ -182,8 +181,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
         if (parts.size == 1) {
             outputStream.write(parts.toString().removeSurrounding("[", "]"))
             outputStream.newLine()
-        }
-        else if (!line.isBlank()) {
+        } else if (!line.isBlank()) {
             var temp = max - l.trim().length
             var i = 0
             while (temp > 0) {
@@ -196,8 +194,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
             }
             outputStream.write(parts.joinToString(" "))
             outputStream.newLine()
-        }
-        else
+        } else
             outputStream.newLine()
     }
     outputStream.close()
@@ -301,8 +298,10 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
         }
     }
     val outputStream = File(outputName).bufferedWriter()
-    outputStream.write(chaoticWords.filter
-    { it.length == max }.toString().removeSurrounding("[", "]"))
+    outputStream.write(
+        chaoticWords.filter
+        { it.length == max }.toString().removeSurrounding("[", "]")
+    )
     outputStream.close()
 }
 
@@ -367,14 +366,14 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     for ((counter, line) in File(inputName).readLines().withIndex()) {
         if (counter < emptyList.indexOf(false))
             outputStream.write("")
-        else if (emptyList[counter] && !emptyList[counter+1])
+        else if (emptyList[counter] && !emptyList[counter + 1])
             outputStream.write("</p><p>")
-        else if (emptyList[counter] && emptyList[counter+1])
+        else if (emptyList[counter] && emptyList[counter + 1])
             outputStream.write("")
         else {
             var i = 0
-            while (i < line.length ) {
-                if (i < line.length - 1 && line[i] == line[i+1] && line[i].toString() == tagSign[0]){
+            while (i < line.length) {
+                if (i < line.length - 1 && line[i] == line[i + 1] && line[i].toString() == tagSign[0]) {
                     outputStream.write("<")
                     if (stack.last() == tagSign[1]) {
                         outputStream.write("/")
@@ -386,21 +385,18 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     }
                     outputStream.write("b>")
                     i++
-                }
-                else if (line[i].toString() == tagSign[0]) {
+                } else if (line[i].toString() == tagSign[0]) {
                     outputStream.write("<")
-                    if (stack.last() == tagSign[0]){
+                    if (stack.last() == tagSign[0]) {
                         outputStream.write("/")
                         stack.remove(stack.last())
                         usingTags[0] = false
-                    }
-                    else {
+                    } else {
                         stack.add(tagSign[0])
                         usingTags[0] = true
                     }
                     outputStream.write("i>")
-                }
-                else if (i < line.length - 1 && line[i] == line[i+1] && line[i].toString() == tagSign[2]){
+                } else if (i < line.length - 1 && line[i] == line[i + 1] && line[i].toString() == tagSign[2]) {
                     outputStream.write("<")
                     if (!usingTags[2])
                         usingTags[2] = true
@@ -410,8 +406,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     }
                     outputStream.write("s>")
                     i++
-                }
-                else
+                } else
                     outputStream.write(line[i].toString())
                 i++
             }
@@ -420,7 +415,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     outputStream.write("</p></body></html>")
     outputStream.close()
 }
-
 
 
 /**
