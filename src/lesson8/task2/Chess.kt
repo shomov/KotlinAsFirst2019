@@ -208,7 +208,44 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
  * Пример: kingMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
-fun kingMoveNumber(start: Square, end: Square): Int = TODO()
+fun kingMoveNumber(start: Square, end: Square): Int {
+    require(start.inside() && end.inside())
+    var counter = 0
+    if (start.row == end.row  && start.column == end.column)
+        return counter
+    while (start.column != end.column || start.row != end.row) {
+        if (start.column < end.column && start.row < end.row){
+            start.column++
+            start.row++
+        }
+        else if (start.column > end.column && start.row > end.row){
+            start.column--
+            start.row--
+        }
+        else if (start.column > end.column && start.row < end.row){
+            start.column--
+            start.row++
+        }
+        else if (start.column < end.column && start.row > end.row){
+            start.column++
+            start.row--
+        }
+        else if (start.column < end.column){
+            start.column++
+        }
+        else if (start.column > end.column){
+            start.column--
+        }
+        else if (start.row < end.row){
+            start.row++
+        }
+        else if (start.row > end.row){
+            start.row--
+        }
+        counter++
+    }
+    return counter
+}
 
 /**
  * Сложная

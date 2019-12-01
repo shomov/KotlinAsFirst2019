@@ -106,6 +106,10 @@ class Tests {
     fun kingMoveNumber() {
         assertEquals(0, kingMoveNumber(square("e3"), square("e3")))
         assertEquals(1, kingMoveNumber(square("c2"), square("b1")))
+        assertEquals(4, kingMoveNumber(square("c2"), square("a6")))
+        assertEquals(3, kingMoveNumber(square("e5"), square("b3")))
+        assertEquals(3, kingMoveNumber(square("b3"), square("e5")))
+        assertEquals(3, kingMoveNumber(square("d4"), square("g3")))
         assertEquals(2, kingMoveNumber(square("g8"), square("f6")))
         assertEquals(6, kingMoveNumber(square("a8"), square("g8")))
         assertEquals(7, kingMoveNumber(square("a1"), square("h8")))
