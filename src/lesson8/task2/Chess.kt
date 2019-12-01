@@ -230,18 +230,10 @@ fun kingMoveNumber(start: Square, end: Square): Int {
             start.column++
             start.row--
         }
-        else if (start.column < end.column){
-            start.column++
-        }
-        else if (start.column > end.column){
-            start.column--
-        }
-        else if (start.row < end.row){
-            start.row++
-        }
-        else if (start.row > end.row){
-            start.row--
-        }
+        else if (start.column < end.column) start.column++
+        else if (start.column > end.column) start.column--
+        else if (start.row < end.row) start.row++
+        else start.row--
         counter++
     }
     return counter
