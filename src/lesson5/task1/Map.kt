@@ -216,8 +216,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     var price = -1.0
     var name: String? = null
     for ((key) in stuff)
-        if ((stuff[key]?.first == kind) && ((price == -1.0) || (price > stuff[key]?.second!!))) {
-            price = stuff[key]?.second!!
+        if ((stuff[key]?.first == kind) && ((price == -1.0) || (price > (stuff[key]?.second ?: return null)))) {
+            price = (stuff[key]?.second ?: return null)
             name = key
         }
     return name
@@ -357,7 +357,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     val listOfMass = mutableListOf<Int>()
     val listOfPrices = mutableListOf<Int>()
     val listOfTreasures = mutableListOf<String>()
-    val prices = Array(treasures.size + 1) { Array(capacity + 1) {0} }
+    val prices = Array(treasures.size + 1) { Array(capacity + 1) { 0 } }
     for ((key, value) in treasures) {
         listOfPrices.add(value.second)
         listOfMass.add(value.first)
