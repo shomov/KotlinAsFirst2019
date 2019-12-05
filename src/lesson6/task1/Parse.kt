@@ -60,43 +60,46 @@ fun main() {
     }
 }
 
-fun universalDateFunction(date: String, trend: Boolean): MutableList<String> {
-    val dict = mapOf(
-        1 to "января",
-        2 to "февраля",
-        3 to "марта",
-        4 to "апреля",
-        5 to "мая",
-        6 to "июня",
-        7 to "июля",
-        8 to "августа",
-        9 to "сентября",
-        10 to "октября",
-        11 to "ноября",
-        12 to "декабря"
+fun universalDateFunction(date: String, trend: Boolean): MutableList<String>? {
+    val dict = listOf(
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
     )
     val dateOnList = mutableListOf<String>()
     val parts = if (trend) date.split(" ") else date.split(".")
-    for (part in parts) dateOnList.add(part)
-    if ((dateOnList.size != 3) || (!parts[0].matches(Regex("""(\d|\d\d)"""))) ||
-        (parts[0].toInt() < 1) || (!trend && ((parts[1].toInt() < 1) || (parts[1].toInt() > 12)))
-    ) dateOnList[0] = ""
-    else if (trend && (!dict.containsValue(dateOnList[1]))) dateOnList[0] = ""
+    for (part in parts)
+        dateOnList.add(part)
+    if (dateOnList.size != 3 || parts[0].toInt() < 1 || (!trend && (parts[1].toInt() < 1 || parts[1].toInt() > 12)))
+        return null
+    else if (trend && (!dict.contains(dateOnList[1])))
+        return null
     else {
-        for ((key, _) in dict) if ((trend) && (dict[key] == dateOnList[1])) {
-            dateOnList[1] = key.toString()
-            break
-        } else if ((!trend) && (key == dateOnList[1].toInt())) {
-            dateOnList[1] = dict[key].toString()
-            break
-        }
+        for (m in dict.indices)
+            if ((trend) && (dict[m] == dateOnList[1])) {
+                dateOnList[1] = (m + 1).toString()
+                break
+            } else if ((!trend) && (m + 1 == dateOnList[1].toInt())) {
+                dateOnList[1] = dict[m]
+                break
+            }
         if ((trend) && (daysInMonth(
                 dateOnList[1].toInt(),
                 dateOnList[2].toInt()
             ) < dateOnList[0].toInt())
-        ) dateOnList[0] = ""
-        if ((!trend) && (daysInMonth(parts[1].toInt(), dateOnList[2].toInt()) < dateOnList[0].toInt())) dateOnList[0] =
-            ""
+        )
+            return null
+        if ((!trend) && (daysInMonth(parts[1].toInt(), dateOnList[2].toInt()) < dateOnList[0].toInt()))
+            return null
     }
     return dateOnList
 }
@@ -113,9 +116,11 @@ fun universalDateFunction(date: String, trend: Boolean): MutableList<String> {
  * входными данными.
  */
 fun dateStrToDigit(str: String): String {
-    val list = universalDateFunction(str, true)
-    if (list[0] != "")
-        return String.format("%02d.%02d.%01d", list[0].toInt(), list[1].toInt(), list[2].toInt())
+    if (str.matches(Regex("""\d* [а-я]* \d*"""))) {
+        val list = universalDateFunction(str, true)
+        if (!list.isNullOrEmpty())
+            return String.format("%02d.%02d.%01d", list[0].toInt(), list[1].toInt(), list[2].toInt())
+    }
     return ""
 }
 
@@ -130,10 +135,11 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    if (!digital.matches(Regex("""\d+\.\d+\.\d+"""))) return ""
-    val list = universalDateFunction(digital, false)
-    if (list[0] != "")
-        return String.format("%d %s %d", list[0].toInt(), list[1], list[2].toInt())
+    if (digital.matches(Regex("""\d+\.\d+\.\d+"""))) {
+        val list = universalDateFunction(digital, false)
+        if (!list.isNullOrEmpty())
+            return String.format("%d %s %d", list[0].toInt(), list[1], list[2].toInt())
+    }
     return ""
 }
 
