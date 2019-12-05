@@ -157,14 +157,11 @@ fun dateDigitToStr(digital: String): String {
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String {
-    return if ((!phone.contains(Regex("""\(\s*\)"""))) && (phone.matches(Regex("""\+?\s*\d+\s*\(?[[\s?][\d+][-*]]*\)?[\d\s-]*"""))) && (!phone.matches(
-            Regex("""\n""")
-        ))
-    )
+fun flattenPhoneNumber(phone: String): String =
+    if ((!phone.contains(Regex("""\( *\)"""))) && (phone.matches(Regex("""\+? *\d+ *\(?[[ ?][\d+][-*]]*\)?[\d -]*"""))))
         phone.filter { it !in " " && it !in "(" && it !in ")" && it !in "-" }
     else ""
-}
+
 
 /**
  * Средняя
@@ -177,10 +174,13 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    if (jumps.contains(Regex("""[^\d\s\-%]"""))) return -1
+    if (jumps.contains(Regex("""[^\d\s\-%]""")) || jumps.contains(Regex("""(%|-|\d)([%\-])""")))
+        return -1
     val parts = Regex("""[\s\-%]""").split(jumps)
     var max = -1
-    for (part in parts) if ((part.isNotEmpty()) && (part.toInt() > max)) max = part.toInt()
+    for (part in parts)
+        if ((part.isNotEmpty()) && (part.toInt() > max))
+            max = part.toInt()
     return max
 }
 
@@ -196,7 +196,8 @@ fun bestLongJump(jumps: String): Int {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    if ((!jumps.contains(Regex("""\d+ \+"""))) || (jumps.contains(Regex("""[^\d\s\-%+]""")))) return -1
+    if ((!jumps.contains(Regex("""\d+ \+"""))) || (jumps.contains(Regex("""[^\d\s\-%+]"""))))
+        return -1
     var max = -1
     val successJump =
         Regex("""\d+""").findAll(Regex("""\d+ \+""").findAll(jumps).map { it.groupValues[0] }.joinToString())
@@ -251,7 +252,8 @@ fun firstDuplicateIndex(str: String): Int {
     if (parts.size == 1) return -1
     var counter = 0
     for (i in 1 until parts.size) {
-        if (parts[i - 1].toLowerCase() == parts[i].toLowerCase()) return counter
+        if (parts[i - 1].toLowerCase() == parts[i].toLowerCase())
+            return counter
         counter += parts[i - 1].length + 1
     }
     return -1
@@ -269,14 +271,15 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше либо равны нуля.
  */
 fun mostExpensive(description: String): String {
-    if (!description.contains(Regex("""[[a-zA-Z] \d*]"""))) return ""
+    if (!description.matches(Regex("""([^\s]+ [\d.]+;? ?)+""")))
+        return ""
     val listOfGoods = Regex("""; """).split(description)
     var maxPrice = -1.0
     var expensiveGoods = ""
     for (i in listOfGoods.indices) {
         val goodsPrice = Regex(""" """).split(listOfGoods[i])
-        if (goodsPrice[1].removeSuffix(";").toDouble() > maxPrice) {
-            maxPrice = goodsPrice[1].removeSuffix(";").toDouble()
+        if (goodsPrice[1].toDouble() > maxPrice) {
+            maxPrice = goodsPrice[1].toDouble()
             expensiveGoods = goodsPrice[0]
         }
     }
