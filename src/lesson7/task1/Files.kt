@@ -59,7 +59,8 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     val listOfSubstrings = substrings.toSet().toList()
     val text = File(inputName).readText().toLowerCase()
     for (i in listOfSubstrings.indices) {
-        if (!result.contains(listOfSubstrings[i])) result[listOfSubstrings[i]] = 0
+        if (!result.contains(listOfSubstrings[i]))
+            result[listOfSubstrings[i]] = 0
         for (j in text.indices)
             if (text.startsWith(listOfSubstrings[i].toLowerCase(), j))
                 result[listOfSubstrings[i]] = result[listOfSubstrings[i]]!! + 1
@@ -289,11 +290,13 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     for (line in File(inputName).readLines()) {
         val l = mutableListOf<Char>()
         for (i in line) {
-            if (i.toLowerCase() !in l) l.add(i.toLowerCase())
+            if (i.toLowerCase() !in l)
+                l.add(i.toLowerCase())
             else break
             if (l.size == line.length) {
                 chaoticWords.add(line)
-                if (line.length > max) max = line.length
+                if (line.length > max)
+                    max = line.length
             }
         }
     }

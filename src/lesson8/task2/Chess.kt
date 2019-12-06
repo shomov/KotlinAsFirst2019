@@ -29,7 +29,8 @@ data class Square(var column: Int, var row: Int) {
      */
 
     fun notation(): String {
-        if (!inside()) return ""
+        if (!inside())
+            return ""
         return charColumn[column].toString() + "$row"
     }
 }
@@ -75,8 +76,10 @@ fun square(notation: String): Square {
 fun rookMoveNumber(start: Square, end: Square): Int {
     require(start.inside() && end.inside())
     var answer = 0
-    if (start.column != end.column) answer++
-    if (start.row != end.row) answer++
+    if (start.column != end.column)
+        answer++
+    if (start.row != end.row)
+        answer++
     return answer
 }
 
@@ -97,8 +100,10 @@ fun rookMoveNumber(start: Square, end: Square): Int {
 fun rookTrajectory(start: Square, end: Square): List<Square> {
     val trace = mutableListOf<Square>()
     trace.add(start)
-    if (start.column != end.column) trace.add(Square(end.column, start.row))
-    if (start.row != end.row) trace.add(Square(end.column, end.row))
+    if (start.column != end.column)
+        trace.add(Square(end.column, start.row))
+    if (start.row != end.row)
+        trace.add(Square(end.column, end.row))
     return trace
 }
 
@@ -125,17 +130,16 @@ fun rookTrajectory(start: Square, end: Square): List<Square> {
  * Примеры: bishopMoveNumber(Square(3, 1), Square(6, 3)) = -1; bishopMoveNumber(Square(3, 1), Square(3, 7)) = 2.
  * Слон может пройти через клетку (6, 4) к клетке (3, 7).
  */
+
+fun color(position: Square): Boolean = position.column % 2 == position.row % 2
+
 fun bishopMoveNumber(start: Square, end: Square): Int {
     require(start.inside() && end.inside())
     if (start == end)
         return 0
     var counter = -1
-    var colorS = false
-    var colorE = false
-    if (start.column % 2 == start.row % 2)
-        colorS = true
-    if (end.column % 2 == end.row % 2)
-        colorE = true
+    val colorS = color(start)
+    val colorE = color(end)
     if (colorS != colorE)
         return counter
     counter += if (abs(start.row - end.row) == abs(start.column - end.column))
@@ -170,11 +174,10 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
         trace.add(start)
         return trace
     }
-    var colorS = false
-    var colorE = false
-    if (start.column % 2 == start.row % 2) colorS = true
-    if (end.column % 2 == end.row % 2) colorE = true
-    if (colorS != colorE) return trace
+    val colorS = color(start)
+    val colorE = color(end)
+    if (colorS != colorE)
+        return trace
     trace.add(start)
     if (abs(start.row - end.row) != abs(start.column - end.column)) {
         var temp = Square(0, 0)
