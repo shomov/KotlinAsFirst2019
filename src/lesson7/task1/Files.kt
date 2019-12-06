@@ -82,20 +82,20 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    val dictOfLetters = listOf("ж", "ч", "ш", "щ")
-    val dOCOIL = listOf('и' to 'ы', 'а' to 'я', 'у' to 'ю') //dOCOIL means dictOfCorrectOrIncorrectLetters
+    val dictOfLetters = listOf('ж', 'ч', 'ш', 'щ')
+    val dictOfReplaceable = listOf('и' to 'ы', 'а' to 'я', 'у' to 'ю') 
     val outputStream = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
         var l = ""
         var temp = ""
         for (i in line.indices)
             if (temp == "") {
-                if ((line[i].toString().toLowerCase() in dictOfLetters) && (i != line.length - 1))
-                    for (j in dOCOIL.indices)
-                        if (line[i + 1] == dOCOIL[j].second)
-                            temp = dOCOIL[j].first.toString()
-                        else if (line[i + 1].toLowerCase() == dOCOIL[j].second)
-                            temp = dOCOIL[j].first.toUpperCase().toString()
+                if ((line[i].toLowerCase() in dictOfLetters) && (i != line.length - 1))
+                    for (j in dictOfReplaceable.indices)
+                        if (line[i + 1] == dictOfReplaceable[j].second)
+                            temp = dictOfReplaceable[j].first.toString()
+                        else if (line[i + 1].toLowerCase() == dictOfReplaceable[j].second)
+                            temp = dictOfReplaceable[j].first.toUpperCase().toString()
                 l += line[i].toString() + temp
             } else
                 temp = ""
@@ -170,13 +170,13 @@ fun centerFile(inputName: String, outputName: String) {
 fun alignFileByWidth(inputName: String, outputName: String) {
     var max = 0
     for (line in File(inputName).readLines()) {
-        val l = line.replace("  ", " ")
-        if (line.replace("  ", " ").trim().length > max)
+        val l = line.replace(" +".toRegex(), " ")
+        if (l.trim().length > max)
             max = l.trim().length
     }
     val outputStream = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
-        val l = line.replace("  ", " ")
+        val l = line.replace(" +".toRegex(), " ")
         val parts = Regex("""\s""").split(l.trim()).toMutableList()
         if (parts.size == 1) {
             outputStream.write(parts.toString().removeSurrounding("[", "]"))
