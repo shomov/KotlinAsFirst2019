@@ -84,7 +84,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  */
 fun sibilants(inputName: String, outputName: String) {
     val dictOfLetters = listOf('ж', 'ч', 'ш', 'щ')
-    val dictOfReplaceable = listOf('и' to 'ы', 'а' to 'я', 'у' to 'ю') 
+    val dictOfReplaceable = mapOf('ы' to 'и', 'я' to 'а', 'ю' to 'у')
     val outputStream = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
         var l = ""
@@ -92,11 +92,10 @@ fun sibilants(inputName: String, outputName: String) {
         for (i in line.indices)
             if (temp == "") {
                 if ((line[i].toLowerCase() in dictOfLetters) && (i != line.length - 1))
-                    for (j in dictOfReplaceable.indices)
-                        if (line[i + 1] == dictOfReplaceable[j].second)
-                            temp = dictOfReplaceable[j].first.toString()
-                        else if (line[i + 1].toLowerCase() == dictOfReplaceable[j].second)
-                            temp = dictOfReplaceable[j].first.toUpperCase().toString()
+                    if (line[i + 1] in dictOfReplaceable.keys)
+                        temp = dictOfReplaceable[line[i + 1]].toString()
+                    else if (line[i + 1].toLowerCase() in dictOfReplaceable.keys)
+                        temp = dictOfReplaceable[line[i + 1].toLowerCase()].toString().toUpperCase()
                 l += line[i].toString() + temp
             } else
                 temp = ""
