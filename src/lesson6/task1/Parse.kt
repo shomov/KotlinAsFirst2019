@@ -204,8 +204,8 @@ fun bestHighJump(jumps: String): Int {
         return -1
     var max = -1
     val successJump =
-        Regex("""\d+""").findAll(Regex("""\d+ \+""").findAll(jumps).map { it.groupValues[0] }.joinToString())
-            .map { it.groupValues[0] }.joinToString()
+        Regex("""\d+""").findAll(Regex("""\d+ \+""").findAll(jumps).map
+        { it.groupValues[0] }.joinToString()).map { it.groupValues[0] }.joinToString()
     val parts = Regex(""", """).split(successJump)
     for (i in parts.indices)
         if (parts[i].toInt() > max)
@@ -224,8 +224,7 @@ fun bestHighJump(jumps: String): Int {
  */
 fun plusMinus(expression: String): Int {
     require(
-        (!expression.contains(Regex("""[^\d \-+]|(^[\-+])|(- -)""")))
-                && (!expression.matches(Regex(""" """)))
+        (!expression.matches(Regex("""(\d+ ([+\-]) \d+ ?(\+|- )?)+""")))
     ) { expression }
     require(expression.isNotEmpty()) { expression }
     val parts = Regex(""" """).split(expression)
