@@ -109,12 +109,13 @@ class Tests {
         assertEquals(6, plusMinus("2 + 31 - 40 + 13"))
         assertEquals(-1, plusMinus("0 - 1"))
         assertThrows(IllegalArgumentException::class.java) { plusMinus("+2") }
+        assertThrows(IllegalArgumentException::class.java) { plusMinus("a") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("\n") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("\t") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("8-5") }
-        assertThrows(IllegalArgumentException::class.java) { plusMinus("8 - 5 +") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("+ 4") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("4 - -2") }
+        assertThrows(IllegalArgumentException::class.java) { plusMinus("4 - 2+") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("44 - - 12") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("4 - + 12") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("4 + + 12") }
