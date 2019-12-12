@@ -158,7 +158,9 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String =
-    if ((!phone.contains(Regex("""\( *\)"""))) && (phone.matches(Regex("""\+? *\d+ *\(?[[ ?][\d+][-*]]*\)?[\d -]*"""))))
+    if ((!phone.contains(Regex("""\( *\)"""))) && (
+                phone.matches(Regex("""\+? *\d+ *\(?[[ ?][\d+][-*]]*\)?[\d -]*"""))
+                ))
         phone.filter { it !in " " && it !in "(" && it !in ")" && it !in "-" }
     else ""
 
@@ -196,7 +198,9 @@ fun bestLongJump(jumps: String): Int {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    if ((!jumps.contains(Regex("""\d+ \+"""))) || (jumps.contains(Regex("""[^\d\s\-%+]"""))))
+    if (!jumps.contains(Regex("""\d+ \+""")) ||
+        jumps.contains(Regex("""[^\d\s\-%+]""")) ||
+        jumps.contains(Regex("""(\d)([%\-+])""")))
         return -1
     var max = -1
     val successJump =
