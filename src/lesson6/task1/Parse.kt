@@ -200,12 +200,14 @@ fun bestLongJump(jumps: String): Int {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    if ((!jumps.contains(Regex("""\d+ \+"""))) || (jumps.contains(Regex("""[^\d\s\-%+]"""))))
+    if (!jumps.contains(Regex("""\d+ \+""")) ||
+        jumps.contains(Regex("""[^\d\s\-%+]""")) ||
+        jumps.contains(Regex("""(\d)([%\-+])""")))
         return -1
     var max = -1
     val successJump =
-        Regex("""\d+""").findAll(Regex("""\d+ \+""").findAll(jumps).map { it.groupValues[0] }.joinToString())
-            .map { it.groupValues[0] }.joinToString()
+        Regex("""\d+""").findAll(Regex("""\d+ \+""").findAll(jumps).map
+        { it.groupValues[0] }.joinToString()).map { it.groupValues[0] }.joinToString()
     val parts = Regex(""", """).split(successJump)
     for (i in parts.indices)
         if (parts[i].toInt() > max)
@@ -224,7 +226,7 @@ fun bestHighJump(jumps: String): Int {
  */
 fun plusMinus(expression: String): Int {
     require(
-        (!expression.contains(Regex("""[^\d \-+]|(^[\-+])|(- -)""")))
+        (!expression.contains(Regex("""[^\d \-+]|(^[\-+])|(- -)""".trimMargin())))
                 && (!expression.matches(Regex(""" """)))
     ) { expression }
     require(expression.isNotEmpty()) { expression }

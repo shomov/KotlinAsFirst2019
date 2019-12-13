@@ -70,6 +70,7 @@ class Tests {
         assertEquals("+12345", flattenPhoneNumber("+12 (3) 4-5"))
         assertEquals("", flattenPhoneNumber("+12 ( ) 4-5"))
         assertEquals("+425667", flattenPhoneNumber("+42 56 -- 67"))
+        assertEquals("", flattenPhoneNumber("+4"))
         assertEquals("+42566789", flattenPhoneNumber("+42(56 -- 67)89"))
         assertEquals("", flattenPhoneNumber("ab-123"))
         assertEquals("", flattenPhoneNumber("\n"))
@@ -94,6 +95,7 @@ class Tests {
         assertEquals(0, bestHighJump("- % 0 +"))
         assertEquals(226, bestHighJump("226 +"))
         assertEquals(-1, bestHighJump("???"))
+        assertEquals(-1, bestHighJump("22+0 + 224 %+ 228 %- 230 + 232 %%- 234 %"))
         assertEquals(230, bestHighJump("220 + 224 %+ 228 %- 230 + 232 %%- 234 %"))
     }
 
@@ -108,11 +110,13 @@ class Tests {
         assertEquals(6, plusMinus("2 + 31 - 40 + 13"))
         assertEquals(-1, plusMinus("0 - 1"))
         assertThrows(IllegalArgumentException::class.java) { plusMinus("+2") }
+        assertThrows(IllegalArgumentException::class.java) { plusMinus("a") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("\n") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("\t") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("8-5") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("+ 4") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("4 - -2") }
+        assertThrows(IllegalArgumentException::class.java) { plusMinus("4 - 2+") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("44 - - 12") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("4 - + 12") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("4 + + 12") }
