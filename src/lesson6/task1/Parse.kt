@@ -157,14 +157,12 @@ fun dateDigitToStr(digital: String): String {
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String {
-    return if ((!phone.contains(Regex("""\(\s*\)"""))) && (phone.matches(Regex("""\+?\s*\d+\s*\(?[[\s?][\d+][-*]]*\)?[\d\s-]*"""))) && (!phone.matches(
-            Regex("""\n""")
-        ))
-    )
+fun flattenPhoneNumber(phone: String): String =
+    if (!phone.contains(Regex("""\( *\)""")) &&
+        phone.matches(Regex("""(\+? *\d*\(?[-\d]*\)?){2,}""")) &&
+        !phone.matches(Regex("""\+ ?\d""")))
         phone.filter { it !in " " && it !in "(" && it !in ")" && it !in "-" }
     else ""
-}
 
 
 /**
@@ -200,14 +198,12 @@ fun bestLongJump(jumps: String): Int {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    if (!jumps.contains(Regex("""\d+ \+""")) ||
-        jumps.contains(Regex("""[^\d\s\-%+]""")) ||
-        jumps.contains(Regex("""(\d)([%\-+])""")))
+    if ((!jumps.contains(Regex("""\d+ \+"""))) || (jumps.contains(Regex("""[^\d\s\-%+]"""))))
         return -1
     var max = -1
     val successJump =
-        Regex("""\d+""").findAll(Regex("""\d+ \+""").findAll(jumps).map
-        { it.groupValues[0] }.joinToString()).map { it.groupValues[0] }.joinToString()
+        Regex("""\d+""").findAll(Regex("""\d+ \+""").findAll(jumps).map { it.groupValues[0] }.joinToString())
+            .map { it.groupValues[0] }.joinToString()
     val parts = Regex(""", """).split(successJump)
     for (i in parts.indices)
         if (parts[i].toInt() > max)
@@ -226,7 +222,7 @@ fun bestHighJump(jumps: String): Int {
  */
 fun plusMinus(expression: String): Int {
     require(
-        (!expression.contains(Regex("""[^\d \-+]|(^[\-+])|(- -)""".trimMargin())))
+        (!expression.contains(Regex("""[^\d \-+]|(^[\-+])|(- -)""")))
                 && (!expression.matches(Regex(""" """)))
     ) { expression }
     require(expression.isNotEmpty()) { expression }
