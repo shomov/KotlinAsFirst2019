@@ -42,12 +42,18 @@ data class Square(var column: Int, var row: Int) {
  * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
  * Если нотация некорректна, бросить IllegalArgumentException
  */
+
+fun coordinateToString(p: Pair<Int, Int>): Pair<Int, Int> {
+    val k = 48
+    return Pair(p.first - 2 * k, p.second - k)
+}
+
 fun square(notation: String): Square {
     require(notation != "" && notation.length == 2)
-    val c = notation.first().toInt() - 96
-    val r = notation.last().toInt() - 48
-    require(c in 1..8 && r in 1..8)
-    return Square(c, r)
+    val p = Pair(notation.first().toInt(), notation.last().toInt())
+    val coordinates = coordinateToString(p)
+    require(coordinates.first in 1..8 && coordinates.second in 1..8)
+    return Square(coordinates.first, coordinates.second)
 }
 
 /**
