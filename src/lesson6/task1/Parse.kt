@@ -158,11 +158,8 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String =
-    if ((phone.contains("(") && !phone.contains(")")) ||
-        (!phone.contains("(") && phone.contains(")")))
-        ""
-    else if (!phone.contains(Regex("""\( *\)""")) &&
-        phone.matches(Regex("""(\+? *\d*\(?[-\d]*\)?){2,}""")) &&
+    if (!phone.contains(Regex("""\( *\)""")) &&
+        phone.matches(Regex("""(\+? *[-\d ]*(\([-\d ]+\))?){2,}""")) &&
         !phone.matches(Regex("""\+ ?\d""")))
         phone.filter { it !in " " && it !in "(" && it !in ")" && it !in "-" }
     else ""

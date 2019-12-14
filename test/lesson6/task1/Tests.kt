@@ -65,6 +65,17 @@ class Tests {
         assertEquals("+79211234568", flattenPhoneNumber("+79211234568"))
         assertEquals("+79211234569", flattenPhoneNumber("+7(921)1234569"))
         assertEquals("+79211234566", flattenPhoneNumber("+7 (921) 1234566"))
+        assertEquals("+79211234567", flattenPhoneNumber("+7 (921) 123-45-67"))
+        assertEquals("123456798", flattenPhoneNumber("12 --  34- 5 -- 67 -98"))
+        assertEquals("+12345", flattenPhoneNumber("+12 (3) 4-5"))
+        assertEquals("", flattenPhoneNumber("+12 ( ) 4-5"))
+        assertEquals("+425667", flattenPhoneNumber("+42 56 -- 67"))
+        assertEquals("", flattenPhoneNumber("+4"))
+        assertEquals("4", flattenPhoneNumber("4"))
+        assertEquals("+42566789", flattenPhoneNumber("+42(56 -- 67)89"))
+        assertEquals("", flattenPhoneNumber("ab-123"))
+        assertEquals("", flattenPhoneNumber("\n"))
+        assertEquals("", flattenPhoneNumber("134_+874"))
     }
 
     @Test
