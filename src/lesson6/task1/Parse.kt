@@ -288,7 +288,11 @@ fun mostExpensive(description: String): String {
     var expensiveGoods = ""
     for (i in listOfGoods.indices) {
         val goodsPrice = Regex(""" """).split(listOfGoods[i])
-        if (goodsPrice[1].toDouble() > maxPrice) {
+        println(goodsPrice[1])
+        if (goodsPrice[1].contains(Regex("""[^\d.]"""))) {
+            return ""
+        } else if (goodsPrice[1].toDouble() > maxPrice) {
+            println(goodsPrice[1])
             maxPrice = goodsPrice[1].toDouble()
             expensiveGoods = goodsPrice[0]
         }
