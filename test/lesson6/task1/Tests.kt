@@ -93,6 +93,7 @@ class Tests {
     @Tag("Hard")
     fun bestHighJump() {
         assertEquals(-1, bestHighJump("- % +"))
+        assertEquals(-1, bestHighJump("%55 +"))
         assertEquals(0, bestHighJump("- % 0 +"))
         assertEquals(226, bestHighJump("226 +"))
         assertEquals(-1, bestHighJump("???"))
@@ -139,6 +140,7 @@ class Tests {
         assertEquals("", mostExpensive(""))
         assertEquals("Курица", mostExpensive("Хлеб 39.9; Молоко 62.5; Курица 184.0; Конфеты 89.9"))
         assertEquals("Вино", mostExpensive("Вино 255.0"))
+        assertEquals("", mostExpensive("tt 55a 66"))
     }
 
     @Test
