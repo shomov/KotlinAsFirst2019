@@ -84,14 +84,10 @@ fun universalDateFunction(date: String, trend: Boolean): MutableList<String>? {
     else if (trend && (!dict.contains(dateOnList[1])))
         return null
     else {
-        for (m in dict.indices)
-            if ((trend) && (dict[m] == dateOnList[1])) {
-                dateOnList[1] = (m + 1).toString()
-                break
-            } else if ((!trend) && (m + 1 == dateOnList[1].toInt())) {
-                dateOnList[1] = dict[m]
-                break
-            }
+        if (trend && dict.contains(dateOnList[1]))
+            dateOnList[1] = (dict.indexOf(dateOnList[1]) + 1).toString()
+        else if ((!trend) && (dateOnList[1].toInt() in 0..11))
+            dateOnList[1] = dict[dateOnList[1].toInt() - 1]
         if ((trend) && (daysInMonth(
                 dateOnList[1].toInt(),
                 dateOnList[2].toInt()
