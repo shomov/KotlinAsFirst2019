@@ -70,7 +70,7 @@ class Tests {
         assertEquals("123456798", flattenPhoneNumber("12 --  34- 5 -- 67 -98"))
         assertEquals("+12345", flattenPhoneNumber("+12 (3) 4-5"))
         assertEquals("", flattenPhoneNumber("+12 ( ) 4-5"))
-        assertEquals("+425667", flattenPhoneNumber("+42 56 -- 67"))
+        assertEquals("", flattenPhoneNumber("44455+99(8)"))
         assertEquals("", flattenPhoneNumber("+4"))
         assertEquals("4", flattenPhoneNumber("4"))
         assertEquals("+42566789", flattenPhoneNumber("+42(56 -- 67)89"))
