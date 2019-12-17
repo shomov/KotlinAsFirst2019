@@ -10,8 +10,6 @@ import kotlin.math.abs
  * Горизонтали нумеруются снизу вверх, вертикали слева направо.
  */
 
-val charColumn = mutableMapOf(1 to 'a', 2 to 'b', 3 to 'c', 4 to 'd', 5 to 'e', 6 to 'f', 7 to 'g', 8 to 'h')
-
 data class Square(var column: Int, var row: Int) {
     /**
      * Пример
@@ -31,7 +29,7 @@ data class Square(var column: Int, var row: Int) {
     fun notation(): String {
         if (!inside())
             return ""
-        return charColumn[column].toString() + "$row"
+        return ('a' + column - 1).toString() + "$row"
     }
 }
 
@@ -43,15 +41,10 @@ data class Square(var column: Int, var row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 
-fun coordinateToString(p: Pair<Int, Int>): Pair<Int, Int> {
-    val k = 48
-    return Pair(p.first - 2 * k, p.second - k)
-}
-
 fun square(notation: String): Square {
     require(notation != "" && notation.length == 2)
     val p = Pair(notation.first().toInt(), notation.last().toInt())
-    val coordinates = coordinateToString(p)
+    val coordinates = Pair(p.first - 'a'.hashCode() + 1, p.second - '1'.hashCode() + 1)
     require(coordinates.first in 1..8 && coordinates.second in 1..8)
     return Square(coordinates.first, coordinates.second)
 }
