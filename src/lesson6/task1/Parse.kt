@@ -227,7 +227,7 @@ fun bestHighJump(jumps: String): Int {
 fun plusMinus(expression: String): Int {
     require(
         expression.matches(Regex("""(\d+( [+-] )?){2,}|\d+""")) &&
-                !expression.contains(Regex("""(\d+ \d)|([+-] [+-])"""))
+                !expression.contains(Regex("""(\d+ \d)|([+-] ?[+-])"""))
     ) { expression }
     val parts = Regex(""" """).split(expression)
     var result = parts[0].toInt()
