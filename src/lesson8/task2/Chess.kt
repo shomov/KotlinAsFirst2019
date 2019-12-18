@@ -137,9 +137,7 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
     if (start == end)
         return 0
     var counter = -1
-    val colorS = color(start)
-    val colorE = color(end)
-    if (colorS != colorE)
+    if (color(start) != color(end))
         return counter
     counter += if (abs(start.row - end.row) == abs(start.column - end.column))
         2
@@ -173,9 +171,7 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
         trace.add(start)
         return trace
     }
-    val colorS = color(start)
-    val colorE = color(end)
-    if (colorS != colorE)
+    if (color(start) != color(end))
         return trace
     trace.add(start)
     if (abs(start.row - end.row) != abs(start.column - end.column)) {
