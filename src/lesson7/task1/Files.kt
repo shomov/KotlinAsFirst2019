@@ -179,7 +179,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
         val l = line.replace(" +".toRegex(), " ")
         val parts = Regex("""\s""").split(l.trim()).toMutableList()
         if (parts.size == 1) {
-            outputStream.write(parts.toString().removeSurrounding("[", "]"))
+            outputStream.write(l.trim())
             outputStream.newLine()
         } else if (!line.isBlank()) {
             var temp = max - l.trim().length
