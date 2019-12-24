@@ -65,6 +65,7 @@ class Tests {
     fun flattenPhoneNumber() {
         assertEquals("+79211234568", flattenPhoneNumber("+79211234568"))
         assertEquals("+79211234569", flattenPhoneNumber("+7(921)1234569"))
+        assertEquals("", flattenPhoneNumber("(921)1234569"))
         assertEquals("+79211234566", flattenPhoneNumber("+7 (921) 1234566"))
         assertEquals("+79211234567", flattenPhoneNumber("+7 (921) 123-45-67"))
         assertEquals("123456798", flattenPhoneNumber("12 --  34- 5 -- 67 -98"))
