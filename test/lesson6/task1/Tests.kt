@@ -96,6 +96,7 @@ class Tests {
     fun bestHighJump() {
         assertEquals(-1, bestHighJump("- % +"))
         assertEquals(-1, bestHighJump("%55 +"))
+        assertEquals(-1, bestHighJump("55 %+"))
         assertEquals(0, bestHighJump("- % 0 +"))
         assertEquals(226, bestHighJump("226 +"))
         assertEquals(-1, bestHighJump("???"))
@@ -121,7 +122,7 @@ class Tests {
         assertThrows(IllegalArgumentException::class.java) { plusMinus("+ 4") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("4 - -2") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("4 -- 5") }
-        assertThrows(IllegalArgumentException::class.java) { plusMinus("4 - 2+") }
+        assertThrows(IllegalArgumentException::class.java) { plusMinus("55 + 66 -") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("44 - - 12") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("4 - + 12") }
         assertThrows(IllegalArgumentException::class.java) { plusMinus("4 + + 12") }
