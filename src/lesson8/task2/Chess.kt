@@ -3,6 +3,7 @@
 package lesson8.task2
 
 import kotlin.math.abs
+import kotlin.math.max
 
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
@@ -43,8 +44,7 @@ data class Square(var column: Int, var row: Int) {
 
 fun square(notation: String): Square {
     require(notation != "" && notation.length == 2)
-    val p = Pair(notation.first().toInt(), notation.last().toInt())
-    val coordinates = Pair(p.first - 'a'.hashCode() + 1, p.second - '1'.hashCode() + 1)
+    val coordinates = Pair(notation.first() - 'a' + 1, notation.last() - '0')
     require(coordinates.first in 1..8 && coordinates.second in 1..8)
     return Square(coordinates.first, coordinates.second)
 }
@@ -208,29 +208,7 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
  */
 fun kingMoveNumber(start: Square, end: Square): Int {
     require(start.inside() && end.inside())
-    var counter = 0
-    if (start.row == end.row && start.column == end.column)
-        return counter
-    while (start.column != end.column || start.row != end.row) {
-        if (start.column < end.column && start.row < end.row) {
-            start.column++
-            start.row++
-        } else if (start.column > end.column && start.row > end.row) {
-            start.column--
-            start.row--
-        } else if (start.column > end.column && start.row < end.row) {
-            start.column--
-            start.row++
-        } else if (start.column < end.column && start.row > end.row) {
-            start.column++
-            start.row--
-        } else if (start.column < end.column) start.column++
-        else if (start.column > end.column) start.column--
-        else if (start.row < end.row) start.row++
-        else start.row--
-        counter++
-    }
-    return counter
+    return max(abs(start.column - end.column), abs(start.row - end.row))
 }
 
 /**
