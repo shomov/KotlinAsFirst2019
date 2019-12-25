@@ -96,7 +96,7 @@ class Tests {
     fun bestHighJump() {
         assertEquals(-1, bestHighJump("- % +"))
         assertEquals(-1, bestHighJump("%55 +"))
-        assertEquals(-1, bestHighJump("55 %+"))
+        assertEquals(55, bestHighJump("55 %+"))
         assertEquals(0, bestHighJump("- % 0 +"))
         assertEquals(226, bestHighJump("226 +"))
         assertEquals(-1, bestHighJump("???"))

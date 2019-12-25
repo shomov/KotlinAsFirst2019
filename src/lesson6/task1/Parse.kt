@@ -156,7 +156,7 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String =
     if (!phone.contains(Regex("""\( *\)""")) &&
         !phone.matches(Regex("""\+ ?\d""")) &&
-        phone.matches(Regex("""(\+? *[-\d ]+(\([-\d ]+\)[-\d ]+)?)"""))
+        phone.matches(Regex("""(\+? *\d[- \d]*(\([-\d ]+\)[-\d ]+)?)"""))
     )
         phone.filter { it !in " " && it !in "(" && it !in ")" && it !in "-" }
     else ""
@@ -197,7 +197,7 @@ fun bestLongJump(jumps: String): Int {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    if (!jumps.contains(Regex("""\d+ \+""")) ||
+    if (!jumps.contains(Regex("""\d+ [-%]*\+[-%]*""")) ||
         jumps.contains(Regex("""[^\d\s\-%+]""")) ||
         jumps.contains(Regex("""(([%\-+])(\d))|((\d)([%\-+]))"""))
     )
@@ -205,7 +205,7 @@ fun bestHighJump(jumps: String): Int {
     var max = -1
     val successJump =
         Regex("""\d+""").findAll(
-            Regex("""\d+ \+""").findAll(jumps).map
+            Regex("""\d+ [-%]*\+[-%]*""").findAll(jumps).map
             { it.groupValues[0] }.joinToString()
         ).map { it.groupValues[0] }.joinToString()
     val parts = Regex(""", """).split(successJump)
