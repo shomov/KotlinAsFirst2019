@@ -122,7 +122,13 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
         else
             throw IllegalArgumentException()
     }
+
+    override fun hashCode(): Int {
+        var result = userV.hashCode()
+        result = 31 * result + userD.hashCode()
+        return result
     }
+}
 
 
 /**
