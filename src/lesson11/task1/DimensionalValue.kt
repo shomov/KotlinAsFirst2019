@@ -89,22 +89,34 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
     /**
      * Деление на число
      */
-    operator fun div(other: Double): DimensionalValue = TODO()
+    operator fun div(other: Double): DimensionalValue =
+        DimensionalValue(value / other, dimension.abbreviation)
 
     /**
      * Деление на другую величину. Если базовая размерность разная, бросить IllegalArgumentException
      */
-    operator fun div(other: DimensionalValue): Double = TODO()
+    operator fun div(other: DimensionalValue): Double {
+        if (dimension == other.dimension)
+            return value / other.value
+        else
+            throw IllegalArgumentException()
+    }
+
 
     /**
      * Сравнение на равенство
      */
-    override fun equals(other: Any?): Boolean = TODO()
+    override fun equals(other: Any?): Boolean =
+        other is DimensionalValue && (value == other.value && dimension == other.dimension)
 
     /**
      * Сравнение на больше/меньше. Если базовая размерность разная, бросить IllegalArgumentException
      */
-    override fun compareTo(other: DimensionalValue): Int = TODO()
+    override fun compareTo(other: DimensionalValue): Int {
+
+
+
+    }
 }
 
 /**
