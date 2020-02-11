@@ -24,18 +24,12 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
     private var userD = dimension
 
     val value: Double get() {
-        println ("$userV $userD")
-        userV *= when {
-            userD.first().toString() == DimensionPrefix.KILO.abbreviation -> DimensionPrefix.KILO.multiplier
-            userD.first().toString() == DimensionPrefix.MILLI.abbreviation -> DimensionPrefix.MILLI.multiplier
-            else -> {
-                if (userD.length == 2)
-                    throw IllegalArgumentException()
-                else
-                    1.0
-
+        if (userD.length == 2)
+            userV *= when {
+                userD.first().toString() == DimensionPrefix.KILO.abbreviation -> DimensionPrefix.KILO.multiplier
+                userD.first().toString() == DimensionPrefix.MILLI.abbreviation -> DimensionPrefix.MILLI.multiplier
+                else -> throw IllegalArgumentException()
             }
-        }
         if (userD.length > 2)
             throw IllegalArgumentException()
         return userV
@@ -61,24 +55,36 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
      * Сложение с другой величиной. Если базовая размерность разная, бросить IllegalArgumentException
      * (нельзя складывать метры и килограммы)
      */
-    operator fun plus(other: DimensionalValue): DimensionalValue =
-        DimensionalValue(value + other.value, dimension.abbreviation)
+    operator fun plus(other: DimensionalValue): DimensionalValue {
+        if (dimension == other.dimension)
+            return DimensionalValue(value + other.value, dimension.abbreviation)
+        else
+            throw IllegalArgumentException()
+    }
 
     /**
      * Смена знака величины
      */
-    operator fun unaryMinus(): DimensionalValue =
-        DimensionalValue((-1.0) * value, dimension.abbreviation)
+    operator fun unaryMinus(): DimensionalValue {
+        print("Жизнь!")
+        return DimensionalValue((-1.0) * value, dimension.abbreviation)
+    }
 
     /**
      * Вычитание другой величины. Если базовая размерность разная, бросить IllegalArgumentException
      */
-    operator fun minus(other: DimensionalValue): DimensionalValue = TODO()
+    operator fun minus(other: DimensionalValue): DimensionalValue {
+        if (dimension == other.dimension)
+            return DimensionalValue(value - other.value, dimension.abbreviation)
+        else
+            throw IllegalArgumentException()
+    }
 
     /**
      * Умножение на число
      */
-    operator fun times(other: Double): DimensionalValue = TODO()
+    operator fun times(other: Double): DimensionalValue =
+        DimensionalValue(value * other, dimension.abbreviation)
 
     /**
      * Деление на число
@@ -99,12 +105,6 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
      * Сравнение на больше/меньше. Если базовая размерность разная, бросить IllegalArgumentException
      */
     override fun compareTo(other: DimensionalValue): Int = TODO()
-
-    override fun hashCode(): Int {
-        var result = userV.hashCode()
-        result = 31 * result + userD.hashCode()
-        return result
-    }
 }
 
 /**

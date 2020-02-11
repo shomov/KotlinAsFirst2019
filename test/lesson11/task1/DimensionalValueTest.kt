@@ -27,6 +27,9 @@ internal class DimensionalValueTest {
         assertEquals(Dimension.METER, fourth.dimension)
         val fifth = DimensionalValue("200 2 m")
         assertThrows(IllegalArgumentException::class.java) { DimensionalValue(fifth.value, fifth.dimension.abbreviation) }
+        val sixth = DimensionalValue("1000 mm")
+        assertEquals(1.0, sixth.value)
+        assertEquals(Dimension.METER, sixth.dimension)
     }
 
     @Test
@@ -48,6 +51,7 @@ internal class DimensionalValueTest {
     @Tag("Easy")
     fun minus() {
         assertApproxEquals(DimensionalValue("0 m"), DimensionalValue("1 Km") - DimensionalValue("1000 m"), 1e-10)
+        assertApproxEquals(DimensionalValue("500 m"), DimensionalValue("1 Km") - DimensionalValue("500 m"), 1e-10)
         assertThrows(IllegalArgumentException::class.java) {
             DimensionalValue("1 g") - DimensionalValue("1 m")
         }
