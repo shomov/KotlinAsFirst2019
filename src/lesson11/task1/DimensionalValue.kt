@@ -113,11 +113,17 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
      * Сравнение на больше/меньше. Если базовая размерность разная, бросить IllegalArgumentException
      */
     override fun compareTo(other: DimensionalValue): Int {
-
-
-
+        if (dimension == other.dimension)
+            return when{
+                value < other.value -> -1
+                value > other.value -> 1
+                else -> 0
+            }
+        else
+            throw IllegalArgumentException()
     }
-}
+    }
+
 
 /**
  * Размерность. В этот класс можно добавлять новые варианты (секунды, амперы, прочие), но нельзя убирать

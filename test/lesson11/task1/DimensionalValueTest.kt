@@ -94,7 +94,14 @@ internal class DimensionalValueTest {
     @Test
     @Tag("Easy")
     fun compareTo() {
+        assertTrue(DimensionalValue("1.9 Kg") == DimensionalValue("1900 g"))
+        assertTrue(DimensionalValue("1 Kg") > DimensionalValue("100 g"))
+        assertFalse(DimensionalValue("1 m") > DimensionalValue("1900 mm"))
+        assertTrue(DimensionalValue("1 Kg") < DimensionalValue("2 Kg"))
         assertTrue(DimensionalValue("1 Kg") < DimensionalValue("1500 g"))
         assertTrue(DimensionalValue("1 m") > DimensionalValue("900 mm"))
+        assertTrue(DimensionalValue("1 m") < DimensionalValue("1900 mm"))
+        assertTrue(DimensionalValue("1 m") == DimensionalValue("1 m"))
+
     }
 }

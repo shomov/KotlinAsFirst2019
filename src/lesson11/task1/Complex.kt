@@ -16,35 +16,32 @@ class Complex(val re: Double, val im: Double) {
     /**
      * Конструктор из вещественного числа
      */
-    constructor(x: Double) : this(x, 0.0)
+    constructor(x: Double) : this(TODO(), TODO())
 
     /**
      * Конструктор из строки вида x+yi
      */
-    constructor(s: String) : this(s.replace("-", "+-").substringBefore('+').toDouble(),
-        s.replace("-", "+-").substringAfter('+').substringBefore('i').toDouble())
+    constructor(s: String) : this(TODO(), TODO())
 
     /**
      * Сложение.
      */
-    operator fun plus(other: Complex): Complex = Complex(re + other.re, im + other.im)
+    operator fun plus(other: Complex): Complex = TODO()
 
     /**
      * Смена знака (у обеих частей числа)
      */
-    operator fun unaryMinus(): Complex = Complex(im * (-1), re * (-1))
+    operator fun unaryMinus(): Complex = TODO()
 
     /**
      * Вычитание
      */
-    operator fun minus(other: Complex): Complex = Complex(re - other.re, im - other.im)
+    operator fun minus(other: Complex): Complex = TODO()
 
     /**
      * Умножение
      */
-    operator fun times(other: Complex): Complex {
-        return Complex(re * other.re - im * other.im, re * other.im + other.re * im)
-    }
+    operator fun times(other: Complex): Complex = TODO()
 
     /**
      * Деление
