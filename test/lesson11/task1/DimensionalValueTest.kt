@@ -1,7 +1,6 @@
 package lesson11.task1
 
 import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Tag
 
@@ -18,9 +17,16 @@ internal class DimensionalValueTest {
         val first = DimensionalValue(1.0, "Kg")
         assertEquals(1000.0, first.value)
         assertEquals(Dimension.GRAM, first.dimension)
-//        val second = DimensionalValue("200 m")
-//        assertEquals(200.0, second.value)
-//        assertEquals(Dimension.METER, second.dimension)
+        val second = DimensionalValue("200 m")
+        assertEquals(200.0, second.value)
+        assertEquals(Dimension.METER, second.dimension)
+        val third = DimensionalValue(1.0, "KGg")
+        assertThrows(IllegalArgumentException::class.java) { DimensionalValue(third.value, third.dimension.abbreviation) }
+        val fourth = DimensionalValue(2.2, "Km")
+        assertEquals(2200.0, fourth.value)
+        assertEquals(Dimension.METER, fourth.dimension)
+        val fifth = DimensionalValue("200 2 m")
+        assertThrows(IllegalArgumentException::class.java) { DimensionalValue(fifth.value, fifth.dimension.abbreviation) }
     }
 
     @Test

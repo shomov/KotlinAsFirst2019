@@ -20,28 +20,55 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
     /**
      * Величина с БАЗОВОЙ размерностью (например для 1.0Kg следует вернуть результат в граммах -- 1000.0)
      */
-    val value: Double get() = TODO()
+    private var userV = value
+    private var userD = dimension
+
+    val value: Double get() {
+        println ("$userV $userD")
+        userV *= when {
+            userD.first().toString() == DimensionPrefix.KILO.abbreviation -> DimensionPrefix.KILO.multiplier
+            userD.first().toString() == DimensionPrefix.MILLI.abbreviation -> DimensionPrefix.MILLI.multiplier
+            else -> {
+                if (userD.length == 2)
+                    throw IllegalArgumentException()
+                else
+                    1.0
+
+            }
+        }
+        if (userD.length > 2)
+            throw IllegalArgumentException()
+        return userV
+    }
 
     /**
      * БАЗОВАЯ размерность (опять-таки для 1.0Kg следует вернуть GRAM)
      */
-    val dimension: Dimension get() = TODO()
+    val dimension: Dimension get() {
+        return when {
+            userD.last().toString() == Dimension.GRAM.abbreviation -> Dimension.GRAM
+            userD.last().toString() == Dimension.METER.abbreviation -> Dimension.METER
+            else -> throw IllegalArgumentException()
+        }
+    }
 
     /**
      * Конструктор из строки. Формат строки: значение пробел размерность (1 Kg, 3 mm, 100 g и так далее).
      */
-    constructor(s: String) : this(TODO(), TODO())
+    constructor(s: String) : this(s.substringBefore(" ").toDouble(), s.substringAfter(" "))
 
     /**
      * Сложение с другой величиной. Если базовая размерность разная, бросить IllegalArgumentException
      * (нельзя складывать метры и килограммы)
      */
-    operator fun plus(other: DimensionalValue): DimensionalValue = TODO()
+    operator fun plus(other: DimensionalValue): DimensionalValue =
+        DimensionalValue(value + other.value, dimension.abbreviation)
 
     /**
      * Смена знака величины
      */
-    operator fun unaryMinus(): DimensionalValue = TODO()
+    operator fun unaryMinus(): DimensionalValue =
+        DimensionalValue((-1.0) * value, dimension.abbreviation)
 
     /**
      * Вычитание другой величины. Если базовая размерность разная, бросить IllegalArgumentException
@@ -72,6 +99,12 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
      * Сравнение на больше/меньше. Если базовая размерность разная, бросить IllegalArgumentException
      */
     override fun compareTo(other: DimensionalValue): Int = TODO()
+
+    override fun hashCode(): Int {
+        var result = userV.hashCode()
+        result = 31 * result + userD.hashCode()
+        return result
+    }
 }
 
 /**
