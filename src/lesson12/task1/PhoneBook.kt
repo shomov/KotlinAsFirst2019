@@ -32,13 +32,11 @@ class PhoneBook() {
         if (type) {
             if (!data.matches(Regex("""[А-Яа-яЁё]+ [А-Яа-яЁё]+""")))
                 throw IllegalArgumentException(data)
-        } else {
-            if (
-                !data.matches(Regex("""(\+?\d[-\d]*(\([-\d ]+\)[-\d]+)?)""")) ||
-                data.matches(Regex("""\*\d[\d+-]+\d#"""))
-            )
-                throw IllegalArgumentException(data)
-        }
+        } else if (
+            !data.matches(Regex("""(\+?\d[-\d]*(\([-\d ]+\)[-\d]+)?)""")) ||
+            data.matches(Regex("""\*\d[\d+-]+\d#"""))
+        )
+            throw IllegalArgumentException(data)
     }
 
     //хотя... не надо, выводить номер будет неудобно
@@ -99,13 +97,12 @@ class PhoneBook() {
     fun removePhone(name: String, phone: String): Boolean {
         inspection(true, name)
         inspection(false, phone)
-        if (book.containsKey(name)) {
+        if (book.containsKey(name))
             for ((person, _) in book)
                 if (book[person]?.contains(phone)!!) {
                     book[name]?.remove(phone)
                     return true
                 }
-        }
         return false
     }
 

@@ -1,5 +1,6 @@
 package lesson12.task1
 
+import lesson11.task1.DimensionalValue
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -12,6 +13,9 @@ internal class PhoneBookTest {
         assertTrue(book.addHuman("Иванов Петр"))
         assertTrue(book.addHuman("Васильев Дмитрий"))
         assertFalse(book.addHuman("Иванов Петр"))
+        assertThrows(IllegalArgumentException::class.java) {
+            book.addHuman("Shomov Mikhail")
+        }
     }
 
     @Test
@@ -21,6 +25,9 @@ internal class PhoneBookTest {
         assertTrue(book.addHuman("Васильев Дмитрий"))
         assertTrue(book.removeHuman("Иванов Петр"))
         assertFalse(book.removeHuman("Сидорова Мария"))
+        assertThrows(IllegalArgumentException::class.java) {
+            book.removeHuman("Shomov Mikhail")
+        }
     }
 
     @Test
@@ -33,6 +40,12 @@ internal class PhoneBookTest {
         assertFalse(book.addPhone("Иванов Петр", "+79211234567"))
         assertFalse(book.addPhone("Васильев Дмитрий", "+79211234567"))
         assertTrue(book.addPhone("Васильев Дмитрий", "+79217654321"))
+        assertThrows(IllegalArgumentException::class.java) {
+            book.addPhone("Shomov Mikhail", "+71234567890")
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            book.addPhone("Шомов Михаил", "*71234567890")
+        }
     }
 
     @Test
