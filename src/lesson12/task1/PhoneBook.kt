@@ -27,12 +27,25 @@ class PhoneBook() {
      * и false, если человек с таким именем уже был в телефонной книге
      * (во втором случае телефонная книга не должна меняться).
      */
-    fun addHuman(name: String): Boolean =
-        if (!book.containsKey(name)) {
+
+    private fun inspection(type: Boolean, data: String) {
+        if (type) {
+            if (!data.matches(Regex("""[А-Яа-яЁё]+ [А-Яа-яЁё]+""")))
+                throw IllegalArgumentException(data)
+        } else {
+            if (data.contains(Regex("""^[0-9]\+*-""")))
+                throw IllegalArgumentException(data)
+        }
+    }
+
+    fun addHuman(name: String): Boolean {
+        inspection(true, name)
+        return if (!book.containsKey(name)) {
             book[name] = mutableListOf()
             true
         } else
             false
+    }
 
     /**
      * Убрать человека.
