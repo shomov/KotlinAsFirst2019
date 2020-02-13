@@ -33,10 +33,17 @@ class PhoneBook() {
             if (!data.matches(Regex("""[А-Яа-яЁё]+ [А-Яа-яЁё]+""")))
                 throw IllegalArgumentException(data)
         } else {
-            if (data.contains(Regex("""^[0-9]\+*-""")))
+            if (
+                !data.matches(Regex("""(\+?\d[-\d]*(\([-\d ]+\)[-\d]+)?)""")) ||
+                data.matches(Regex("""\*\d[\d+-]+\d#"""))
+            )
                 throw IllegalArgumentException(data)
         }
     }
+
+    //хотя... не надо, выводить номер будет неудобно
+    //в принципе, можно каждый раз проверять на эквивалентность имеющихся в базе номеров и входных
+    // private fun generalizer() Эта функция должна приводить телефонный номер в единый формат , скажем из +7x-x-x -> 8xxx
 
     fun addHuman(name: String): Boolean {
         inspection(true, name)
@@ -53,7 +60,14 @@ class PhoneBook() {
      * и false, если человек с таким именем отсутствовал в телефонной книге
      * (во втором случае телефонная книга не должна меняться).
      */
-    fun removeHuman(name: String): Boolean = TODO()
+    fun removeHuman(name: String): Boolean {
+        inspection(true, name)
+        return if (book.containsKey(name)) {
+            book.remove(name)
+            true
+        } else
+            false
+    }
 
     /**
      * Добавить номер телефона.
@@ -62,7 +76,19 @@ class PhoneBook() {
      * либо у него уже был такой номер телефона,
      * либо такой номер телефона зарегистрирован за другим человеком.
      */
-    fun addPhone(name: String, phone: String): Boolean = TODO()
+    fun addPhone(name: String, phone: String): Boolean {
+        inspection(true, name)
+        inspection(false, phone)
+        if (book.containsKey(name)) {
+            for ((person, _) in book)
+                if (book[person]?.contains(phone)!!)
+                    return false
+            book[name]?.add(phone)
+            return true
+        }
+        return false
+    }
+
 
     /**
      * Убрать номер телефона.
@@ -70,7 +96,18 @@ class PhoneBook() {
      * и false, если человек с таким именем отсутствовал в телефонной книге
      * либо у него не было такого номера телефона.
      */
-    fun removePhone(name: String, phone: String): Boolean = TODO()
+    fun removePhone(name: String, phone: String): Boolean {
+        inspection(true, name)
+        inspection(false, phone)
+        if (book.containsKey(name)) {
+            for ((person, _) in book)
+                if (book[person]?.contains(phone)!!) {
+                    book[name]?.remove(phone)
+                    return true
+                }
+        }
+        return false
+    }
 
     /**
      * Вернуть все номера телефона заданного человека.
