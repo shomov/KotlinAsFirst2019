@@ -17,14 +17,22 @@ package lesson12.task1
  *
  * Класс должен иметь конструктор по умолчанию (без параметров).
  */
-class PhoneBook {
+class PhoneBook() {
+
+    private val book = mutableMapOf<String, MutableList<String>>()
+
     /**
      * Добавить человека.
      * Возвращает true, если человек был успешно добавлен,
      * и false, если человек с таким именем уже был в телефонной книге
      * (во втором случае телефонная книга не должна меняться).
      */
-    fun addHuman(name: String): Boolean = TODO()
+    fun addHuman(name: String): Boolean =
+        if (!book.containsKey(name)) {
+            book[name] = mutableListOf()
+            true
+        } else
+            false
 
     /**
      * Убрать человека.

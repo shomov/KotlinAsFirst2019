@@ -23,28 +23,30 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
     private var userV = value
     private var userD = dimension
 
-    val value: Double get() {
-        if (userD.length == 2)
-            userV *= when {
-                userD.first().toString() == DimensionPrefix.KILO.abbreviation -> DimensionPrefix.KILO.multiplier
-                userD.first().toString() == DimensionPrefix.MILLI.abbreviation -> DimensionPrefix.MILLI.multiplier
-                else -> throw IllegalArgumentException()
-            }
-        if (userD.length > 2)
-            throw IllegalArgumentException()
-        return userV
-    }
+    val value: Double
+        get() {
+            if (userD.length == 2)
+                userV *= when {
+                    userD.first().toString() == DimensionPrefix.KILO.abbreviation -> DimensionPrefix.KILO.multiplier
+                    userD.first().toString() == DimensionPrefix.MILLI.abbreviation -> DimensionPrefix.MILLI.multiplier
+                    else -> throw IllegalArgumentException()
+                }
+            if (userD.length > 2)
+                throw IllegalArgumentException()
+            return userV
+        }
 
     /**
      * БАЗОВАЯ размерность (опять-таки для 1.0Kg следует вернуть GRAM)
      */
-    val dimension: Dimension get() {
-        return when {
-            userD.last().toString() == Dimension.GRAM.abbreviation -> Dimension.GRAM
-            userD.last().toString() == Dimension.METER.abbreviation -> Dimension.METER
-            else -> throw IllegalArgumentException()
+    val dimension: Dimension
+        get() {
+            return when {
+                userD.last().toString() == Dimension.GRAM.abbreviation -> Dimension.GRAM
+                userD.last().toString() == Dimension.METER.abbreviation -> Dimension.METER
+                else -> throw IllegalArgumentException()
+            }
         }
-    }
 
     /**
      * Конструктор из строки. Формат строки: значение пробел размерность (1 Kg, 3 mm, 100 g и так далее).
@@ -114,7 +116,7 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
      */
     override fun compareTo(other: DimensionalValue): Int {
         if (dimension == other.dimension)
-            return when{
+            return when {
                 value < other.value -> -1
                 value > other.value -> 1
                 else -> 0
