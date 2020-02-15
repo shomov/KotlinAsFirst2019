@@ -110,18 +110,41 @@ class PhoneBook() {
      * Вернуть все номера телефона заданного человека.
      * Если этого человека нет в книге, вернуть пустой список
      */
-    fun phones(name: String): Set<String> = TODO()
+    fun phones(name: String): Set<String> {
+        for ((person, num) in book)
+            if (person == name)
+                return num.toSet()
+        return emptySet()
+    }
 
     /**
      * Вернуть имя человека по заданному номеру телефона.
      * Если такого номера нет в книге, вернуть null.
      */
-    fun humanByPhone(phone: String): String? = TODO()
+    fun humanByPhone(phone: String): String? {
+        for ((person, num) in book)
+            if (num.contains(phone))
+                return person
+        return null
+    }
 
     /**
      * Две телефонные книги равны, если в них хранится одинаковый набор людей,
      * и каждому человеку соответствует одинаковый набор телефонов.
      * Порядок людей / порядок телефонов в книге не должен иметь значения.
      */
-    override fun equals(other: Any?): Boolean = TODO()
+    override fun equals(other: Any?): Boolean {
+        if (other is PhoneBook)
+            for ((person, _) in other.book)
+                if (!(book.containsKey(person) && book[person]?.toSet() == other.book[person]?.toSet()))
+                    return false
+        return true
+    }
+
+    override fun hashCode(): Int {
+        book.toSortedMap()
+        for ((person, _) in book)
+            book[person]?.sort()
+        return book.hashCode()
+    }
 }

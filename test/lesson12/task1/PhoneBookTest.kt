@@ -1,6 +1,5 @@
 package lesson12.task1
 
-import lesson11.task1.DimensionalValue
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -99,6 +98,19 @@ internal class PhoneBookTest {
         assertTrue(book2.addPhone("Васильев Дмитрий", "+79217654321"))
         assertTrue(book2.addPhone("Иванов Петр", "+79211234567"))
         assertTrue(book == book2)
+        val book3 = PhoneBook()
+        assertTrue(book3.addHuman("Иванов Петр"))
+        assertTrue(book3.addHuman("Васильев Дима"))
+        assertTrue(book3.addPhone("Иванов Петр", "+79211234567"))
+        assertTrue(book3.addPhone("Иванов Петр", "+78121234567"))
+        assertTrue(book3.addPhone("Васильев Дима", "+79217654321"))
+        val book4 = PhoneBook()
+        assertTrue(book4.addHuman("Васильев Дмитрий"))
+        assertTrue(book4.addHuman("Иванов Петр"))
+        assertTrue(book4.addPhone("Иванов Петр", "+78121234567"))
+        assertTrue(book4.addPhone("Васильев Дмитрий", "+79217654321"))
+        assertTrue(book4.addPhone("Иванов Петр", "+79211234567"))
+        assertFalse(book3 == book4)
     }
 
     @Test
