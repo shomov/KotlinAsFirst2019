@@ -39,10 +39,6 @@ class PhoneBook() {
             throw IllegalArgumentException(data)
     }
 
-    //хотя... не надо, выводить номер будет неудобно
-    //в принципе, можно каждый раз проверять на эквивалентность имеющихся в базе номеров и входных
-    // private fun generalizer() Эта функция должна приводить телефонный номер в единый формат , скажем из +7x-x-x -> 8xxx
-
     fun addHuman(name: String): Boolean {
         inspection(true, name)
         return if (!book.containsKey(name)) {
