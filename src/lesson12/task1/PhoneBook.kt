@@ -17,9 +17,9 @@ package lesson12.task1
  *
  * Класс должен иметь конструктор по умолчанию (без параметров).
  */
-class PhoneBook() {
+class PhoneBook {
 
-    private val book = mutableMapOf<String, MutableList<String>>()
+    private val book = mutableMapOf<String, MutableSet<String>>()
 
     /**
      * Добавить человека.
@@ -28,11 +28,14 @@ class PhoneBook() {
      * (во втором случае телефонная книга не должна меняться).
      */
 
-    private fun inspection(type: Boolean, data: String) {
-        if (type) {
-            if (!data.matches(Regex("""[А-Яа-яЁё]+ [А-Яа-яЁё]+""")))
-                throw IllegalArgumentException(data)
-        } else if (
+    private fun checkName(data: String) {
+        if (!data.matches(Regex("""[А-Яа-яЁё]+ [А-Яа-яЁё]+""")))
+            throw IllegalArgumentException(data)
+
+    }
+
+    private fun checkPhone(data: String) {
+        if (
             !data.matches(Regex("""(\+?\d[-\d]*(\([-\d ]+\)[-\d]+)?)""")) ||
             data.matches(Regex("""\*\d[\d+-]+\d#"""))
         )
@@ -40,12 +43,13 @@ class PhoneBook() {
     }
 
     fun addHuman(name: String): Boolean {
-        inspection(true, name)
+        checkName(name)
         return if (!book.containsKey(name)) {
-            book[name] = mutableListOf()
+            book[name] = mutableSetOf()
             true
-        } else
+        } else {
             false
+        }
     }
 
     /**
@@ -55,12 +59,13 @@ class PhoneBook() {
      * (во втором случае телефонная книга не должна меняться).
      */
     fun removeHuman(name: String): Boolean {
-        inspection(true, name)
+        checkName(name)
         return if (book.containsKey(name)) {
             book.remove(name)
             true
-        } else
+        } else {
             false
+        }
     }
 
     /**
@@ -71,8 +76,8 @@ class PhoneBook() {
      * либо такой номер телефона зарегистрирован за другим человеком.
      */
     fun addPhone(name: String, phone: String): Boolean {
-        inspection(true, name)
-        inspection(false, phone)
+        checkName(name)
+        checkPhone(phone)
         if (book.containsKey(name)) {
             for ((person, _) in book)
                 if (book[person]?.contains(phone)!!)
@@ -91,8 +96,8 @@ class PhoneBook() {
      * либо у него не было такого номера телефона.
      */
     fun removePhone(name: String, phone: String): Boolean {
-        inspection(true, name)
-        inspection(false, phone)
+        checkName(name)
+        checkPhone(phone)
         if (book.containsKey(name))
             for ((person, _) in book)
                 if (book[person]?.contains(phone)!!) {
@@ -106,10 +111,13 @@ class PhoneBook() {
      * Вернуть все номера телефона заданного человека.
      * Если этого человека нет в книге, вернуть пустой список
      */
-    fun phones(name: String): Set<String> {
-        for ((person, num) in book)
-            if (person == name)
-                return num.toSet()
+    fun phones(name: String): Set<String>? {
+//        for ((person, num) in book)
+//            if (person == name)
+//                return num.toSet()
+//        return emptySet()
+        if (book.containsKey(name))
+            return book[name]?.toSet()
         return emptySet()
     }
 
@@ -139,8 +147,6 @@ class PhoneBook() {
 
     override fun hashCode(): Int {
         book.toSortedMap()
-        for ((person, _) in book)
-            book[person]?.sort()
         return book.hashCode()
     }
 }

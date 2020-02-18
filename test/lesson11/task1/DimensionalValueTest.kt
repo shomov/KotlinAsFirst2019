@@ -89,6 +89,7 @@ internal class DimensionalValueTest {
     @Tag("Easy")
     fun hashCodeTest() {
         assertEquals(DimensionalValue("1 Kg").hashCode(), DimensionalValue("1 Kg").hashCode())
+        assertEquals(DimensionalValue("1 Kg").hashCode(), DimensionalValue("1000 g").hashCode())
     }
 
     @Test
