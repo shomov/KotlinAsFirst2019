@@ -26,13 +26,8 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
     val value: Double
         get() {
             if (userD.length == 2) {
-                userV *= when {
-                    userD.first().toString() == DimensionPrefix.KILO.abbreviation -> DimensionPrefix.KILO.multiplier
-                    userD.first().toString() == DimensionPrefix.MILLI.abbreviation -> DimensionPrefix.MILLI.multiplier
-                    else -> throw IllegalArgumentException()
-                }
-
-
+                userV *= DimensionPrefix.values().find { it.abbreviation == userD.first().toString() }?.multiplier
+                    ?: userV
             }
             if (userD.length > 2)
                 throw IllegalArgumentException()
@@ -44,11 +39,12 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
      */
     val dimension: Dimension
         get() {
-            return when {
-                userD.last().toString() == Dimension.GRAM.abbreviation -> Dimension.GRAM
-                userD.last().toString() == Dimension.METER.abbreviation -> Dimension.METER
-                else -> throw IllegalArgumentException()
+            if (Dimension.values().find { it.abbreviation == userD.last().toString() }.toString().isNotEmpty()) {
+                val a = Dimension.values().find { it.abbreviation == userD.last().toString() }
+                if (a != null)
+                    return a
             }
+            throw IllegalArgumentException()
         }
 
     /**
@@ -141,7 +137,8 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
  */
 enum class Dimension(val abbreviation: String) {
     METER("m"),
-    GRAM("g");
+    GRAM("g"),
+    VOLT("V");
 }
 
 /**
@@ -149,5 +146,6 @@ enum class Dimension(val abbreviation: String) {
  */
 enum class DimensionPrefix(val abbreviation: String, val multiplier: Double) {
     KILO("K", 1000.0),
-    MILLI("m", 0.001);
+    MILLI("m", 0.001),
+    NANO("n", 0.000000001);
 }

@@ -117,7 +117,10 @@ class PhoneBook {
      * Если такого номера нет в книге, вернуть null.
      */
     fun humanByPhone(phone: String): String? =
-        if (book.filterValues { it.contains(phone) }.keys.isNotEmpty()) book.filterValues { it.contains(phone) }.keys.first() else null
+        if (book.filterValues { it.contains(phone) }.keys.isNotEmpty())
+            book.filterValues { it.contains(phone) }.keys.first()
+        else
+            null
 
     /**
      * Две телефонные книги равны, если в них хранится одинаковый набор людей,
