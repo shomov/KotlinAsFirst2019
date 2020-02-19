@@ -78,10 +78,7 @@ class PhoneBook {
     fun addPhone(name: String, phone: String): Boolean {
         checkName(name)
         checkPhone(phone)
-        if (book.containsKey(name)) {
-            for ((person, _) in book)
-                if (book[person]?.contains(phone)!!)
-                    return false
+        if (book.containsKey(name) && book.values.find { it.contains(phone) }.isNullOrEmpty()) {
             book[name]?.add(phone)
             return true
         }
@@ -98,12 +95,10 @@ class PhoneBook {
     fun removePhone(name: String, phone: String): Boolean {
         checkName(name)
         checkPhone(phone)
-        if (book.containsKey(name))
-            for ((person, _) in book)
-                if (book[person]?.contains(phone)!!) {
-                    book[name]?.remove(phone)
-                    return true
-                }
+        if (book.containsKey(name) && book[name]?.contains(phone) == true) {
+            book[name]?.remove(phone)
+            return true
+        }
         return false
     }
 
