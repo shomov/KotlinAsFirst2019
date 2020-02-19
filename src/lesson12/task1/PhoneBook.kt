@@ -112,10 +112,6 @@ class PhoneBook {
      * Если этого человека нет в книге, вернуть пустой список
      */
     fun phones(name: String): Set<String>? {
-//        for ((person, num) in book)
-//            if (person == name)
-//                return num.toSet()
-//        return emptySet()
         if (book.containsKey(name))
             return book[name]?.toSet()
         return emptySet()
@@ -125,12 +121,8 @@ class PhoneBook {
      * Вернуть имя человека по заданному номеру телефона.
      * Если такого номера нет в книге, вернуть null.
      */
-    fun humanByPhone(phone: String): String? {
-        for ((person, num) in book)
-            if (num.contains(phone))
-                return person
-        return null
-    }
+    fun humanByPhone(phone: String): String? =
+        if (book.filterValues { it.contains(phone) }.keys.isNotEmpty()) book.filterValues { it.contains(phone) }.keys.first() else null
 
     /**
      * Две телефонные книги равны, если в них хранится одинаковый набор людей,
