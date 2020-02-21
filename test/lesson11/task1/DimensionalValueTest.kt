@@ -54,11 +54,11 @@ internal class DimensionalValueTest {
         }
     }
 
-//    @Test
-//    @Tag("Easy")
-//    operator fun unaryMinus() {
-//        assertApproxEquals(DimensionalValue("2 g"), DimensionalValue("-2 g"), 1e-12)
-//    }
+    @Test
+    @Tag("Easy")
+    operator fun unaryMinus() {
+        assertApproxEquals(DimensionalValue("2 g"), -DimensionalValue("-2 g"), 1e-12)
+    }
 
     @Test
     @Tag("Easy")
