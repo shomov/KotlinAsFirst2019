@@ -20,8 +20,7 @@ class DimensionalValue(var value: Double, dimension: String) : Comparable<Dimens
     /**
      * Величина с БАЗОВОЙ размерностью (например для 1.0Kg следует вернуть результат в граммах -- 1000.0)
      */
-    //private var userV = value
-    private val userD = dimension
+
 
     init {
         if (dimension.length > 1 &&
@@ -31,35 +30,25 @@ class DimensionalValue(var value: Double, dimension: String) : Comparable<Dimens
         ) {
             value *= DimensionPrefix.values().find { it.abbreviation == dimension.first().toString() }?.multiplier
                 ?: value
-        }
-        else if (Dimension.values().find { it.abbreviation == dimension } == null)
+        } else if (Dimension.values().find { it.abbreviation == dimension } == null)
             throw IllegalArgumentException()
     }
 
 
-//    val value: Double
-//        get() {
-//            if (userD.length == 2) {
-//                 *= DimensionPrefix.values().find { it.abbreviation == userD.first().toString() }?.multiplier
-//                    ?: userV
-//            }
-//            if (userD.length > 2)
-//                throw IllegalArgumentException()
-//            return userV
-//        }
-
     /**
      * БАЗОВАЯ размерность (опять-таки для 1.0Kg следует вернуть GRAM)
      */
-    val dimension: Dimension
-        get() {
-            if (Dimension.values().find { it.abbreviation == userD.last().toString() }.toString().isNotEmpty()) {
-                val a = Dimension.values().find { it.abbreviation == userD.last().toString() }
-                if (a != null)
-                    return a
-            }
-            throw IllegalArgumentException()
-        }
+
+    val dimension: Dimension = when {
+        (dimension.length > 1 &&
+                DimensionPrefix.values().find { it.abbreviation == dimension.first().toString() } != null &&
+                Dimension.values().find { it.abbreviation == dimension } == null &&
+                Dimension.values().find { it.abbreviation == dimension.removePrefix(dimension[0].toString()) } != null
+                ) -> Dimension.values().find { it.abbreviation == dimension.removePrefix(dimension[0].toString()) }!!
+        (Dimension.values().find { it.abbreviation == dimension } != null) -> Dimension.values().find { it.abbreviation == dimension }!!
+        else -> throw IllegalArgumentException()
+
+    }
 
     /**
      * Конструктор из строки. Формат строки: значение пробел размерность (1 Kg, 3 mm, 100 g и так далее).
