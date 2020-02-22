@@ -16,23 +16,37 @@ package lesson11.task1
  * - либо соответствовать одной из приставок, к которой приписана сама размерность (Km, Kg, mm, mg)
  * - во всех остальных случаях следует бросить IllegalArgumentException
  */
-class DimensionalValue(value: Double, dimension: String) : Comparable<DimensionalValue> {
+class DimensionalValue(var value: Double, dimension: String) : Comparable<DimensionalValue> {
     /**
      * Величина с БАЗОВОЙ размерностью (например для 1.0Kg следует вернуть результат в граммах -- 1000.0)
      */
-    private var userV = value
+    //private var userV = value
     private val userD = dimension
 
-    val value: Double
-        get() {
-            if (userD.length == 2) {
-                userV *= DimensionPrefix.values().find { it.abbreviation == userD.first().toString() }?.multiplier
-                    ?: userV
-            }
-            if (userD.length > 2)
-                throw IllegalArgumentException()
-            return userV
+    init {
+        if (dimension.length > 1 &&
+            DimensionPrefix.values().find { it.abbreviation == dimension.first().toString() } != null &&
+            Dimension.values().find { it.abbreviation == dimension } == null &&
+            Dimension.values().find { it.abbreviation == dimension.removePrefix(dimension[0].toString()) } != null
+        ) {
+            value *= DimensionPrefix.values().find { it.abbreviation == dimension.first().toString() }?.multiplier
+                ?: value
         }
+        else if (Dimension.values().find { it.abbreviation == dimension } == null)
+            throw IllegalArgumentException()
+    }
+
+
+//    val value: Double
+//        get() {
+//            if (userD.length == 2) {
+//                 *= DimensionPrefix.values().find { it.abbreviation == userD.first().toString() }?.multiplier
+//                    ?: userV
+//            }
+//            if (userD.length > 2)
+//                throw IllegalArgumentException()
+//            return userV
+//        }
 
     /**
      * БАЗОВАЯ размерность (опять-таки для 1.0Kg следует вернуть GRAM)
@@ -59,6 +73,7 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
      * Сложение с другой величиной. Если базовая размерность разная, бросить IllegalArgumentException
      * (нельзя складывать метры и килограммы)
      */
+
     operator fun plus(other: DimensionalValue): DimensionalValue {
         if (dimension == other.dimension)
             return DimensionalValue(value + other.value, abbr)
@@ -138,7 +153,8 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
 enum class Dimension(val abbreviation: String) {
     METER("m"),
     GRAM("g"),
-    VOLT("V");
+    VOLT("V"),
+    HERTZ("Hz");
 }
 
 /**

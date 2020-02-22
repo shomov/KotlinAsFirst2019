@@ -35,7 +35,7 @@ class Rational(numerator: Int, denominator: Int) : Comparable<Rational> {
     /**
      * Сложение
      */
-    operator fun plus(other: Rational) = Rational(
+    operator fun plus(other: Rational): Rational = Rational(
         numerator * other.denominator + denominator * other.numerator,
         denominator * other.denominator
     )

@@ -20,22 +20,14 @@ internal class DimensionalValueTest {
         val second = DimensionalValue("200 m")
         assertEquals(200.0, second.value)
         assertEquals(Dimension.METER, second.dimension)
-        val third = DimensionalValue(1.0, "KGg")
         assertThrows(IllegalArgumentException::class.java) {
-            DimensionalValue(
-                third.value,
-                third.dimension.abbreviation
-            )
+            DimensionalValue(1.0, "KGg")
         }
         val fourth = DimensionalValue(2.2, "Km")
         assertEquals(2200.0, fourth.value)
         assertEquals(Dimension.METER, fourth.dimension)
-        val fifth = DimensionalValue("200 2 m")
         assertThrows(IllegalArgumentException::class.java) {
-            DimensionalValue(
-                fifth.value,
-                fifth.dimension.abbreviation
-            )
+            DimensionalValue("200 2 m")
         }
         val sixth = DimensionalValue("1000 mm")
         assertEquals(1.0, sixth.value)
@@ -43,6 +35,9 @@ internal class DimensionalValueTest {
         val eighth = DimensionalValue("1000000000 nV")
         assertEquals(1.0, eighth.value)
         assertEquals(Dimension.VOLT, eighth.dimension)
+        val ninth = DimensionalValue("1000000000 nHz")
+        assertEquals(1.0, ninth.value)
+        assertEquals(Dimension.HERTZ, ninth.dimension)
     }
 
     @Test
