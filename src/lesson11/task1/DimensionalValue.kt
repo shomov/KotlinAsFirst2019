@@ -16,22 +16,21 @@ package lesson11.task1
  * - либо соответствовать одной из приставок, к которой приписана сама размерность (Km, Kg, mm, mg)
  * - во всех остальных случаях следует бросить IllegalArgumentException
  */
-class DimensionalValue(var value: Double, dimension: String) : Comparable<DimensionalValue> {
+class DimensionalValue(value: Double, dimension: String) : Comparable<DimensionalValue> {
     /**
      * Величина с БАЗОВОЙ размерностью (например для 1.0Kg следует вернуть результат в граммах -- 1000.0)
      */
 
 
-    init {
-        if (dimension.length > 1 &&
-            DimensionPrefix.values().find { it.abbreviation == dimension.first().toString() } != null &&
-            Dimension.values().find { it.abbreviation == dimension } == null &&
-            Dimension.values().find { it.abbreviation == dimension.removePrefix(dimension[0].toString()) } != null
-        ) {
-            value *= DimensionPrefix.values().find { it.abbreviation == dimension.first().toString() }?.multiplier
-                ?: value
-        } else if (Dimension.values().find { it.abbreviation == dimension } == null)
+    var value: Double = when {
+        (dimension.length > 1 &&
+                DimensionPrefix.values().find { it.abbreviation == dimension.first().toString() } != null &&
+                Dimension.values().find { it.abbreviation == dimension } == null &&
+                Dimension.values().find { it.abbreviation == dimension.removePrefix(dimension[0].toString()) } != null
+                ) -> value * DimensionPrefix.values().find { it.abbreviation == dimension.first().toString() }?.multiplier!!
+        (Dimension.values().find { it.abbreviation == dimension } == null) ->
             throw IllegalArgumentException()
+        else -> value
     }
 
 
@@ -40,14 +39,9 @@ class DimensionalValue(var value: Double, dimension: String) : Comparable<Dimens
      */
 
     val dimension: Dimension = when {
-        (dimension.length > 1 &&
-                DimensionPrefix.values().find { it.abbreviation == dimension.first().toString() } != null &&
-                Dimension.values().find { it.abbreviation == dimension } == null &&
-                Dimension.values().find { it.abbreviation == dimension.removePrefix(dimension[0].toString()) } != null
-                ) -> Dimension.values().find { it.abbreviation == dimension.removePrefix(dimension[0].toString()) }!!
+        (dimension.length > 1) -> Dimension.values().find { it.abbreviation == dimension.removePrefix(dimension[0].toString()) }!!
         (Dimension.values().find { it.abbreviation == dimension } != null) -> Dimension.values().find { it.abbreviation == dimension }!!
         else -> throw IllegalArgumentException()
-
     }
 
     /**
