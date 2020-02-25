@@ -129,14 +129,9 @@ class PhoneBook {
      */
     override fun equals(other: Any?): Boolean {
         if (other is PhoneBook)
-            for ((person, _) in other.book)
-                if (!(book.containsKey(person) && book[person]?.toSet() == other.book[person]?.toSet()))
-                    return false
-        return true
+            return other.book == book
+        return false
     }
 
-    override fun hashCode(): Int {
-        book.toSortedMap()
-        return book.hashCode()
-    }
+    override fun hashCode(): Int = book.hashCode()
 }
