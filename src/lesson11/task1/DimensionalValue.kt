@@ -21,7 +21,6 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
      * Величина с БАЗОВОЙ размерностью (например для 1.0Kg следует вернуть результат в граммах -- 1000.0)
      */
 
-
     var value: Double = when {
         (dimension.length > 1 &&
                 DimensionPrefix.values().find { it.abbreviation == dimension.first().toString() } != null &&
@@ -31,7 +30,6 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
         (Dimension.values().find { it.abbreviation == dimension } == null) -> throw IllegalArgumentException()
         else -> value
     }
-
 
     /**
      * БАЗОВАЯ размерность (опять-таки для 1.0Kg следует вернуть GRAM)
