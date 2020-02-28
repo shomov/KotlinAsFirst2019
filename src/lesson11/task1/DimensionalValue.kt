@@ -21,24 +21,32 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
      * Величина с БАЗОВОЙ размерностью (например для 1.0Kg следует вернуть результат в граммах -- 1000.0)
      */
 
-    var value: Double = when {
-        (dimension.length > 1 &&
-                DimensionPrefix.values().find { it.abbreviation == dimension.first().toString() } != null &&
-                Dimension.values().find { it.abbreviation == dimension } == null &&
-                Dimension.values().find { it.abbreviation == dimension.removePrefix(dimension[0].toString()) } != null
-                ) -> value * DimensionPrefix.values().find { it.abbreviation == dimension.first().toString() }?.multiplier!!
-        (Dimension.values().find { it.abbreviation == dimension } == null) -> throw IllegalArgumentException()
-        else -> value
+    val value: Double = run {
+        val dValue = Dimension.values()
+        val pValue = DimensionPrefix.values()
+        val firstLetter = dimension.first().toString()
+        when {
+            (dimension.length > 1 &&
+                    pValue.find { it.abbreviation == firstLetter } != null &&
+                    dValue.find { it.abbreviation == dimension } == null &&
+                    dValue.find { it.abbreviation == dimension.removePrefix(firstLetter) } != null
+                    ) -> value * pValue.find { it.abbreviation == firstLetter }?.multiplier!!
+            (dValue.find { it.abbreviation == dimension } == null) -> throw IllegalArgumentException()
+            else -> value
+        }
     }
 
     /**
      * БАЗОВАЯ размерность (опять-таки для 1.0Kg следует вернуть GRAM)
      */
 
-    val dimension: Dimension = when {
-        (dimension.length > 1) -> Dimension.values().find { it.abbreviation == dimension.removePrefix(dimension[0].toString()) }!!
-        (Dimension.values().find { it.abbreviation == dimension } != null) -> Dimension.values().find { it.abbreviation == dimension }!!
-        else -> throw IllegalArgumentException()
+    val dimension: Dimension = run {
+        val dValue = Dimension.values()
+        when {
+            (dimension.length > 1) -> dValue.find { it.abbreviation == dimension.removePrefix(dimension.first().toString()) }!!
+            (dValue.find { it.abbreviation == dimension } != null) -> dValue.find { it.abbreviation == dimension }!!
+            else -> throw IllegalArgumentException()
+        }
     }
 
     /**
