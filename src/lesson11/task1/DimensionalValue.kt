@@ -28,8 +28,8 @@ class DimensionalValue(value: Double, dimension: String) : Comparable<Dimensiona
         when {
             (dimension.length > 1 &&
                     pValue.find { it.abbreviation == firstLetter } != null &&
-                    dValue.find { it.abbreviation == dimension } == null &&
-                    dValue.find { it.abbreviation == dimension.removePrefix(firstLetter) } != null
+                    dValue.find { it.abbreviation == dimension.removePrefix(firstLetter) } != null &&
+                    dValue.find { it.abbreviation == dimension } == null
                     ) -> value * pValue.find { it.abbreviation == firstLetter }?.multiplier!!
             (dValue.find { it.abbreviation == dimension } == null) -> throw IllegalArgumentException()
             else -> value
